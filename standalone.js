@@ -139,6 +139,18 @@ const downloads={save:async({filename,data})=>{const blob=data instanceof Blob?d
 
 window.claude={use:async n=>{await ready;if(n==="db")return{doc:docRef,collection:col};if(n==="user")return userApi;if(n==="downloads")return downloads;return null}};
 
+/* ---------- boîtes de dialogue intégrées (remplacent alert/confirm/prompt, bloqués dans certains navigateurs) ---------- */
+function dlg({title,text,input,ok="OK",cancel}){return new Promise(res=>{const w=document.createElement("div");
+ w.style.cssText="position:fixed;inset:0;z-index:10000;background:rgba(20,25,15,.45);display:flex;align-items:center;justify-content:center;padding:16px;font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif";
+ w.innerHTML=`<div role="dialog" aria-modal="true" style="background:#fff;color:#1d2a10;border-radius:14px;max-width:420px;width:100%;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,.25)">${title?`<h3 style="margin:0 0 8px;font:600 18px Outfit,Inter,sans-serif">${esc(title)}</h3>`:""}<div style="white-space:pre-line">${esc(text||"")}</div>${input!=null?`<input id="atDlgIn" type="text" value="${esc(input)}" style="width:100%;box-sizing:border-box;margin-top:12px;font-size:16px;padding:10px 12px;border:1px solid #cfd6c6;border-radius:9px">`:""}<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px">${cancel?`<button data-v="0" style="padding:10px 16px;border-radius:9px;border:1px solid #cfd6c6;background:#fff;font:600 15px Inter,sans-serif;cursor:pointer">${esc(cancel)}</button>`:""}<button data-v="1" style="padding:10px 18px;border-radius:9px;border:0;background:#111;color:#dcfa4b;font:600 15px Inter,sans-serif;cursor:pointer">${esc(ok)}</button></div></div>`;
+ document.body.appendChild(w);const i=w.querySelector("#atDlgIn");(i||w.querySelector('[data-v="1"]')).focus();if(i)i.select();
+ const done=v=>{w.remove();res(input!=null?(v?i.value:null):v)};
+ w.querySelectorAll("button").forEach(b=>b.onclick=()=>done(b.dataset.v==="1"));
+ w.addEventListener("keydown",e=>{if(e.key==="Escape")done(false);if(e.key==="Enter"&&i)done(true)})})}
+const atAlert=(text,title)=>dlg({title,text});
+const atConfirm=(text,ok="Confirmer",title)=>dlg({title,text,ok,cancel:"Annuler"});
+const atPrompt=(text,def,title)=>dlg({title,text,input:def||"",ok:"Enregistrer",cancel:"Annuler"});
+
 /* ---------- connexion / déconnexion ---------- */
 async function afterLogin(u){user=u;
  shell(`<div class="wait">Chargement de tes données…</div>`);
@@ -150,7 +162,7 @@ async function afterLogin(u){user=u;
 }
 async function logout(){try{await sb.auth.signOut()}catch(e){}try{sessionStorage.clear()}catch(e){}location.reload()}
 window.AT_logout=logout;
-function addLogout(){const put=()=>{if(document.getElementById("atOut"))return;const g=document.getElementById("gear");if(!g||!g.parentNode)return;const b=document.createElement("button");b.id="atOut";b.type="button";b.title="Se déconnecter ("+(user&&user.email||"")+")";b.setAttribute("aria-label","Se déconnecter");b.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';b.onclick=async()=>{if(confirm("Te déconnecter?"))logout()};g.parentNode.appendChild(b)};put();setTimeout(put,500);setTimeout(put,2000)}
+function addLogout(){const put=()=>{if(document.getElementById("atOut"))return;const g=document.getElementById("gear");if(!g||!g.parentNode)return;const b=document.createElement("button");b.id="atOut";b.type="button";b.title="Se déconnecter ("+(user&&user.email||"")+")";b.setAttribute("aria-label","Se déconnecter");b.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';b.onclick=async()=>{if(await atConfirm("Te déconnecter de la plateforme?","Se déconnecter"))logout()};g.parentNode.appendChild(b)};put();setTimeout(put,500);setTimeout(put,2000)}
 
 /* ---------- gestion des utilisateurs (onglet Utilisateurs) ---------- */
 function bindCopy(toast){const c=document.getElementById("nu-cp");if(c)c.onclick=()=>navigator.clipboard.writeText(window.AT_SA._info||"").then(()=>toast("Copié")).catch(()=>toast("Sélectionne le texte pour le copier"))}
@@ -185,20 +197,21 @@ window.AT_SA={
    catch(x){toast(frErr(x));b.disabled=false;b.textContent="Créer le compte"}};
   bindCopy(toast);
   document.querySelectorAll("[data-upw]").forEach(btn=>btn.onclick=async()=>{const id=btn.dataset.upw,u=A[id];
-   const pw=prompt(`Nouveau mot de passe pour ${en(u.emp)} (8 caractères minimum) :`,genPw());if(pw===null)return;
+   const pw=await atPrompt(`Nouveau mot de passe pour ${en(u.emp)} (8 caractères minimum) :`,genPw(),"Changer le mot de passe");if(pw===null)return;
    if(pw.length<8){toast("8 caractères minimum.");return}
    const {error}=await sb.rpc("at_set_password",{uid:id,pw});if(error){fail(error);return}
    try{await navigator.clipboard.writeText(pw)}catch(x){}toast("Mot de passe changé"+(navigator.clipboard?" (copié)":""))});
  },
  deleteUser:async uid=>{const {error}=await sb.rpc("at_delete_user",{uid});if(error)throw error},
  importJSON:()=>{const inp=document.createElement("input");inp.type="file";inp.accept=".json,application/json";
-  inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;let j;try{j=JSON.parse(await f.text())}catch(e){alert("Fichier illisible.");return}
-   const D=j&&j.docs;if(!D||typeof D!=="object"){alert("Ce fichier ne vient pas de l'export de la plateforme.");return}
-   const n=Object.keys(D).length;if(!confirm(`Importer ${n} éléments? Les documents qui ont le même numéro seront remplacés.`))return;
+  inp.style.display="none";document.body.appendChild(inp);
+  inp.onchange=async()=>{setTimeout(()=>inp.remove(),1000);const f=inp.files&&inp.files[0];if(!f)return;let j;try{j=JSON.parse(await f.text())}catch(e){atAlert("Ce fichier est illisible.");return}
+   const D=j&&j.docs;if(!D||typeof D!=="object"){atAlert("Ce fichier ne vient pas de l'export de la plateforme.");return}
+   const n=Object.keys(D).length;if(!await atConfirm(`Importer ${n} éléments? Les documents qui ont le même numéro seront remplacés.`,"Importer","Importer les données"))return;
    const rows=Object.entries(D).filter(([p])=>/^(docs|orgs)\/[^/]+$/.test(p)||p==="config/entreprise").map(([p,d])=>{if(p==="config/entreprise"){d={...d,ownerId:user.id}}return{path:p,col:p.split("/")[0],data:d,updated_at:new Date().toISOString()}});
    try{for(let i=0;i<rows.length;i+=200){const {error}=await sb.from(T).upsert(rows.slice(i,i+200));if(error)throw error}
     const roles=cache.get("acces/roles");if(!roles){await sb.from(T).upsert({path:"acces/roles",col:"acces",data:{users:{}},updated_at:new Date().toISOString()})}
-    await loadAll();schedule();alert(`Import terminé : ${rows.length} éléments.`)}catch(e){alert("L'import a échoué : "+(e.message||e))}};
+    await loadAll();schedule();atAlert(`${rows.length} éléments importés. Tes soumissions, factures, clients et paramètres sont maintenant dans l'application.`,"Import terminé")}catch(e){atAlert("L'import a échoué : "+(e.message||e),"Erreur")}};
   inp.click()}
 };
 
