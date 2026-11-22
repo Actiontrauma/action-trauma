@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122184000">
+<link rel="manifest" href="manifest.webmanifest?v=20261122185913">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122184000">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122185913">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122184000"></script>
-<script src="standalone.js?v=20261122184000"></script>
+<script src="config.js?v=20261122185913"></script>
+<script src="standalone.js?v=20261122185913"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -615,7 +615,7 @@ function paperHTML(d){const c=cfg(),m=model(d),w=m.isF?"facture":"soumission",bg
  <div class="meta"><b>Date de la ${w}:</b><span>${fdate(d.date)}</span><b>Numéro de la ${w}:</b><span>${d.numero}</span></div>
  <table style="table-layout:fixed"><colgroup><col style="width:50.7%"><col style="width:16%"><col style="width:16.5%"><col style="width:16.8%"></colgroup><tr class="hd" style="background:${bg}"><td>À l'intention de:</td><td colspan="3">Pour l'évènement:</td></tr>
  <tr class="kv"><td><div><span>Client:</span><small>${esc(d.client.entreprise)}</small></div><div><span>Référence:</span><small>${esc(d.client.contact)}</small></div><div><span>Courriel:</span><small>${esc(d.client.courriel)}</small></div></td><td colspan="3"><div><span>Nom:</span><small>${esc(d.evenement.nom)}</small></div><div><span>Date:</span><small>${fdate(d.evenement.date)}</small></div><div><span>Adresse:</span><small>${esc(d.evenement.adresse)}</small></div></td></tr>
- ${m.secs.map(sec).join("")}${tot}</table>
+ ${m.secs.map((x,i)=>sec(x)+(i===m.secs.map(z=>z.titre!=="Matériel consommé").lastIndexOf(true)?'<tr class="padA" style="display:none"></tr>':"")).join("")}${tot}</table>
  ${d.notes?`<div class="ft" style="margin-top:8px"><b>Note :</b> ${esc(d.notes)}</div>`:""}<div class="pfoot">${foot}
  <div class="sig">${esc((m.isF?c.salutF:c.salutS)||"Nous attendons de vos nouvelles,")}<br>${esc(c.signature).replace(/\n/g,"<br>")}</div></div></div>`}
 
@@ -624,7 +624,10 @@ async function savePdf(d){const bytes=await buildPdf(d);return S.dl.save({filena
 function previewModal(d){
  $("#modal").innerHTML=`<div class="modal"><div class="box wide"><div class="mfoot" style="margin:0 0 12px;justify-content:space-between"><h3 style="margin:0">Aperçu ${label(d)}</h3><div class="actions"><button class="btn g" id="pX">Fermer</button><button class="btn p" id="pPdf" ${S.dl?"":"disabled"}>Enregistrer le PDF</button></div></div><div class="pwrap"><div class="pscale">${paperHTML(d)}</div></div><p class="note">Format lettre 8,5 × 11 po, identique au PDF. Nom du fichier : <b>${esc(fileName(d))}</b>.</p>${S.dl?"":`<p class="note">L'enregistrement n'est pas disponible dans cette vue. Ouvre l'application dans Claude.</p>`}${d.client.courriel?`<p class="note">Courriel du client : <b>${esc(d.client.courriel)}</b> <button class="btn g" id="cpy">Copier</button></p>`:""}</div></div>`;
  $("#pX").onclick=closeM;
- const fit=()=>{const w=$(".pwrap"),p=$(".pscale");if(!w||!p)return;const k=Math.min(1,w.clientWidth/840);p.style.transform=`scale(${k})`;w.style.height=(p.firstElementChild.offsetHeight*k)+"px"};fit();setTimeout(fit,60);window.addEventListener("resize",fit);
+ const pad=()=>{const pp=$(".pwrap .paper"),a=pp&&pp.querySelector(".padA"),f=pp&&pp.querySelector(".pfoot"),tb=pp&&pp.querySelector("table");if(!a||!f||!tb)return;pp.querySelectorAll("tr.er").forEach(r=>r.remove());
+  const mk=()=>{const r=document.createElement("tr");r.className="er";r.innerHTML="<td>&nbsp;</td><td></td><td></td><td></td>";a.parentNode.insertBefore(r,a);return r};
+  const free=()=>f.offsetTop-(tb.offsetTop+tb.offsetHeight)-14;if(free()<20)return;const r0=mk(),rh=r0.offsetHeight||20;let k=Math.floor(free()/rh);while(k-->0)mk();while(free()<0&&pp.querySelector("tr.er"))pp.querySelector("tr.er").remove()};
+ const fit=()=>{const w=$(".pwrap"),p=$(".pscale");if(!w||!p)return;const k=Math.min(1,w.clientWidth/840);p.style.transform=`scale(${k})`;w.style.height=(p.firstElementChild.offsetHeight*k)+"px"};pad();fit();setTimeout(()=>{pad();fit()},80);window.addEventListener("resize",fit);
  if($("#cpy"))$("#cpy").onclick=()=>navigator.clipboard.writeText(d.client.courriel).then(()=>toast("Courriel copié")).catch(()=>toast("Copie impossible ici"));
  $("#pPdf").onclick=async()=>{const b=$("#pPdf");b.disabled=true;b.textContent="Préparation…";try{await savePdf(d);toast("PDF enregistré")}catch(e){if(e&&e.code==="declined")toast("Enregistrement annulé");else{console.error(e);toast("Le PDF n'a pas pu être créé.")}}b.disabled=false;b.textContent="Enregistrer le PDF"};
 }
@@ -666,25 +669,8 @@ async function buildPdf(d){
  y=165;box(L,y,X1,16,FILL);box(X1,y,R,16,FILL);T("À l'intention de:",64,y+2.5,{s:10.5});T("Pour l'évènement:",312,y+2.5,{s:10.5});y+=16;
  const kv=[["Client:",d.client.entreprise,"Nom:",d.evenement.nom],["Référence:",d.client.contact,"Date:",fdate(d.evenement.date)],["Courriel:",d.client.courriel,"Adresse:",d.evenement.adresse]];
  box(L,y,X1,47.5);box(X1,y,R,47.5);kv.forEach((r,i)=>{const t=y+2.5+i*16;T(r[0],64,t,{s:9.5});T(wrap(r[1]||"",160,F,8)[0]||"",145,t+1,{s:8});T(r[2],312,t,{s:9.5});T(wrap(r[3]||"",158,F,8)[0]||"",388,t+1,{s:8})});y+=47.5;
- // sections
- const secHead=s=>{if(y+16>H-BOT-20){newPage()}const mat=s.titre==="Matériel consommé";box(L,y,mat?X2:X1,16,FILL);if(!mat)box(X1,y,X2,16,FILL);box(X2,y,X3,16,FILL);box(X3,y,R,16,FILL);T(s.titre,64,y+2.5,{s:10.5});if(!mat)T(s.cols[0],(X1+X2)/2,y+2.5,{s:10.5,c:1});T(s.cols[1],(X2+X3)/2,y+2.5,{s:10.5,c:1});T(s.cols[2],(X3+R)/2,y+2.5,{s:10.5,c:1});y+=16};
- for(const s of m.secs){
-  if(s.titre==="Matériel consommé"){secHead(s);const n=Math.max(s.rows.length,10),rh=11.4;if(y+n*rh>H-BOT-80){newPage();secHead(s)}
-   for(let i=0;i<n;i++){const r=s.rows[i],t=y+i*rh;box(L,t,X2,rh);box(X2,t,X3,rh);if(r){T(wrap(r.desc+(r.qte!==1?` (${money(r.tarif)} ch.)`:""),X2-L-6,F,8)[0],64,t+2,{s:8});T(fq(r.qte),(X2+X3)/2,t+2,{s:8,c:1})}}
-   box(X3,y,R,n*rh);T(money(s.rows.reduce((a,r)=>a+r.total,0)),(X3+R)/2,y+n*rh/2-4.5,{s:9.5,c:1});y+=n*rh;continue}
-  secHead(s);
-  for(const r of s.rows){const dl=r.detail?wrap(r.detail,X1-L-6,F,6.6):[],nl=wrap(r.desc,X1-L-6,F,10);const h=r.detail?Math.max(15,3+nl.length*11.5+dl.length*8.6+4):15;
-   if(y+h>H-BOT-20){newPage();secHead(s)}
-   box(L,y,X1,h);box(X1,y,X2,h);box(X2,y,X3,h);box(X3,y,R,h);
-   let t=y+2.2;nl.forEach(l=>{T(l,64,t,{s:10,u:1});t+=11.5});dl.forEach(l=>{T(l,64,t,{s:6.6});t+=8.6});
-   const mid=y+h/2-5;T(money(r.tarif)+(r.unite?"  / "+r.unite:""),(X1+X2)/2,mid,{s:9.5,c:1});T(fq(r.qte),(X2+X3)/2,mid,{s:9.5,c:1});T(money(r.total),(X3+R)/2,mid,{s:9.5,c:1});y+=h}}
- // totaux
- if(y+17*m.tot.length>H-BOT-20)newPage();
- m.tot.forEach(([a,b],i)=>{const h=i===0?17.5:16.75,tx=/^(TPS|TVQ)/.test(a);if(tx){box(L,y,224.5,h,FILL);box(224.5,y,X3,h,FILL);T(a.slice(0,3),64,y+3,{s:10.5});T(a.slice(3).trim(),227,y+3,{s:10.5})}else{box(L,y,X3,h,FILL);T(a,64,y+3,{s:10.5})}box(X3,y,R,h,FILL);T(money(b),(X3+R)/2,y+3,{s:10.5,c:1});y+=h});
  // pied de page
  const rich=(line,x,top,sz)=>{let xx=x;for(const[i,part]of clean(line).split("**").entries()){if(!part)continue;const f=i%2?B:F;pg.drawText(part,{x:xx,y:H-top-sz*.8,size:sz,font:f,color:INK});xx+=f.widthOfTextAtSize(part,sz)*SQ}};
- const need=h=>{if(y+h>H-BOT){newPage()}};
- if(d.notes){y+=8;for(const l of wrap("Note : "+d.notes,R-52,F,8)){need(11);T(l,52,y,{s:8});y+=10.5}}
  // bloc du bas (conditions / message + signature) : toujours collé au bas de la dernière page
  const footer=(dr)=>{const t=(...a)=>dr&&T(...a),hl=(...a)=>dr&&hline(...a),rc=(...a)=>dr&&rich(...a);
   hl(52,R+12,y,GREEN,1.2);y+=8;
@@ -695,7 +681,31 @@ async function buildPdf(d){
   }else{const ls=c.conditionsS.split("\n");ls.forEach((l,i)=>{if(i===0){t(l.replace(/\*\*/g,""),53,y,{s:8.5,b:1,u:1});y+=13;return}const ind=/^\s{2,}/.test(l)?105:64;for(const ww of wrap(l.trim(),R+10-ind,F,8)){rc(ww,ind,y,8);y+=11.8}})}
   y+=4;hl(52,R+12,y,GREEN,1.2);y+=6;
   for(const l of[(m.isF?c.salutF:c.salutS)||"Nous attendons de vos nouvelles,",...clean(c.signature).split("\n")]){t(l,53,y,{s:11.5});y+=13.6}};
- const y0=y;y=0;footer(false);const fh=y;y=y0+11;
+ // hauteur de tout ce qui suit la dernière section de services (pour remplir la page de lignes vides)
+ const fh=(()=>{const y0=y;y=0;footer(false);const h=y;y=y0;return h})();
+ const matS=m.secs.find(x=>x.titre==="Matériel consommé"),matH=matS?16+Math.max(matS.rows.length,10)*11.4:0;
+ const totH=m.tot.reduce((a,_,i)=>a+(i===0?17.5:16.75),0),notesH=d.notes?8+wrap("Note : "+d.notes,R-52,F,8).length*10.5:0;
+ const lastSvc=m.secs.map(x=>x.titre!=="Matériel consommé").lastIndexOf(true);
+ // sections
+ const secHead=s=>{if(y+16>H-BOT-20){newPage()}const mat=s.titre==="Matériel consommé";box(L,y,mat?X2:X1,16,FILL);if(!mat)box(X1,y,X2,16,FILL);box(X2,y,X3,16,FILL);box(X3,y,R,16,FILL);T(s.titre,64,y+2.5,{s:10.5});if(!mat)T(s.cols[0],(X1+X2)/2,y+2.5,{s:10.5,c:1});T(s.cols[1],(X2+X3)/2,y+2.5,{s:10.5,c:1});T(s.cols[2],(X3+R)/2,y+2.5,{s:10.5,c:1});y+=16};
+ for(const[si,s]of m.secs.entries()){
+  if(s.titre==="Matériel consommé"){secHead(s);const n=Math.max(s.rows.length,10),rh=11.4;if(y+n*rh>H-BOT-80){newPage();secHead(s)}
+   for(let i=0;i<n;i++){const r=s.rows[i],t=y+i*rh;box(L,t,X2,rh);box(X2,t,X3,rh);if(r){T(wrap(r.desc+(r.qte!==1?` (${money(r.tarif)} ch.)`:""),X2-L-6,F,8)[0],64,t+2,{s:8});T(fq(r.qte),(X2+X3)/2,t+2,{s:8,c:1})}}
+   box(X3,y,R,n*rh);T(money(s.rows.reduce((a,r)=>a+r.total,0)),(X3+R)/2,y+n*rh/2-4.5,{s:9.5,c:1});y+=n*rh;continue}
+  secHead(s);
+  for(const r of s.rows){const dl=r.detail?wrap(r.detail,X1-L-6,F,6.6):[],nl=wrap(r.desc,X1-L-6,F,10);const h=r.detail?Math.max(15,3+nl.length*11.5+dl.length*8.6+4):15;
+   if(y+h>H-BOT-20){newPage();secHead(s)}
+   box(L,y,X1,h);box(X1,y,X2,h);box(X2,y,X3,h);box(X3,y,R,h);
+   let t=y+2.2;nl.forEach(l=>{T(l,64,t,{s:10,u:1});t+=11.5});dl.forEach(l=>{T(l,64,t,{s:6.6});t+=8.6});
+   const mid=y+h/2-5;T(money(r.tarif)+(r.unite?"  / "+r.unite:""),(X1+X2)/2,mid,{s:9.5,c:1});T(fq(r.qte),(X2+X3)/2,mid,{s:9.5,c:1});T(money(r.total),(X3+R)/2,mid,{s:9.5,c:1});y+=h}
+  if(si===lastSvc&&pdf.getPageCount()===1){const k=Math.floor((H-BOT-y-(matH+totH+notesH+11+fh))/15);for(let i=0;i<k;i++){box(L,y,X1,15);box(X1,y,X2,15);box(X2,y,X3,15);box(X3,y,R,15);y+=15}}}
+ // totaux
+ if(y+17*m.tot.length>H-BOT-20)newPage();
+ m.tot.forEach(([a,b],i)=>{const h=i===0?17.5:16.75,tx=/^(TPS|TVQ)/.test(a);if(tx){box(L,y,224.5,h,FILL);box(224.5,y,X3,h,FILL);T(a.slice(0,3),64,y+3,{s:10.5});T(a.slice(3).trim(),227,y+3,{s:10.5})}else{box(L,y,X3,h,FILL);T(a,64,y+3,{s:10.5})}box(X3,y,R,h,FILL);T(money(b),(X3+R)/2,y+3,{s:10.5,c:1});y+=h});
+ // pied de page
+ const need=h=>{if(y+h>H-BOT){newPage()}};
+ if(d.notes){y+=8;for(const l of wrap("Note : "+d.notes,R-52,F,8)){need(11);T(l,52,y,{s:8});y+=10.5}}
+ y+=11;
  if(y+fh>H-BOT)newPage();
  y=H-BOT-fh;footer(true);
  const n=pdf.getPageCount();if(n>1)pdf.getPages().forEach((p,k)=>p.drawText(`Page ${k+1} de ${n}`,{x:520,y:22,size:8,font:F,color:TITLE}));
