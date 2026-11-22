@@ -55,7 +55,7 @@ const frErr=e=>{const m=String((e&&(e.message||e.error_description))||e||"");
  return m||"Une erreur est survenue.";};
 
 function loginScreen(note){
- const el=shell(`<h1>Connexion</h1><p class="s">Facturation et gestion des évènements</p>
+ const el=shell(`<h1 style="margin-bottom:14px">Connexion</h1>
  <form id="atF" novalidate><label for="atE">Courriel</label><input id="atE" type="email" autocomplete="username" inputmode="email" required>
  <label for="atP">Mot de passe</label><div class="pw"><input id="atP" type="password" autocomplete="current-password" required><button type="button" id="atShow">Afficher</button></div>
  <label class="rm"><input type="checkbox" id="atR" ${remember()?"checked":""}> Rester connecté</label>
