@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122194706">
+<link rel="manifest" href="manifest.webmanifest?v=20261122195634">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122194706">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122195634">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122194706"></script>
-<script src="standalone.js?v=20261122194706"></script>
+<script src="config.js?v=20261122195634"></script>
+<script src="standalone.js?v=20261122195634"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -53,6 +53,14 @@ header{background:var(--brand);color:#111;padding:10px max(4vw,14px) 0}
 .pill.ag1{background:var(--oksoft);color:var(--ok)}.pill.ag2{background:#fff3bf;color:#7a5b00}.pill.ag3{background:#ffe8cc;color:#d9480f}.pill.ag4{background:#ffe3e3;color:#c92a2a}
 .pill.imp{background:#eef0f2;color:#3b4148;font-weight:500}
 table.pann{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}table.pann th{background:#16181a;color:#fff;text-align:right;padding:8px 10px;font-weight:600;white-space:nowrap}table.pann th:first-child,table.pann td:first-child{text-align:left}table.pann td{padding:8px 10px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}table.pann tbody tr:nth-child(even){background:#fafbfc}
+.calbar{display:flex;align-items:center;gap:8px;margin:4px 0 10px;flex-wrap:wrap}.calbar h3{margin:0 6px;min-width:150px;text-align:center;text-transform:capitalize}
+.calg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-bottom:14px}.cdh{font-size:12px;color:var(--mute);text-align:center;text-transform:uppercase;letter-spacing:.04em;padding:4px 0}
+.cday{background:var(--card,#fff);border:1px solid var(--line);border-radius:8px;min-height:92px;padding:4px;display:flex;flex-direction:column;gap:3px;min-width:0}.cday.off{background:transparent;border-color:transparent}.cday.past{opacity:.75}.cday.tod{border:2px solid #16181a}
+.cdn{font-size:12px;font-weight:600;color:var(--mute);padding:0 2px}.cday.tod .cdn{color:#16181a}
+.cev{all:unset;cursor:pointer;font-size:11.5px;line-height:1.25;padding:3px 5px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}.cev:hover{filter:brightness(.93)}
+.cup{background:#dcf34a;color:#1d2a10}.cpast{background:#e6e9ee;color:#495057}.cdot{display:inline-block;width:10px;height:10px;border-radius:3px;border:1px solid rgba(0,0,0,.15);vertical-align:-1px;margin:0 4px 0 8px}
+.callist{display:none}button.cli{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:60px 1fr;gap:12px;padding:10px 14px;border-top:1px solid var(--line)}
+@media(max-width:700px){.calg .cev{font-size:0;padding:0;height:6px;border-radius:3px}.calg .cev b{display:none}.cday{min-height:52px}.callist{display:block}.calbar .note{display:none}}
 .hnext{margin:8px 0 2px}.hnext .hn-in{width:100%;display:flex;align-items:center;gap:10px;flex-wrap:wrap;text-align:left;background:rgba(17,17,17,.08);border:0;border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;color:#111;cursor:pointer}
 .hnext .hn-in:hover{background:rgba(17,17,17,.14)}.hnext .hn-lab{font-weight:600;color:#333}.hnext .hn-d{color:#333}.hnext .hn-go{margin-left:auto;font-size:20px;line-height:1}
 .hnext.today .hn-in{background:#111;color:#fff;padding:10px 14px}.hnext.today .hn-d{color:#d6dbd0}.hnext.today .hn-in:hover{background:#2a2a2a}
@@ -955,8 +963,27 @@ function paieAnnuelCSV(all,y){const LB={gestion:"Gestion",ps:"PS",pr:"PR",pro:"P
  Object.entries(byE).sort((a,b)=>empName(a[0]).localeCompare(empName(b[0]),"fr")).forEach(([id,e])=>rows.push([empName(id),e.ev.size,...HCATS.map(k=>fq(e.h[k])),fq(r2(e.g)),fq(r2(e.p)),fq(r2(e.ka)),fq(r2(e.g+e.p+e.ka)),fq(r2(e.ap))]));
  return"﻿"+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(";")).join("\r\n")}
 
+/* calendrier des évènements acceptés */
+function calItems(){const I=[];S.docs.forEach(d=>{if(d.type==="soumission"&&statutOf(d)[0]==="acceptee"){const f=factOf(d);if(f&&f.statut==="annulee")return;I.push({s:d,f})}else if(d.type==="facture"&&!d.sourceId&&d.statut!=="annulee")I.push({s:null,f:d})});return I}
+function renderCal(){const t=today(),m=S.calM||t.slice(0,7),[Y,M]=m.split("-").map(Number),first=new Date(Y,M-1,1),start=(first.getDay()+6)%7,nd=new Date(Y,M,0).getDate();
+ const by={};calItems().forEach(x=>{const i=x.s||x.f;evDaysOf(i).forEach(j=>{(by[j.date]=by[j.date]||[]).push({x,j})})});
+ const p2=n=>String(n).padStart(2,"0"),mv=k=>{const d=new Date(Y,M-1+k,1);return d.getFullYear()+"-"+p2(d.getMonth()+1)};
+ const MN=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+ const cls=x=>{const f=x.f;return f&&isArch(f)?"cpast":"cup"};
+ let cells="";for(let k=0;k<start;k++)cells+=`<div class="cday off"></div>`;
+ for(let d=1;d<=nd;d++){const ds=m+"-"+p2(d),E=(by[ds]||[]).sort((a,b)=>(a.j.debut||"").localeCompare(b.j.debut||""));
+  cells+=`<div class="cday ${ds===t?"tod":""} ${ds<t?"past":""}"><span class="cdn">${d}</span>${E.map(({x,j})=>{const i=x.s||x.f;return`<button class="cev ${cls(x)}" data-cs="${x.s?esc(x.s.id):""}" data-cf="${x.f?esc(x.f.id):""}" title="${esc((i.evenement.nom||"")+" · "+(i.client.entreprise||"")+(evHrs(j)?" · "+evHrs(j):""))}">${j.debut?`<b>${nfH(j.debut)}</b> `:""}${esc(i.evenement.nom||i.client.entreprise||"Évènement")}</button>`}).join("")}</div>`}
+ const tot=Object.keys(by).filter(k=>k.startsWith(m)).reduce((a,k)=>a+by[k].length,0);
+ const list=Object.keys(by).filter(k=>k.startsWith(m)).sort().flatMap(k=>by[k].map(o=>({k,...o})));
+ $("#app").innerHTML=`<div class="ehead"><div><h2>Évènements</h2></div></div>${evTabs()}
+ <div class="calbar"><button class="btn" id="calP" aria-label="Mois précédent">‹</button><h3>${MN[M-1]} ${Y}</h3><button class="btn" id="calN" aria-label="Mois suivant">›</button><button class="btn" id="calT">Aujourd'hui</button><span class="note grow" style="text-align:right">${tot} journée${tot>1?"s":""} d'évènement · <span class="cdot cup"></span>à venir / à facturer <span class="cdot cpast"></span>facturé</span></div>
+ <div class="calg"><div class="cdh">lun</div><div class="cdh">mar</div><div class="cdh">mer</div><div class="cdh">jeu</div><div class="cdh">ven</div><div class="cdh">sam</div><div class="cdh">dim</div>${cells}</div>
+ <div class="card callist" style="padding:0">${list.map(({k,x,j})=>{const i=x.s||x.f;return`<button class="cfrow cli" data-cs="${x.s?esc(x.s.id):""}" data-cf="${x.f?esc(x.f.id):""}"><span class="num f">${fdate(k).slice(0,5)}</span><span><b>${esc(i.evenement.nom||"")}</b><div class="note">${esc(i.client.entreprise||"")}${evHrs(j)?" · "+evHrs(j):""}</div></span></button>`}).join("")||`<div class="empty">Aucun évènement ce mois-ci.</div>`}</div>`;
+ bindEvTabs();$("#calP").onclick=()=>{S.calM=mv(-1);render()};$("#calN").onclick=()=>{S.calM=mv(1);render()};$("#calT").onclick=()=>{S.calM=t.slice(0,7);render()};
+ document.querySelectorAll("[data-cs],[data-cf]").forEach(b=>{if(!b.matches("button"))return;b.onclick=()=>{const sd=S.docs.find(d=>d.id===b.dataset.cs)||null,fd=S.docs.find(d=>d.id===b.dataset.cf)||null;if(fd&&isArch(fd)){S.evA=fd.id;S.arFrom="cal";S.view="evarch";render();scrollTo(0,0)}else openEv({s:sd,f:fd})}})}
+
 /* ---------- évènements (chefs d'équipe) ---------- */
-function evTabs(){const n=S.docs.filter(isArch).length;return`<div class="seg" style="margin-bottom:12px"><button class="${S.evTab!=="arch"?"on":""}" data-evt="cours">En cours</button><button class="${S.evTab==="arch"?"on":""}" data-evt="arch">Archivés <span class="note">${n}</span></button></div>`}
+function evTabs(){const n=S.docs.filter(isArch).length;return`<div class="seg" style="margin-bottom:12px"><button class="${S.evTab!=="arch"&&S.evTab!=="cal"?"on":""}" data-evt="cours">En cours</button><button class="${S.evTab==="arch"?"on":""}" data-evt="arch">Archivés <span class="note">${n}</span></button><button class="${S.evTab==="cal"?"on":""}" data-evt="cal" title="Calendrier des évènements acceptés"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Calendrier</button></div>`}
 function bindEvTabs(){document.querySelectorAll("[data-evt]").forEach(b=>b.onclick=()=>{S.evTab=b.dataset.evt;render();scrollTo(0,0)})}
 function rapLine(r){if(!r)return"";const p=[];if(r.mineurs!=null)p.push(r.mineurs+" mineur"+(r.mineurs>1?"s":""));if(r.majeurs!=null)p.push(r.majeurs+" majeur"+(r.majeurs>1?"s":""));if(r.ambulances!=null)p.push(r.ambulances+" ambulance"+(r.ambulances>1?"s":""));return p.join(" · ")}
 const isArch=d=>d.type==="facture"&&(d.statut==="envoyee"||d.statut==="payee");
@@ -969,14 +996,14 @@ function renderArch(){const q=(S.arQ||"").toLowerCase(),L=S.docs.filter(isArch).
  document.querySelectorAll("[data-ar]").forEach(r=>{const o=()=>{S.evA=r.dataset.ar;S.arFrom="arch";S.view="evarch";render();scrollTo(0,0)};r.onclick=o;r.onkeydown=e=>{if(e.key==="Enter")o()}})}
 function renderEvArch(){const f=S.docs.find(d=>d.id===S.evA);if(!f){S.view="evenements";return render()}const s=f.sourceId?S.docs.find(d=>d.id===f.sourceId):null,e=Object.assign({},(s&&s.evenement)||{},f.evenement||{}),r=rapOf(f)||{},H=f.heures||[],J=evJours(e).filter(j=>j.date||j.debut||j.fin),hm=v=>v?v.replace(":","h"):"";
  const hrs=h=>HCATS.reduce((a,k)=>a+(+h[k]||0),0);
- $("#app").innerHTML=`<div class="ehead"><div><a href="#evenements" class="note" id="arBack">← ${S.arFrom==="cours"?"Évènements en cours":"Évènements archivés"}</a><h2 style="margin-top:4px">${esc(e.nom||"(sans titre)")}</h2></div></div>
+ $("#app").innerHTML=`<div class="ehead"><div><a href="#evenements" class="note" id="arBack">← ${S.arFrom==="cours"?"Évènements en cours":S.arFrom==="cal"?"Calendrier":"Évènements archivés"}</a><h2 style="margin-top:4px">${esc(e.nom||"(sans titre)")}</h2></div></div>
  <div class="card"><div class="kvl" style="grid-template-columns:auto minmax(0,1fr);column-gap:18px"><span class="note">Date</span><b style="text-align:left">${e.date?dayLong(e.date):"–"}</b><span class="note">Lieu</span><b style="text-align:left">${esc(e.adresse||"–")}</b><span class="note">Client</span><b style="text-align:left">${esc(f.client.entreprise||"")}${f.client.contact?" · "+esc(f.client.contact):""}</b><span class="note">Soumission</span><b style="text-align:left">${s?label(s):"–"}</b><span class="note">Facture</span><b style="text-align:left">${label(f)} (${f.statut==="payee"?"payée":"envoyée"})</b></div>
  ${J.length>1||(J[0]&&(J[0].debut||J[0].fin))?`<div style="margin-top:12px"><b>Horaire</b><ul style="margin:4px 0 0;padding-left:18px">${J.map(j=>`<li>${j.date?dayLong(j.date):"Date à confirmer"}${j.debut||j.fin?` : ${hm(j.debut)||"?"} à ${hm(j.fin)||"?"}${jDur(j)?` (${jDur(j)})`:""}`:""}</li>`).join("")}</ul></div>`:""}
  ${e.infos?`<div style="margin-top:12px"><b>Informations pertinentes</b><div style="white-space:pre-wrap;margin-top:4px">${esc(e.infos)}</div></div>`:""}</div>
  <div class="card"><h3>Rapport d'évènement</h3><div class="stats five rp3" style="margin-bottom:12px"><div class="stat"><b>${r.mineurs??"–"}</b><span>Accidents mineurs</span></div><div class="stat ${r.majeurs?"alert":""}"><b>${r.majeurs??"–"}</b><span>Accidents majeurs</span></div><div class="stat"><b>${r.ambulances??"–"}</b><span>Ambulances</span></div></div>
  <b>Commentaires sur l'évènement</b><div style="white-space:pre-wrap;margin-top:4px">${r.commentaires?esc(r.commentaires):`<span class="note">Aucun commentaire.</span>`}</div></div>
  <div class="card"><h3>Équipe</h3>${H.length?`<div class="list">${H.map(h=>`<div class="srow" style="grid-template-columns:minmax(0,1fr) auto;cursor:default"><span><b>${esc(empName(h.emp))}</b>${h.chef?` <span class="note">· chef d'équipe</span>`:""}</span><span class="r">${fq(hrs(h))} h</span></div>`).join("")}</div>`:`<p class="note">Aucune heure enregistrée.</p>`}</div>`;
- $("#arBack").onclick=ev=>{ev.preventDefault();S.view="evenements";S.evTab=S.arFrom==="cours"?"cours":"arch";render()};
+ $("#arBack").onclick=ev=>{ev.preventDefault();S.view="evenements";S.evTab=S.arFrom==="cours"?"cours":S.arFrom==="cal"?"cal":"arch";render()};
 }
 function rapClean(r){if(!r)return null;const o={};for(const k of["mineurs","majeurs","ambulances"])if(r[k]!==""&&r[k]!=null)o[k]=+r[k]||0;if((r.commentaires||"").trim())o.commentaires=r.commentaires.trim();return Object.keys(o).length?o:null}
 function rapOf(f){const s=f.sourceId?S.docs.find(d=>d.id===f.sourceId):null;return f.rapport||(s&&s.rapport)||null}
@@ -1033,7 +1060,7 @@ function mailModal(o){const to=(cfg().courrielComptable||"").trim();if(!to){toas
  $("#mlC").onclick=async()=>{try{await navigator.clipboard.writeText("À : "+to+"\nObjet : "+subject+"\n\n"+text);toast("Destinataire, objet et texte copiés")}catch(e){toast("Copie impossible")}}}
 function factOf(s){if(!s)return null;let f=s.factureId?S.docs.find(x=>x.id===s.factureId):null;if(f&&f.sourceId&&f.sourceId!==s.id)f=null;return f||S.docs.find(x=>x.type==="facture"&&x.sourceId===s.id)||null}
 function evList(){const lim=addDays(today(),-7);return S.docs.filter(d=>d.type==="soumission"&&statutOf(d)[0]==="acceptee"&&(!d.importe||(d.evenement.date||d.date)>=lim)).map(s=>({s,f:factOf(s)})).filter(({s,f})=>!f||f.statut==="brouillon").concat(S.docs.filter(d=>d.type==="facture"&&d.statut==="brouillon"&&!d.sourceId).map(f=>({s:null,f}))).sort((a,b)=>{const t=Date.parse(today()),d=x=>{const i=x.s||x.f,v=(i.evenement&&i.evenement.date)||"";return v?Math.abs(Date.parse(v)-t):9e15};return d(a)-d(b)||(b.f||b.s).numero-(a.f||a.s).numero})}
-function renderEvents(){if(S.evTab==="arch")return renderArch();const L=evList(),TD=today(),TM=addDays(TD,1),isTod=x=>evDaysOf(x.s||x.f).some(j=>j.date===TD),isTom=x=>evDaysOf(x.s||x.f).some(j=>j.date===TM),
+function renderEvents(){if(S.evTab==="arch")return renderArch();if(S.evTab==="cal")return renderCal();const L=evList(),TD=today(),TM=addDays(TD,1),isTod=x=>evDaysOf(x.s||x.f).some(j=>j.date===TD),isTom=x=>evDaysOf(x.s||x.f).some(j=>j.date===TM),
   tdy=L.filter(x=>isTod(x)&&!(x.f&&x.f.termine)),todo=L.filter(x=>(!x.f||!x.f.termine)&&!isTod(x)),done=L.filter(x=>x.f&&x.f.termine);
  const row=({s,f})=>{const i=s||f;return`<div class="evrow" ${s?`data-ev="${esc(s.id)}"`:`data-evf="${esc(f.id)}"`} tabindex="0"><span class="num ${s?"s":"f"}">${label(i)}</span><div class="tc"><div class="t"><b>${esc(i.evenement.nom||"(sans titre)")}</b></div><div class="c note"><span class="dm">${i.evenement.date?fdate(i.evenement.date):`<b class="tbd">Date à confirmer</b>`} · </span>${hrsTBD(i)?`<b class="tbd">Heures à confirmer</b> · `:""}${esc(i.client.entreprise||"")}${i.evenement.adresse?" · "+esc(i.evenement.adresse):""}</div></div><span class="date ed">${isTod({s,f})?`<span class="pill evtd">Aujourd'hui</span>`:isTom({s,f})?`<span class="pill evtm">Demain</span>`:i.evenement.date?fdate(i.evenement.date):`<b class="tbd">À confirmer</b>`}</span><span class="sp" style="text-align:right">${f&&f.termine?`<span class="pill st-payee">Terminé</span>`:(s&&(s.heures||[]).length)||(f&&(f.heures||[]).length)?`<span class="pill st-encours">Heures en cours</span>`:`<span class="pill st-envoyee">Heures à entrer</span>`}</span></div>`};
  $("#app").innerHTML=`<div class="ehead"><div><h2>Évènements</h2></div>${role()==="admin"?`<button class="btn p" id="evNew">+ Évènement</button>`:""}</div>${evTabs()}
