@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122204620">
+<link rel="manifest" href="manifest.webmanifest?v=20261122204911">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122204620">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122204911">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122204620"></script>
-<script src="standalone.js?v=20261122204620"></script>
+<script src="config.js?v=20261122204911"></script>
+<script src="standalone.js?v=20261122204911"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -510,12 +510,12 @@ function evCardS(d){const e=d.evenement,J=evJours(e),tm=(i,k,v)=>`<select data-j
  <div><label for="e-inf">Informations pertinentes</label><textarea id="e-inf" rows="3" placeholder="Stationnement, contact sur place, accès, consignes…">${esc(e.infos||"")}</textarea></div>
  <p class="note" style="margin-bottom:0">Seule la date officielle apparaît sur la soumission imprimée. Les quarts et les informations sont visibles dans l'onglet Évènements. Changer la date déplace aussi les quarts.</p></div>`}
 function lineHTML(l,i){if(l.svc==="ponct")return`<div class="line ponct" data-i="${i}">
- <input class="svc" data-k="desc" value="${esc(l.desc||"")}" placeholder="Description du service ponctuel" aria-label="Description du service ponctuel">
+ <input class="svc" data-k="desc" value="${esc(l.desc||"")}" placeholder="Description du service « autre »" aria-label="Description du service « autre »">
  <div class="qwrap"><input data-k="qte" inputmode="decimal" value="${esc(l.qteTxt??fq(l.qte))}" aria-label="Quantité" title="Quantité"></div>
  <input data-k="tarif" inputmode="decimal" value="${esc(l.tarifTxt??fq(l.tarif))}" aria-label="Prix unitaire" placeholder="Prix unitaire $">
  <div class="lt">${isNaN(l.qte)?"Calcul invalide":money(r2(l.qte*l.tarif))}</div>
  <button class="btn g del" data-del="${i}" aria-label="Retirer la ligne">✕</button>
- <div class="det note">Service ponctuel : inscrit seulement sur ce document.</div>
+ <div class="det note">Service « autre » : inscrit seulement sur ce document.</div>
  </div>`;const sv=cfg().services,isMat=l.svc==="materiel",s=sv[l.svc],libre=isMat?!l.matId:(!s||s.prixLibre),y=yearOf(S.edit);const hl=S.edit.type==="facture"&&HCATS.includes(l.svc)&&(S.edit.heures||[]).length&&S.edit.heuresFacturer!==false;
  const opts=isMat?`<option value="">— Matériel —</option>${matList().map(m=>`<option value="m:${esc(m.id)}" ${l.matId===m.id?"selected":""}>${esc(m.nom)}</option>`).join("")}<option value="m:" ${isMat&&!l.matId&&l.desc!==undefined&&l.svc?"selected":""}>Matériel divers (montant libre)</option>`
   :`<option value="">— Choisir un service —</option>${svcList().filter(([k,v])=>S.edit.type!=="soumission"||k===l.svc||!(HCATS.includes(k)||v.prixLibre)).map(([k,v])=>`<option value="${k}" ${l.svc===k?"selected":""}>${esc(v.nom)}</option>`).join("")}${l.svc&&!sv[l.svc]?`<option value="${esc(l.svc)}" selected>${esc(l.desc||"Ancienne ligne")}</option>`:""}${s&&s.actif===false?`<option value="${esc(l.svc)}" selected>${esc(s.nom)} (retiré)</option>`:""}`;
@@ -556,7 +556,7 @@ function renderEditor(){
  ${isF?"":`<div class="card"><h3>Services</h3>
   <div class="lhead"><span>Service</span><span>Quantité</span><span>Tarif</span><span style="text-align:right">Total</span><span></span></div>
   <div id="lines">${d.lignes.map((l,i)=>[l,i]).filter(([l])=>l.svc!=="materiel").map(([l,i])=>lineHTML(l,i)).join("")||`<p class="note">Aucun service pour l'instant.</p>`}</div>
-  <div class="addbar"><button class="btn p" data-add="svc">+ Ajouter un service</button><button class="btn" data-add="ponct">+ Service ponctuel</button></div>${!isF&&(d.evenement.quarts||[]).length?"":!isF?`<p class="note" style="margin:6px 0 0">Les heures de personnel (PS, PR, PO) s'ajoutent avec les quarts de travail, dans la section Évènement.</p>`:""}
+  <div class="addbar"><button class="btn p" data-add="svc">+ Ajouter un service</button><button class="btn p" data-add="ponct">+ Service « autre »</button></div>${!isF&&(d.evenement.quarts||[]).length?"":!isF?`<p class="note" style="margin:6px 0 0">Les heures de personnel (PS, PR, PO) s'ajoutent avec les quarts de travail, dans la section Évènement.</p>`:""}
   ${isF||d.lignes.some(l=>l.svc==="materiel")?`<h3 style="margin-top:18px">Matériel consommé</h3><div id="mlines">${d.lignes.map((l,i)=>[l,i]).filter(([l])=>l.svc==="materiel").map(([l,i])=>lineHTML(l,i)).join("")||`<p class="note">Aucun matériel.</p>`}</div><div class="addbar"><button class="btn" data-add="mat">+ Ajouter du matériel</button></div>`:""}
   <details class="more"><summary>Plus d'options</summary><div class="actions" style="margin-top:8px"><button class="btn" id="rates">Appliquer les tarifs ${yearOf(d)}</button></div></details>
  </div>`}
