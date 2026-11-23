@@ -174,13 +174,12 @@ window.AT_SA={
    <div><label for="nu-e">Employé</label><select id="nu-e"><option value="">— Choisir —</option>${emps.map(e=>`<option value="${esc(e.id)}" data-mail="${esc(e.courriel||"")}">${esc(e.nom)}</option>`).join("")}</select></div>
    <div><label for="nu-r">Type d'utilisateur</label><select id="nu-r"><option value="employe">Employé</option><option value="chef">Chef d'équipe</option><option value="compta">Comptabilité</option><option value="admin">Administrateur</option></select></div>
    <div><label for="nu-m">Courriel (sert à se connecter)</label><input id="nu-m" type="email" autocomplete="off"></div>
-   <div><label for="nu-p">Mot de passe</label><div class="atpw"><input id="nu-p" type="text" autocomplete="off" placeholder="8 caractères minimum"><button class="btn" id="nu-g" type="button" title="Générer un mot de passe">🎲</button></div></div>
+   <div><label for="nu-p">Mot de passe</label><input id="nu-p" type="text" autocomplete="off" placeholder="8 caractères minimum"></div>
   </div><div class="actions" style="margin-top:12px;justify-content:flex-end"><button class="btn p" id="nu-ok">Créer le compte</button></div>
   <div id="nu-done" style="margin-top:12px">${window.AT_SA._done||""}</div></div>`,
  bindUsers:({A,en,toast,fail,ask,setEmpChef,saveRoles})=>{
   const e=document.getElementById("nu-e");if(!e)return;
   e.onchange=()=>{const o=e.selectedOptions[0];const m=document.getElementById("nu-m");if(o&&o.dataset.mail&&!m.value)m.value=o.dataset.mail};
-  document.getElementById("nu-g").onclick=()=>{document.getElementById("nu-p").value=genPw()};
   document.getElementById("nu-ok").onclick=async ev=>{const emp=e.value,role=document.getElementById("nu-r").value,email=document.getElementById("nu-m").value.trim().toLowerCase(),pw=document.getElementById("nu-p").value;
    if(!emp){toast("Choisis l'employé.");return}if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){toast("Courriel invalide.");return}if(pw.length<8){toast("Le mot de passe doit avoir au moins 8 caractères.");return}
    if(Object.values(A).some(u=>(u.email||"").toLowerCase()===email)){toast("Ce courriel a déjà un accès.");return}
