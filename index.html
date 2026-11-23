@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122233327">
+<link rel="manifest" href="manifest.webmanifest?v=20261122233556">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122233327">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122233556">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122233327"></script>
-<script src="standalone.js?v=20261122233327"></script>
+<script src="config.js?v=20261122233556"></script>
+<script src="standalone.js?v=20261122233556"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -228,7 +228,7 @@ body.employe #nav a:not([data-v="moi"]):not([data-v="mesquarts"]):not([data-v="c
 body:not(.chef):not(.employe) #nav a[data-v="mesquarts"],body:not(.chef):not(.employe) #nav a[data-v="combler"],body:not(.chef):not(.employe) #nav a[data-v="fiche"],body.chef #nav a[data-v="quarts"],body.employe #nav a[data-v="quarts"],body.compta #nav a[data-v="quarts"]{display:none!important}
 #nav a[data-v="soumission"]{order:1}#nav a[data-v="evenements"]{order:2}#nav a[data-v="quarts"]{order:3}#nav a[data-v="facture"]{order:4}#nav a[data-v="paies"]{order:5}#nav a[data-v="clients"]{order:6}#nav a[data-v="employes"]{order:7}#nav a[data-v="materiel"]{order:8}#nav a[data-v="services"]{order:9}#nav a[data-v="statistiques"]{order:10}#nav a[data-v="utilisateurs"]{order:11}
 body.chef #nav a[data-v="evenements"],body.employe #nav a[data-v="mesquarts"]{order:1}body.chef #nav a[data-v="mesquarts"],body.employe #nav a[data-v="combler"]{order:2}body.chef #nav a[data-v="combler"],body.employe #nav a[data-v="moi"]{order:3}body.chef #nav a[data-v="moi"],body.employe #nav a[data-v="fiche"]{order:4}body.chef #nav a[data-v="fiche"]{order:5}
-body.compta #nav a[data-v="paies"]{order:1}body.compta #nav a[data-v="cfact"]{order:2}body.compta #nav a[data-v="recevoir"]{order:3}body.compta #nav a[data-v="statistiques"]{order:4}body.compta #nav a[data-v="employes"]{order:5}#nav a[data-v="cfact"],#nav a[data-v="recevoir"]{display:none}body.compta #nav a[data-v="cfact"],body.compta #nav a[data-v="recevoir"]{display:inline-flex}body.compta #nav a:not([data-v="paies"]):not([data-v="statistiques"]):not([data-v="employes"]):not([data-v="cfact"]):not([data-v="recevoir"]),body.compta #gear,body.compta #hTot{display:none!important}body:not(.chef):not(.employe) #nav a[data-v="moi"],body:not(.chef):not(.compta):not(.employe) #hMe{display:none!important}
+body:not(.compta) #nav a[data-v="paies"]{display:none!important}body.compta #nav a[data-v="paies"]{order:1}body.compta #nav a[data-v="cfact"]{order:2}body.compta #nav a[data-v="recevoir"]{order:3}body.compta #nav a[data-v="statistiques"]{order:4}body.compta #nav a[data-v="employes"]{order:5}#nav a[data-v="cfact"],#nav a[data-v="recevoir"]{display:none}body.compta #nav a[data-v="cfact"],body.compta #nav a[data-v="recevoir"]{display:inline-flex}body.compta #nav a:not([data-v="paies"]):not([data-v="statistiques"]):not([data-v="employes"]):not([data-v="cfact"]):not([data-v="recevoir"]),body.compta #gear,body.compta #hTot{display:none!important}body:not(.chef):not(.employe) #nav a[data-v="moi"],body:not(.chef):not(.compta):not(.employe) #hMe{display:none!important}
 .steps{margin:0;padding-left:22px;line-height:1.55}.steps li{margin:0 0 12px}.steps li:last-child{margin:0}
 .urow.rqrow{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 170px 200px}@media(max-width:820px){.urow.rqrow{grid-template-columns:1fr 1fr}.urow.rqrow>div:first-child,.urow.rqrow>span{grid-column:1/-1}}
 body.noacc #nav,body.noacc #hMe{display:none!important}body.compta #hMe{display:block!important}
@@ -449,7 +449,7 @@ function render(){headerTotal();roBar();$("#gear")&&$("#gear").classList.toggle(
  if(S.view==="quarts"&&rl!=="admin"){S.view=rl==="employe"?"mesquarts":"evenements"}
  if(rl==="compta"&&!["paies","statistiques","employes","cfact","recevoir"].includes(S.view)){S.view="paies"}
  if((S.view==="cfact"||S.view==="recevoir")&&rl!=="compta"&&rl!=="admin"){S.view="evenements"}
- if(S.view==="paies"&&rl!=="compta"&&rl!=="admin"){S.view="evenements"}
+ if(S.view==="paies"&&rl!=="compta"){S.view="evenements"}
  if(S.view==="moi"&&rl!=="chef"&&rl!=="employe"){S.view="evenements"}
  meHeader();
  if(rl==="compta"&&(S.view==="employes"||S.view==="statistiques")){setTimeout(()=>readOnly($("#app")),0);if(!S._roObs){S._roObs=1;roObs.observe($("#modal"),{childList:true,subtree:true})}}
