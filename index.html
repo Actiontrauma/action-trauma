@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122220914">
+<link rel="manifest" href="manifest.webmanifest?v=20261122231554">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122220914">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122231554">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122220914"></script>
-<script src="standalone.js?v=20261122220914"></script>
+<script src="config.js?v=20261122231554"></script>
+<script src="standalone.js?v=20261122231554"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -1304,14 +1304,17 @@ function orgModal(o,after){const isNew=!o;o=o?JSON.parse(JSON.stringify(o)):{id:
  <label class="check wide"><input type="checkbox" id="k-sp" ${special?"checked":""}> Tarification spéciale</label>
  <div class="wide" id="k-spb" style="${special?"":"display:none"}"><p class="note" style="margin:0 0 6px">Laisse vide pour garder le tarif normal de l'année. Les années terminées (🔒) ne peuvent plus être modifiées.</p>${yrs.map(y=>`<div class="grid" style="grid-template-columns:52px repeat(4,minmax(0,1fr));align-items:end;margin-bottom:6px"><b style="padding-bottom:12px">${isPast(y)?"🔒<br>":""}${y}</b>${HCATS.map(k=>`<div><label for="k-r-${y}-${k}">${SHORT[k]}<br><span class="note">Normal : ${money(rateFor("",k,y)).replace("$","")} ${uLab(cfg().services[k].unite)}</span></label><input id="k-r-${y}-${k}" inputmode="decimal" value="${esc((TA[y]||{})[k]??"")}" ${isPast(y)?`disabled class="lk" title="${LOCKT}"`:""}></div>`).join("")}</div>`).join("")}</div>
  <details class="wide more" ${o.notes?"open":""}><summary>Notes internes</summary><textarea id="k-n" aria-label="Notes internes">${esc(o.notes||"")}</textarea></details></div>
- <div class="mfoot">${!isNew?`<button class="btn d" id="kDel" ${used?"disabled title='Cette organisation a des documents'":""}>Supprimer</button>`:""}<button class="btn g" id="kX">Annuler</button><button class="btn p" id="kOk">Enregistrer</button></div></div></div>`;
+ <div class="mfoot">${!isNew?`<button class="btn d" id="kDel">Supprimer</button>`:""}<button class="btn g" id="kX">Annuler</button><button class="btn p" id="kOk">Enregistrer</button></div></div></div>`;
  $("#k-sp").onchange=e=>{special=e.target.checked;$("#k-spb").style.display=special?"":"none"};
  const keep=()=>{o.actif=$("#k-act").checked;o.nom=$("#k-e").value;o.adresse=$("#k-a").value;o.notes=$("#k-n").value;yrs.forEach(y=>HCATS.forEach(k=>{const e=$(`#k-r-${y}-${k}`);if(e&&!e.disabled){(TA[y]=TA[y]||{})[k]=e.value}}))};
  document.querySelectorAll("[data-pk]").forEach(inp=>inp.oninput=()=>{P[+inp.dataset.p][inp.dataset.pk]=inp.value});
  document.querySelectorAll("[data-prm]").forEach(b=>b.onclick=()=>{keep();P.splice(+b.dataset.prm,1);draw()});
  $("#pAdd").onclick=()=>{keep();P.push({id:"p"+Date.now().toString(36)+P.length,nom:"",courriel:"",tel:""});draw();const ins=document.querySelectorAll('[data-pk="nom"]');ins[ins.length-1].focus()};
  $("#kX").onclick=closeM;
- if($("#kDel"))$("#kDel").onclick=async()=>{if(!await ask(`Supprimer ${o.nom}?`,"Supprimer",true))return;try{await S.db.collection("orgs").doc(o.id).delete();toast("Organisation supprimée")}catch(e){fail(e)}};
+ if($("#kDel"))$("#kDel").onclick=async()=>{const n=S.docs.filter(d=>docOrgId(d)===o.id).length;
+  if(!n){if(!await ask(`Supprimer ${o.nom}?`,"Supprimer",true))return;try{await S.db.collection("orgs").doc(o.id).delete();toast("Organisation supprimée")}catch(e){fail(e)}return}
+  const choice=await new Promise(res=>{$("#modal").innerHTML=`<div class="modal"><div class="box"><h3>Supprimer ${esc(o.nom)}?</h3><div class="askd"><p>Ce client a <b>${n} document${n>1?"s":""}</b> (soumissions ou factures). Ils resteront dans l'application avec le nom du client inscrit dessus, mais ne seront plus reliés à sa fiche (historique et statistiques par client).</p><p><b>Désactiver</b> le client le retire des listes de choix tout en gardant son historique : c'est généralement le meilleur choix.</p></div><div class="mfoot"><button class="btn g" id="dN">Annuler</button><button class="btn" id="dA">Désactiver</button><button class="btn d" id="dY">Supprimer quand même</button></div></div></div>`;$("#dN").onclick=()=>{closeM();res(0)};$("#dA").onclick=()=>{closeM();res(1)};$("#dY").onclick=()=>{closeM();res(2)}});
+  try{if(choice===1){await S.db.collection("orgs").doc(o.id).update({actif:false});toast("Client désactivé")}else if(choice===2){await S.db.collection("orgs").doc(o.id).delete();toast("Organisation supprimée")}}catch(e){fail(e)}};
  $("#kOk").onclick=async()=>{keep();const n={...o,nom:o.nom.trim(),adresse:o.adresse.trim(),notes:o.notes.trim(),contacts:P.filter(c=>c.nom.trim()).map(c=>({id:c.id,nom:c.nom.trim(),courriel:(c.courriel||"").trim(),tel:(c.tel||"").trim()})),tarifsAnnee:{}};
   if(special)for(const y of yrs)for(const k of HCATS){const v=String((TA[y]||{})[k]??"").replace(",",".").trim();if(v!==""&&!isNaN(+v))(n.tarifsAnnee[y]=n.tarifsAnnee[y]||{})[k]=+v}
   if(!n.nom){toast("Indique le nom de l'organisation.");return}
