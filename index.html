@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122202426">
+<link rel="manifest" href="manifest.webmanifest?v=20261122202758">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122202426">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122202758">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122202426"></script>
-<script src="standalone.js?v=20261122202426"></script>
+<script src="config.js?v=20261122202758"></script>
+<script src="standalone.js?v=20261122202758"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -965,7 +965,7 @@ function paieAnnuelCSV(all,y){const LB={gestion:"Gestion",ps:"PS",pr:"PR",pro:"P
 
 /* calendrier des évènements acceptés */
 function calItems(){const I=[];S.docs.forEach(d=>{if(d.type==="soumission"&&statutOf(d)[0]==="acceptee"){const f=factOf(d);if(f&&f.statut==="annulee")return;I.push({s:d,f})}else if(d.type==="facture"&&!d.sourceId&&d.statut!=="annulee")I.push({s:null,f:d})});return I}
-function renderCal(){const t=today(),m=S.calM||t.slice(0,7),[Y,M]=m.split("-").map(Number),first=new Date(Y,M-1,1),start=(first.getDay()+6)%7,nd=new Date(Y,M,0).getDate();
+function renderCal(){const t=today(),m=S.calM||t.slice(0,7),[Y,M]=m.split("-").map(Number),first=new Date(Y,M-1,1),start=first.getDay(),nd=new Date(Y,M,0).getDate();
  const by={};calItems().forEach(x=>{const i=x.s||x.f;evDaysOf(i).forEach(j=>{(by[j.date]=by[j.date]||[]).push({x,j})})});
  const p2=n=>String(n).padStart(2,"0"),mv=k=>{const d=new Date(Y,M-1+k,1);return d.getFullYear()+"-"+p2(d.getMonth()+1)};
  const MN=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
@@ -977,7 +977,7 @@ function renderCal(){const t=today(),m=S.calM||t.slice(0,7),[Y,M]=m.split("-").m
  const list=Object.keys(by).filter(k=>k.startsWith(m)).sort().flatMap(k=>by[k].map(o=>({k,...o})));
  $("#app").innerHTML=`<div class="ehead"><div><h2>Évènements</h2></div></div>${evTabs()}
  <div class="calbar"><button class="btn" id="calP" aria-label="Mois précédent">‹</button><h3>${MN[M-1]} ${Y}</h3><button class="btn" id="calN" aria-label="Mois suivant">›</button><button class="btn" id="calT">Aujourd'hui</button><span class="note grow" style="text-align:right">${tot} journée${tot>1?"s":""} d'évènement · <span class="cdot cup"></span>à venir / à facturer <span class="cdot cpast"></span>facturé</span></div>
- <div class="calg"><div class="cdh">lun</div><div class="cdh">mar</div><div class="cdh">mer</div><div class="cdh">jeu</div><div class="cdh">ven</div><div class="cdh">sam</div><div class="cdh">dim</div>${cells}</div>
+ <div class="calg"><div class="cdh">dim</div><div class="cdh">lun</div><div class="cdh">mar</div><div class="cdh">mer</div><div class="cdh">jeu</div><div class="cdh">ven</div><div class="cdh">sam</div>${cells}</div>
  <div class="card callist" style="padding:0">${list.map(({k,x,j})=>{const i=x.s||x.f;return`<button class="cfrow cli" data-cs="${x.s?esc(x.s.id):""}" data-cf="${x.f?esc(x.f.id):""}"><span class="num f">${fdate(k).slice(0,5)}</span><span><b>${esc(i.evenement.nom||"")}</b><div class="note">${esc(i.client.entreprise||"")}${evHrs(j)?" · "+evHrs(j):""}</div></span></button>`}).join("")||`<div class="empty">Aucun évènement ce mois-ci.</div>`}</div>`;
  bindEvTabs();$("#calP").onclick=()=>{S.calM=mv(-1);render()};$("#calN").onclick=()=>{S.calM=mv(1);render()};$("#calT").onclick=()=>{S.calM=t.slice(0,7);render()};
  document.querySelectorAll("[data-cs],[data-cf]").forEach(b=>{if(!b.matches("button"))return;b.onclick=()=>{const sd=S.docs.find(d=>d.id===b.dataset.cs)||null,fd=S.docs.find(d=>d.id===b.dataset.cf)||null;if(fd&&isArch(fd)){S.evA=fd.id;S.arFrom="cal";S.view="evarch";render();scrollTo(0,0)}else openEv({s:sd,f:fd})}})}
