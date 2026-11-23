@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122210319">
+<link rel="manifest" href="manifest.webmanifest?v=20261122210428">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122210319">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122210428">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122210319"></script>
-<script src="standalone.js?v=20261122210319"></script>
+<script src="config.js?v=20261122210428"></script>
+<script src="standalone.js?v=20261122210428"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -586,7 +586,7 @@ function bindEditor(){
  if($("#qAdd")){const e=d.evenement,od=e.date||"",sync=()=>{e.jours=evJours(e)};
   $("#e-ed").addEventListener("change",()=>{const nd=e.date||"";if(od&&nd&&nd!==od&&(e.quarts||[]).length){const k=Math.round((Date.parse(nd)-Date.parse(od))/864e5);e.quarts.forEach(q=>{if(q.date)q.date=addDays(q.date,k)});syncQuarts(d)}else sync();render()});
   $("#e-inf").oninput=ev=>{e.infos=ev.target.value};
-  $("#qAdd").onclick=()=>{sync();e.quarts=e.quarts||[];const L=e.quarts[e.quarts.length-1],j0=e.jours[0]||{};e.quarts.push(L?{...L,cat:"ps",nb:1}:{date:e.date||j0.date||"",debut:j0.debut||"",fin:j0.fin||"",cat:"ps",nb:1});syncQuarts(d);render()};
+  $("#qAdd").onclick=()=>{sync();e.quarts=e.quarts||[];const F=e.quarts[0],j0=e.jours[0]||{},mx=e.quarts.map(q=>q.date).filter(Boolean).sort().pop();e.quarts.push(F?{...F,date:mx?addDays(mx,1):(F.date||"")}:{date:e.date||j0.date||"",debut:j0.debut||"",fin:j0.fin||"",cat:"ps",nb:1});syncQuarts(d);render()};
   document.querySelectorAll("[data-qdel]").forEach(b=>b.onclick=()=>{e.quarts.splice(+b.dataset.qdel,1);if(!e.quarts.length)d.lignes.forEach(l=>delete l.auto);else syncQuarts(d);render()});
   document.querySelectorAll(".qrow [data-qk]").forEach(inp=>inp.onchange=()=>{const q=e.quarts[+inp.closest(".qrow").dataset.qi],k=inp.dataset.qk;q[k]=k==="nb"?Math.max(1,parseInt(inp.value)||1):inp.value;syncQuarts(d);render()})}
  set("#e-no",v=>d.notes=v);
