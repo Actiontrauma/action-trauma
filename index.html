@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122195634">
+<link rel="manifest" href="manifest.webmanifest?v=20261122200432">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122195634">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122200432">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122195634"></script>
-<script src="standalone.js?v=20261122195634"></script>
+<script src="config.js?v=20261122200432"></script>
+<script src="standalone.js?v=20261122200432"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -1511,6 +1511,7 @@ function renderSettings(){const c=cfg();
  <div class="card"><h3>Taxes et paiement</h3><div class="trow2">${f("tps","Numéro TPS (ex. 123456789 RT0001)")}${f("tvq","Numéro TVQ (ex. 1234567890 TQ0001)")}</div><div class="trow2">${f("tauxTps","Taux TPS (%)",{num:1})}${f("tauxTvq","Taux TVQ (%)",{num:1})}</div><div class="trow1">${f("delai","Délai de paiement (jours)",{num:1})}</div><div class="trow3">${f("transit","Transit")}${f("institution","Institution")}${f("folio","Folio / compte")}</div></div>
  <div class="card"><h3>Textes</h3><div class="grid">${f("conditionsS","Conditions sur les soumissions (mets **entre astérisques doubles** pour le gras; indente une ligne pour la décaler)",{ta:9,wide:1})}${f("messageF","Message sur les factures ({delai} = délai, {banque} = ligne bancaire)",{ta:4,wide:1})}${f("salutS","Formule de fin des soumissions",{wide:1})}${f("salutF","Formule de fin des factures",{wide:1})}${f("signature","Signature",{ta:2,wide:1})}</div></div>
  <div class="card"><h3>Courriels automatiques</h3><div class="grid">${f("courrielComptable","Courriel de la comptable (reçoit les heures quand un évènement est terminé)",{wide:1})}</div></div>
+ <div class="card"><h3>Calendrier Outlook</h3>${window.AT_sb?`<p class="note" style="margin-top:0">Les évènements dont la soumission est acceptée s'affichent dans Outlook (ou Google Agenda, Apple Calendrier) et se mettent à jour automatiquement, en général en quelques heures. C'est à sens unique : les changements faits dans Outlook ne reviennent pas dans l'application.</p><div id="icsBox"><button class="btn" id="icsGet">Afficher le lien d'abonnement</button></div>`:`<p class="note" style="margin:0">L'abonnement au calendrier se fait dans l'application web Action Trauma (Paramètres → Calendrier Outlook).</p>`}</div>
  <div class="actions" style="justify-content:space-between"><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="csv">Exporter tous les documents (CSV)</button>${window.AT_SA?`<button class="btn" id="jsonIn">Importer des données (JSON)</button>`:`<button class="btn" id="jsonOut">Exporter toutes les données (JSON)</button>`}</span><button class="btn p" id="pSave">Enregistrer les paramètres</button></div>
  <p class="note">L'export CSV s'ouvre dans Excel : garde-le comme copie de sécurité.</p>`;
  $("#pSaveTop").onclick=()=>$("#pSave").click();
@@ -1521,6 +1522,13 @@ function renderSettings(){const c=cfg();
   try{await S.db.doc("config/entreprise").set(o);toast("Paramètres enregistrés");goBack()}catch(e){fail(e)}};
  if($("#jsonOut"))$("#jsonOut").onclick=async()=>{if(!S.dl){toast("Téléchargement non disponible dans cette vue.");return}try{const all={};const grab=c=>new Promise((res,rej)=>{let un=null;un=S.db.collection(c).limit(1000).onSnapshot(q=>{q.docs.forEach(d=>all[c+"/"+d.id]=d.data());res();setTimeout(()=>{try{un&&un()}catch(e){}})},rej)});await grab("docs");await grab("orgs");const cs=await S.db.doc("config/entreprise").get();if(cs.exists)all["config/entreprise"]=cs.data();const blob=new Blob([JSON.stringify({app:"facturation-action-trauma",version:1,exporte:new Date().toISOString(),docs:all})],{type:"application/json"});await S.dl.save({filename:"Action Trauma - donnees "+today()+".json",data:blob});toast(Object.keys(all).length+" éléments exportés")}catch(e){if(e&&e.code==="declined")toast("Export annulé");else fail(e)}};
  if($("#jsonIn"))$("#jsonIn").onclick=()=>AT_SA.importJSON();
+ const icsShow=async regen=>{const box=$("#icsBox");try{const {data,error}=await window.AT_sb.rpc("at_ics_token",{regen:!!regen});if(error)throw error;const url=(window.AT_CONFIG||{}).url+"/functions/v1/ics?t="+data;
+  box.innerHTML=`<div class="bar" style="gap:8px"><input class="grow" id="icsUrl" readonly value="${esc(url)}"><button class="btn p" id="icsCp">Copier</button></div>
+  <ol class="note" style="margin:10px 0 6px;padding-left:20px;line-height:1.6"><li>Ouvre <b>outlook.office.com</b> avec le compte <b>evenement@actiontrauma.ca</b>, puis va dans <b>Calendrier</b>.</li><li>Clique <b>Ajouter un calendrier</b> → <b>S'abonner à partir du web</b>.</li><li>Colle le lien, nomme-le « Action Trauma – Évènements », puis clique <b>Importer</b>.</li></ol>
+  <p class="note" style="margin:0 0 8px">Garde ce lien privé : toute personne qui l'a peut voir les évènements.</p><button class="btn" id="icsNew">Générer un nouveau lien (désactive l'ancien)</button>`;
+  $("#icsUrl").onclick=e=>e.target.select();$("#icsCp").onclick=()=>navigator.clipboard.writeText(url).then(()=>toast("Lien copié")).catch(()=>{$("#icsUrl").select();toast("Sélectionne le lien pour le copier")});
+  $("#icsNew").onclick=async()=>{if(await ask("Générer un nouveau lien?","Générer",true,"<p>L'ancien lien cessera de fonctionner : il faudra refaire l'abonnement dans Outlook.</p>"))icsShow(true)}}catch(e){fail(e)}};
+ if($("#icsGet"))$("#icsGet").onclick=()=>icsShow(false);
  $("#csv").onclick=async()=>{if(!S.dl){toast("Téléchargement non disponible dans cette vue.");return}
   const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';const rows=[["Type","Numéro","Date","Statut","Client","Contact","Évènement","Date évènement","Sous-total","TPS","TVQ","Total","Échéance"]];
   [...S.docs].sort((a,b)=>a.type.localeCompare(b.type)||a.numero-b.numero).forEach(d=>rows.push([d.type,d.numero,d.date,statutOf(d)[1],d.client?.entreprise,d.client?.contact,d.evenement?.nom,d.evenement?.date,fq(d.sousTotal),fq(d.tps),fq(d.tvq),fq(d.total),d.type==="facture"?echeance(d):""]));
