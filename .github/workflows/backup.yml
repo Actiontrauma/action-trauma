@@ -1,0 +1,22 @@
+# Sauvegarde hebdomadaire des données de l'application dans OneDrive (dossier « Backup plateforme »).
+# Secrets requis (Settings > Secrets and variables > Actions) :
+#   SUPABASE_SECRET_KEY, MS_TENANT_ID, MS_CLIENT_ID, MS_CLIENT_SECRET
+name: Sauvegarde hebdomadaire
+on:
+  schedule:
+    - cron: "17 4 * * 1"   # dimanche vers 23 h 17 (heure de l'Est)
+  workflow_dispatch:
+jobs:
+  sauvegarde:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copier les données dans OneDrive
+        env:
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          MS_TENANT_ID: ${{ secrets.MS_TENANT_ID }}
+          MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
+          MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
+          ONEDRIVE_DRIVE_ID: "b!1KQ7zyNwd0CgvZ4FzjpnepPeEJ9T8MJOob8WAcnwAIHx9TBJBqzaRorCzeSExAVe"
+          ONEDRIVE_FOLDER_ID: "01NQWA5UYQ3XZTZKYGHJF234K3EKKAIMA6"
+        run: python3 .github/scripts/backup.py

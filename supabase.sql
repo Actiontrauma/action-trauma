@@ -81,3 +81,6 @@ grant execute on function public.at_delete_user(uuid) to authenticated;
 grant execute on function public.at_my_role() to authenticated;
 grant select, insert, update, delete on public.at_docs to authenticated;
 
+
+-- 7. Sauvegarde hebdomadaire (GitHub Actions) : la clé secrète lit les données pour les copier dans OneDrive
+grant select on public.at_docs to service_role;
