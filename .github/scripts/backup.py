@@ -3,6 +3,11 @@ dans le dossier OneDrive « Backup plateforme ». Aucune donnée n'est affichée
 le journal (le dépôt est public) : seulement des compteurs."""
 import json, os, sys, urllib.request, urllib.parse, datetime
 
+NEED = ["SUPABASE_SECRET_KEY", "MS_TENANT_ID", "MS_CLIENT_ID", "MS_CLIENT_SECRET"]
+if not all(os.environ.get(k, "").strip() for k in NEED):
+    print("Sauvegarde pas encore configurée (secrets GitHub manquants) : rien à faire.")
+    sys.exit(0)
+
 SB_URL = "https://juhnkuxxzomaramxmuik.supabase.co"
 DRIVE_ID = os.environ["ONEDRIVE_DRIVE_ID"]
 FOLDER_ID = os.environ["ONEDRIVE_FOLDER_ID"]
