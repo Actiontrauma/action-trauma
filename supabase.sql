@@ -98,3 +98,5 @@ begin
 end $$;
 revoke all on function public.at_ics_token(boolean) from public, anon;
 grant execute on function public.at_ics_token(boolean) to authenticated;
+grant select on public.at_ics to service_role;
+grant select on public.at_docs to service_role;
