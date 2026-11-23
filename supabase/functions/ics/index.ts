@@ -63,7 +63,8 @@ Deno.serve(async (req) => {
   let key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
   try { const o = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") || "{}"); key = o.default || Object.values(o)[0] || key; } catch (_) { /* clés classiques */ }
   const sb = createClient(Deno.env.get("SUPABASE_URL")!, key as string, { auth: { persistSession: false } });
-  const { data: tok } = await sb.from("at_ics").select("token").eq("id", 1).maybeSingle();
+  const { data: tok, error: e1 } = await sb.from("at_ics").select("token").eq("id", 1).maybeSingle();
+  if (e1) { console.error("at_ics", e1); return new Response("Erreur de configuration : " + e1.message, { status: 500 }); }
   if (!t || !tok || t !== tok.token) return new Response("Lien d'abonnement invalide.", { status: 403 });
   const docs: any[] = [];
   for (let from = 0; ; from += 1000) {
