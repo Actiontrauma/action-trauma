@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122214052">
+<link rel="manifest" href="manifest.webmanifest?v=20261122214346">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122214052">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122214346">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122214052"></script>
-<script src="standalone.js?v=20261122214052"></script>
+<script src="config.js?v=20261122214346"></script>
+<script src="standalone.js?v=20261122214346"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -587,8 +587,8 @@ function bindEditor(){
 
  set("#e-en",v=>d.evenement.nom=v);set("#e-ed",v=>{const y0=yearOf(d);d.evenement.date=v;if(yearOf(d)!==y0){applyRates();render()}});
  if($("#rates"))$("#rates").onclick=()=>{applyRates(true);render()};set("#e-ea",v=>d.evenement.adresse=v);
- if($("#qAdd")){const e=d.evenement,od=e.date||"",sync=()=>{e.jours=evJours(e)};
-  $("#e-ed").addEventListener("change",()=>{const nd=e.date||"";if(od&&nd&&nd!==od&&(e.quarts||[]).length){const k=Math.round((Date.parse(nd)-Date.parse(od))/864e5);e.quarts.forEach(q=>{if(q.date)q.date=addDays(q.date,k)});syncQuarts(d)}else sync();render()});
+ if($("#qAdd")){const e=d.evenement,od=e.date||e._od||"",sync=()=>{e.jours=evJours(e)};
+  $("#e-ed").addEventListener("change",()=>{const nd=e.date||"";if(nd)delete e._od;if(od&&nd&&nd!==od&&(e.quarts||[]).length){const k=Math.round((Date.parse(nd)-Date.parse(od))/864e5);e.quarts.forEach(q=>{if(q.date)q.date=addDays(q.date,k)});syncQuarts(d)}else sync();render()});
   $("#e-inf").oninput=ev=>{e.infos=ev.target.value};
   $("#qAdd").onclick=()=>{sync();e.quarts=e.quarts||[];const F=e.quarts[0],j0=e.jours[0]||{},mx=e.quarts.map(q=>q.date).filter(Boolean).sort().pop();e.quarts.push(F?{...F,date:mx?addDays(mx,1):(F.date||"")}:{date:e.date||j0.date||"",debut:j0.debut||"",fin:j0.fin||"",cat:"ps",nb:1});syncQuarts(d);render()};
   document.querySelectorAll("[data-qdel]").forEach(b=>b.onclick=()=>{e.quarts.splice(+b.dataset.qdel,1);if(!e.quarts.length)d.lignes.forEach(l=>delete l.auto);else syncQuarts(d);render()});
@@ -610,7 +610,7 @@ function bindEditor(){
  ["#save","#save2"].forEach(s=>$(s).onclick=saveDoc);
  ["#prev","#prev2"].forEach(s=>$(s).onclick=()=>{if(!checkLines())return;previewModal(finalize(d))});
  if($("#conv"))$("#conv").onclick=convert;
- if($("#dup"))$("#dup").onclick=()=>{const n=JSON.parse(JSON.stringify(d));Object.assign(n,{id:null,numero:nextNum(n.type),date:today(),statut:"brouillon",heures:[],importe:false,sourceId:null,factureId:null,datePaiement:"",echeance:n.type==="facture"?addDays(today(),cfg().delai):""});n.evenement.date="";S.edit=n;render();toast("Copie créée : ajuste-la puis enregistre.")};
+ if($("#dup"))$("#dup").onclick=()=>{const n=JSON.parse(JSON.stringify(d));Object.assign(n,{id:null,numero:nextNum(n.type),date:today(),statut:"brouillon",heures:[],importe:false,sourceId:null,factureId:null,datePaiement:"",echeance:n.type==="facture"?addDays(today(),cfg().delai):""});["evLignes","rapport","termine","termineLe","courrielEnvoye","heuresPar","creeLe","modifieLe","statutAvant","heuresFacturer"].forEach(k=>delete n[k]);n.lignes=(n.lignes||[]).filter(l=>!(n.type==="facture"&&(l.benev||String(l.svc||"").startsWith("bv_"))));if(n.type==="facture")n.lignes.forEach(l=>{if(HCATS.includes(l.svc)||KMS.includes(l.svc)){l.qte=0;delete l.qteTxt}});n.evenement._od=n.evenement.date||"";n.evenement.date="";if(n.type==="soumission")n.statut="envoyee";S.edit=n;render();toast((n.evenement.quarts||[]).length?"Copie créée : choisis la nouvelle date, les quarts suivront.":"Copie créée : ajuste-la puis enregistre.")};
  if($("#del"))$("#del").onclick=async()=>{if(!await ask(`Supprimer ${label(d)} définitivement?`,"Supprimer",true))return;try{await S.db.collection("docs").doc(d.id).delete();toast(label(d)+" supprimée");S.f.type=d.type;S.view="documents";S.edit=null;render()}catch(e){fail(e)}};
 }
 function refreshTotals(){const d=S.edit,t=calc(d),box=document.querySelector(".totals");if(!box)return;const c=cfg();box.innerHTML=`<div><span>Sous-total</span><span>${money(t.sousTotal)}</span></div>${d.taxes?`<div><span>TPS (${fr(c.tauxTps)} %)</span><span>${money(t.tps)}</span></div><div><span>TVQ (${fr(c.tauxTvq)} %)</span><span>${money(t.tvq)}</span></div>`:""}<div class="big"><span>Total</span><span>${money(t.total)}</span></div>`}
@@ -619,7 +619,7 @@ function snap(){const d=S.edit,o=orgOf(d),c=o&&(o.contacts||[]).find(x=>x.id===d
 function pickOrg(id){const d=S.edit,o=orgById(id);d.orgId=id;const cs=o?o.contacts||[]:[];d.clientId=cs.length===1?cs[0].id:"";snap();if(o)applyRates();render()}
 function pickContact(id){S.edit.clientId=id;snap();render()}
 function checkLines(){S.edit.lignes=S.edit.lignes.filter(l=>l.svc!==""&&!(l.svc==="materiel"&&l.desc===undefined)&&!(l.svc==="ponct"&&!String(l.desc||"").trim()&&!(+l.tarif)));if(S.edit.lignes.some(l=>isNaN(l.qte))){toast("Une quantité contient un calcul invalide.");return false}return true}
-function finalize(d){const o=JSON.parse(JSON.stringify(d));delete o.datePaiement;if(o.type==="facture")o.taxes=true;else if(o.type==="soumission")o.taxes=false;if(o.evenement&&o.evenement.jours&&o.evenement.jours.length){o.evenement.jours[0].date=o.evenement.date||"";o.evenement.jours=o.evenement.jours.filter((j,i)=>!i||j.date||j.debut||j.fin)}o.lignes=o.lignes.map(({qteTxt,tarifTxt,...l})=>({...l,qte:r2(l.qte),tarif:+l.tarif||0}));Object.assign(o,calc(o));if(o.type==="facture"&&!o.echeance)o.echeance=addDays(o.date,cfg().delai);return o}
+function finalize(d){const o=JSON.parse(JSON.stringify(d));delete o.datePaiement;if(o.evenement)delete o.evenement._od;if(o.type==="facture")o.taxes=true;else if(o.type==="soumission")o.taxes=false;if(o.evenement&&o.evenement.jours&&o.evenement.jours.length){o.evenement.jours[0].date=o.evenement.date||"";o.evenement.jours=o.evenement.jours.filter((j,i)=>!i||j.date||j.debut||j.fin)}o.lignes=o.lignes.map(({qteTxt,tarifTxt,...l})=>({...l,qte:r2(l.qte),tarif:+l.tarif||0}));Object.assign(o,calc(o));if(o.type==="facture"&&!o.echeance)o.echeance=addDays(o.date,cfg().delai);return o}
 async function propagateSoum(o){const hk=new Set(Object.entries(cfg().services).filter(([k,v])=>v.heures).map(([k])=>k)),isX=l=>l.svc&&!hk.has(l.svc)&&!HCATS.includes(l.svc)&&!KMS.includes(l.svc)&&l.svc!=="materiel"&&!l.benev&&!String(l.svc||"").startsWith("bv_");
  const X=(o.lignes||[]).filter(l=>isX(l)&&(+l.qte||l.svc==="ponct"||(cfg().services[l.svc]||{}).prixLibre)).map(({qteTxt,tarifTxt,auto,...l})=>l);
  const f=factOf(o),sameX=(A,B)=>JSON.stringify(A.filter(isX).map(l=>[l.svc,l.desc,+l.qte,+l.tarif]))===JSON.stringify(B.filter(isX).map(l=>[l.svc,l.desc,+l.qte,+l.tarif]));
