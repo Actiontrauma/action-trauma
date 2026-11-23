@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122231554">
+<link rel="manifest" href="manifest.webmanifest?v=20261122231731">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122231554">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122231731">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122231554"></script>
-<script src="standalone.js?v=20261122231554"></script>
+<script src="config.js?v=20261122231731"></script>
+<script src="standalone.js?v=20261122231731"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -226,7 +226,11 @@ body.noacc #nav,body.noacc #hMe{display:none!important}body.compta #hMe{display:
 .mbar{display:flex;align-items:flex-end;gap:6px;height:150px;padding-top:18px}.mbar>div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:11px;color:var(--mute)}.mbar i{display:block;width:100%;max-width:34px;background:linear-gradient(#a3d636,#5f9e1b);border-radius:5px 5px 0 0}.mbar em{font-style:normal;font-size:10.5px;color:var(--ink);margin-bottom:2px}
 .evrow{display:grid;grid-template-columns:76px minmax(0,1fr) 110px 150px;gap:14px;align-items:center;padding:12px 14px;border-top:1px solid var(--line);cursor:pointer}.evrow:first-child{border-top:0}.evrow:hover{background:light-dark(#f8f9fb,#1b2838)}
 .chh,.chr{display:grid;grid-template-columns:minmax(150px,1.8fr) repeat(4,minmax(52px,.6fr)) minmax(64px,.7fr) minmax(64px,.7fr) 136px 44px;gap:10px;align-items:center}.chr .cb{white-space:nowrap}.chh{font-size:13px;color:var(--mute);padding-bottom:4px}.chr{padding:6px 0;border-top:1px solid var(--line)}.chr .r{text-align:right}
-.urow{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.4fr) 190px auto;gap:14px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}.urow:first-child{border-top:0}
+.urow{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 180px 206px;gap:14px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
+.uhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.uhb{display:flex;gap:8px;flex-wrap:wrap}
+.urole{display:block;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:light-dark(#f4f5f7,#1b2532);font-weight:500}
+.uacts{display:flex;gap:6px;justify-content:flex-end}.uacts .btn{min-width:44px}.uph{width:44px;flex:0 0 44px}
+@media(max-width:820px){.urow{grid-template-columns:1fr 1fr;row-gap:8px}.urow>div:first-child,.urow>.note{grid-column:1/-1}.uacts .uph{display:none}}.urow:first-child{border-top:0}
 .uhit{display:block;width:100%;text-align:left;border:0;background:none;padding:8px 10px;border-radius:8px;cursor:pointer;font:inherit;color:inherit}.uhit:hover,.uhit.on{background:light-dark(#eef7d6,#2a3a12)}
 @media(max-width:820px){.evrow{grid-template-columns:62px minmax(0,1fr);gap:4px 12px;align-items:start;padding:12px}.evrow .num{margin-top:2px}.evrow .ed{display:none}.evrow .t b{font-size:16px}.evrow .c{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:normal;line-height:1.4}.evrow .sp{grid-column:2;text-align:left!important}.chh{display:none}.chr{grid-template-columns:repeat(4,minmax(0,1fr));padding:10px 0}.chr select{grid-column:1/4}.chr [data-cdel]{grid-column:4;grid-row:1;justify-self:end}.urow{grid-template-columns:minmax(0,1fr) auto}.urow .ua{grid-column:1/-1}}
 .hs{display:grid;grid-template-columns:minmax(0,2fr) repeat(5,minmax(0,.7fr)) minmax(0,1fr);gap:6px 20px;padding:10px 14px;border-top:1px solid var(--line);align-items:center}.hs:first-child{border-top:0}.hs.hd{font-size:13px;color:var(--mute)}.hs .r{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}.hs.tot{border-top:2px solid var(--ink)}
@@ -1256,9 +1260,9 @@ async function renderUsers(){if(role()!=="admin"){S.view="evenements";return ren
    <li><b>Sa demande apparaît dans « Demandes d'accès »</b>, juste au-dessus. Choisis l'employé et le type, puis clique « Accepter ». C'est tout!</li>
   </ol>
  </div>`}
- <div class="card"><div class="bar" style="justify-content:space-between;margin-bottom:8px"><h3 style="margin:0">Accès actuels</h3><button class="btn" id="pvChef">👁 Voir comme chef d'équipe</button><button class="btn" id="pvCompta">👁 Voir comme comptabilité</button></div><div class="list">
-  <div class="urow"><div><b>${S.isOwner?"Toi":"Propriétaire de la plateforme"}</b><div class="note">${S.isOwner?"Propriétaire":"Propriétaire"}</div></div><span class="note">Accès complet</span><span>Administrateur</span><span></span></div>
-  ${ids.map(id=>{const u=A[id],p=P[id]||{};return`<div class="urow"><div><b>${esc(en(u.emp))}</b><div class="note">${esc(p.name||"")}${(p.email||u.email)?(p.name?" · ":"")+esc(p.email||u.email):""}${!p.name&&!p.email&&!u.email?"Compte Claude lié":""}</div></div><span class="note">${u.role==="chef"?"Évènements et ses propres statistiques":u.role==="compta"?"Paies des évènements terminés":"Accès complet"}</span><select data-ur="${esc(id)}" class="ua" aria-label="Type d'utilisateur">${Object.entries(ROLES).map(([k,t])=>`<option value="${k}" ${u.role===k?"selected":""}>${t}</option>`).join("")}</select><span style="display:flex;gap:6px;justify-content:flex-end">${u.role==="chef"?`<button class="btn" data-pv="${esc(u.emp)}" title="Voir l'application comme ${esc(en(u.emp))}">👁</button>`:""}${window.AT_SA?`<button class="btn" data-upw="${esc(id)}" title="Changer le mot de passe">🔑</button>`:""}<button class="btn d" data-ux="${esc(id)}">Retirer</button></span></div>`}).join("")}
+ <div class="card"><div class="uhead"><h3 style="margin:0">Accès actuels</h3><div class="uhb"><button class="btn" id="pvChef">👁 Voir comme chef d'équipe</button><button class="btn" id="pvCompta">👁 Voir comme comptabilité</button></div></div><div class="list">
+  <div class="urow"><div><b>${S.isOwner?"Toi":"Propriétaire de la plateforme"}</b><div class="note">${S.isOwner?"Propriétaire":"Propriétaire"}</div></div><span class="note">Accès complet</span><span class="urole">Administrateur</span><span></span></div>
+  ${ids.map(id=>{const u=A[id],p=P[id]||{};return`<div class="urow"><div><b>${esc(en(u.emp))}</b><div class="note">${esc(p.name||"")}${(p.email||u.email)?(p.name?" · ":"")+esc(p.email||u.email):""}${!p.name&&!p.email&&!u.email?"Compte Claude lié":""}</div></div><span class="note">${u.role==="chef"?"Évènements et ses propres statistiques":u.role==="compta"?"Paies des évènements terminés":"Accès complet"}</span><select data-ur="${esc(id)}" class="ua" aria-label="Type d'utilisateur">${Object.entries(ROLES).map(([k,t])=>`<option value="${k}" ${u.role===k?"selected":""}>${t}</option>`).join("")}</select><span class="uacts">${u.role==="chef"?`<button class="btn" data-pv="${esc(u.emp)}" title="Voir l'application comme ${esc(en(u.emp))}" aria-label="Voir l'application comme ${esc(en(u.emp))}">👁</button>`:`<span class="uph"></span>`}${window.AT_SA?`<button class="btn" data-upw="${esc(id)}" title="Changer le mot de passe">🔑</button>`:""}<button class="btn d" data-ux="${esc(id)}">Retirer</button></span></div>`}).join("")}
  </div><p class="note">${window.AT_SA?"Retirer un utilisateur supprime son compte : il ne pourra plus se connecter. 🔑 permet de lui donner un nouveau mot de passe.":"Retirer un utilisateur ici lui enlève son rôle dans l'application. Pour lui couper complètement l'accès, retire-le aussi du partage de la page dans Claude."}</p></div>`;
  document.querySelectorAll("[data-rq]").forEach(r=>{const id=r.dataset.rq;
   r.querySelector("[data-rqok]").onclick=async()=>{const emp=r.querySelector("[data-rqe]").value,rl=r.querySelector("[data-rqr]").value;if(!emp){toast("Choisis l'employé.");return}
