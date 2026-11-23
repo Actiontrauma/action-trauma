@@ -1,6 +1,6 @@
 // Service worker : permet d'installer l'application et de l'ouvrir même avec une connexion faible.
 // Stratégie « réseau d'abord » : la dernière version publiée est toujours chargée quand Internet est disponible.
-const CACHE = "at-app-20261122231731";
+const CACHE = "at-app-20261122231913";
 const SHELL = ["./", "index.html", "config.js", "standalone.js", "manifest.webmanifest", "logo.png", "icon-192.png", "icon-512.png", "pdf-lib.min.js", "jszip.min.js"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
