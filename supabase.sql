@@ -81,22 +81,3 @@ grant execute on function public.at_delete_user(uuid) to authenticated;
 grant execute on function public.at_my_role() to authenticated;
 grant select, insert, update, delete on public.at_docs to authenticated;
 
--- 7. Abonnement au calendrier (Outlook) : jeton secret du lien, lisible seulement par la fonction « ics »
-create table if not exists public.at_ics (id int primary key default 1 check (id = 1), token text not null);
-alter table public.at_ics enable row level security;
-create or replace function public.at_ics_token(regen boolean default false) returns text
-language plpgsql volatile security definer set search_path = public, extensions as $$
-declare t text;
-begin
-  if not public.at_is_admin() then raise exception 'Réservé aux administrateurs'; end if;
-  select token into t from at_ics where id = 1;
-  if t is null or regen then
-    t := encode(extensions.gen_random_bytes(24), 'hex');
-    insert into at_ics(id, token) values (1, t) on conflict (id) do update set token = excluded.token;
-  end if;
-  return t;
-end $$;
-revoke all on function public.at_ics_token(boolean) from public, anon;
-grant execute on function public.at_ics_token(boolean) to authenticated;
-grant select on public.at_ics to service_role;
-grant select on public.at_docs to service_role;
