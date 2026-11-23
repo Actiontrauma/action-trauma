@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122202758">
+<link rel="manifest" href="manifest.webmanifest?v=20261122203633">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122202758">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122203633">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122202758"></script>
-<script src="standalone.js?v=20261122202758"></script>
+<script src="config.js?v=20261122203633"></script>
+<script src="standalone.js?v=20261122203633"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -61,6 +61,9 @@ table.pann{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}ta
 .cup{background:#dcf34a;color:#1d2a10}.cpast{background:#e6e9ee;color:#495057}.cdot{display:inline-block;width:10px;height:10px;border-radius:3px;border:1px solid rgba(0,0,0,.15);vertical-align:-1px;margin:0 4px 0 8px}
 .callist{display:none}button.cli{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:60px 1fr;gap:12px;padding:10px 14px;border-top:1px solid var(--line)}
 @media(max-width:700px){.calg .cev{font-size:0;padding:0;height:6px;border-radius:3px}.calg .cev b{display:none}.cday{min-height:52px}.callist{display:block}.calbar .note{display:none}}
+.qsec{border-top:1px solid var(--line);padding-top:12px;margin:4px 0 14px}
+.qh,.qrow{display:grid;grid-template-columns:minmax(120px,1.3fr) 1fr 1fr 80px 80px 80px 40px;gap:8px;align-items:center}.qh{font-size:12px;color:var(--mute);margin-bottom:4px}.qrow{margin-bottom:6px}
+@media(max-width:700px){.qh{display:none}.qrow{grid-template-columns:1fr 1fr 1fr;padding:8px;border:1px solid var(--line);border-radius:8px}.qrow>select[data-qk="date"]{grid-column:1/-1}}
 .hnext{margin:8px 0 2px}.hnext .hn-in{width:100%;display:flex;align-items:center;gap:10px;flex-wrap:wrap;text-align:left;background:rgba(17,17,17,.08);border:0;border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;color:#111;cursor:pointer}
 .hnext .hn-in:hover{background:rgba(17,17,17,.14)}.hnext .hn-lab{font-weight:600;color:#333}.hnext .hn-d{color:#333}.hnext .hn-go{margin-left:auto;font-size:20px;line-height:1}
 .hnext.today .hn-in{background:#111;color:#fff;padding:10px 14px}.hnext.today .hn-d{color:#d6dbd0}.hnext.today .hn-in:hover{background:#2a2a2a}
@@ -485,12 +488,22 @@ const dayLong=d=>{const t=new Date(d+"T12:00:00");if(isNaN(t))return fdate(d);co
 function jDur(j){if(!j.debut||!j.fin)return"";const[a,b]=[j.debut,j.fin].map(t=>{const[h,m]=t.split(":");return+h*60+ +m});let d=b-a;if(d<=0)d+=1440;return fq(d/60)+" h"}
 function hrsTBD(d){const J=evJours((d&&d.evenement)||{});return J.some(j=>!j.debut||!j.fin)}
 function evJours(e){const J=(e.jours||[]).slice();if(!J.length)J.push({date:e.date||"",debut:"",fin:""});else J[0]={...J[0],date:e.date||J[0].date||""};return J}
+const QCATS=[["ps","PS"],["pr","PR"],["pro","PO"]],QLAB={ps:"PS",pr:"PR",pro:"PO"};
+function qDur(q){if(!q.debut||!q.fin)return 0;const[a,b]=[q.debut,q.fin].map(t=>{const[h,m]=t.split(":");return+h*60+ +m});let x=b-a;if(x<=0)x+=1440;return x/60}
+function qHrs(e){const o={ps:0,pr:0,pro:0};(e.quarts||[]).forEach(q=>{if(o[q.cat]!==undefined)o[q.cat]+=qDur(q)*(+q.nb||0)});Object.keys(o).forEach(k=>o[k]=r2(o[k]));return o}
+function syncQuarts(d){const e=d.evenement;if(d.type!=="soumission"||!(e.quarts||[]).length)return;const H=qHrs(e);QCATS.forEach(([k])=>{let l=d.lignes.find(x=>x.svc===k);if(!l&&H[k]){l=newLine(k);d.lignes.splice(d.lignes.filter(x=>HCATS.includes(x.svc)).length,0,l)}if(l){l.qte=H[k];delete l.qteTxt;l.auto=1}})}
+function quartsHTML(e){const Q=e.quarts||[],D=evJours(e).map(j=>j.date).filter(Boolean),H=qHrs(e);
+ return`<div class="qsec"><b>Quarts de travail requis</b><p class="note" style="margin:2px 0 8px">Inscris les postes à combler, sans nécessairement nommer d'employés. Les plages peuvent se chevaucher. Les heures de la soumission sont calculées à partir de ces quarts.</p>
+ ${Q.length?`<div class="qh"><span>Jour</span><span>Début</span><span>Fin</span><span>Poste</span><span>Nombre</span><span>Heures</span><span></span></div>`:""}
+ ${Q.map((q,i)=>`<div class="qrow" data-qi="${i}"><select data-qk="date" aria-label="Jour">${(D.length?D:[""]).concat(q.date&&!D.includes(q.date)?[q.date]:[]).map(v=>`<option value="${esc(v)}" ${q.date===v?"selected":""}>${v?fdate(v):"Date à confirmer"}</option>`).join("")}</select><select data-qk="debut" aria-label="Début">${tOpts(q.debut||"")}</select><select data-qk="fin" aria-label="Fin">${tOpts(q.fin||"")}</select><select data-qk="cat" aria-label="Poste">${QCATS.map(([k,t])=>`<option value="${k}" ${q.cat===k?"selected":""}>${t}</option>`).join("")}</select><input data-qk="nb" type="number" min="1" step="1" inputmode="numeric" value="${esc(q.nb||1)}" aria-label="Nombre de personnes"><input class="lk" disabled value="${fq(r2(qDur(q)*(+q.nb||0)))} h" aria-label="Heures"><button class="btn g" data-qdel="${i}" aria-label="Retirer ce quart">✕</button></div>`).join("")}
+ <div class="actions" style="margin:6px 0 4px;justify-content:space-between;align-items:center"><button class="btn" id="qAdd">+ Ajouter un quart</button>${Q.length?`<span class="note">Total soumis : ${QCATS.filter(([k])=>H[k]).map(([k,t])=>`<b>${t} ${fq(H[k])} h</b>`).join(" · ")||"0 h"}</span>`:""}</div></div>`}
 function evCardS(d){const e=d.evenement,J=evJours(e),tm=(i,k,v)=>`<select data-jt="${i}" data-jk="${k}" aria-label="${k==="debut"?"Heure de début":"Heure de fin"}">${tOpts(v)}</select>`;
  return`<div class="card"><h3>Évènement</h3>
  <div style="margin-bottom:12px"><label for="e-en">Nom de l'évènement${d.id?"":' <span class="req">*</span>'}</label><input id="e-en" value="${esc(e.nom)}"></div>
  <div style="margin-bottom:12px"><label for="e-ea">Adresse complète</label><input id="e-ea" value="${esc(e.adresse)}"></div>
  ${J.map((j,i)=>`<div class="jrow"><div><label ${i?"":`for="e-ed"`}>${i?"Jour "+(i+1):"Date (1re journée, date officielle)"+(d.id?"":' <span class="req">*</span>')}</label>${i?`<input type="date" data-jt="${i}" data-jk="date" value="${esc(j.date||"")}" aria-label="Date jour ${i+1}">`:`<input id="e-ed" type="date" value="${esc(e.date||"")}">`}</div><div><label>Début</label>${tm(i,"debut",j.debut)}</div><div><label>Fin</label>${tm(i,"fin",j.fin)}</div><div><label>Durée</label><input class="lk" disabled data-jdur="${i}" value="${jDur(j)}" aria-label="Durée de la journée"></div>${i?`<button class="btn g" data-jdel="${i}" aria-label="Retirer cette journée">✕</button>`:`<span></span>`}</div>`).join("")}
  <div class="actions" style="margin:4px 0 12px"><button class="btn" id="jAdd">+ Ajouter une journée</button></div>
+ ${quartsHTML(e)}
  <div><label for="e-inf">Informations pertinentes</label><textarea id="e-inf" rows="3" placeholder="Stationnement, contact sur place, accès, consignes…">${esc(e.infos||"")}</textarea></div>
  <p class="note" style="margin-bottom:0">Seule la première date apparaît sur la soumission imprimée. Les journées, heures et informations sont visibles dans l'onglet Évènements.</p></div>`}
 function lineHTML(l,i){const sv=cfg().services,isMat=l.svc==="materiel",s=sv[l.svc],libre=isMat?!l.matId:(!s||s.prixLibre),y=yearOf(S.edit);const hl=S.edit.type==="facture"&&HCATS.includes(l.svc)&&(S.edit.heures||[]).length&&S.edit.heuresFacturer!==false;
@@ -498,7 +511,7 @@ function lineHTML(l,i){const sv=cfg().services,isMat=l.svc==="materiel",s=sv[l.s
   :`<option value="">— Choisir un service —</option>${svcList().map(([k,v])=>`<option value="${k}" ${l.svc===k?"selected":""}>${esc(v.nom)}</option>`).join("")}${l.svc&&!sv[l.svc]?`<option value="${esc(l.svc)}" selected>${esc(l.desc||"Ancienne ligne")}</option>`:""}${s&&s.actif===false?`<option value="${esc(l.svc)}" selected>${esc(s.nom)} (retiré)</option>`:""}`;
  return`<div class="line ${isMat?"mat":""}" data-i="${i}">
  <select class="svc" data-k="svc" aria-label="${isMat?"Matériel":"Service"}" ${hl?"disabled":""}>${opts}</select>
- <div class="qwrap">${S.edit.type==="facture"&&HCATS.includes(l.svc)&&(S.edit.heures||[]).length&&S.edit.heuresFacturer!==false?`<input value="${esc(fq(l.qte))}" disabled class="lk" title="Total des heures entrées dans l'onglet Évènements" aria-label="Quantité">`:`<input data-k="qte" inputmode="decimal" value="${esc(l.qteTxt??fq(l.qte))}" aria-label="Quantité" title="Tu peux écrire un calcul, ex. 85+55 ou 5,5*6">`}</div>
+ <div class="qwrap">${S.edit.type==="facture"&&HCATS.includes(l.svc)&&(S.edit.heures||[]).length&&S.edit.heuresFacturer!==false?`<input value="${esc(fq(l.qte))}" disabled class="lk" title="Total des heures entrées dans l'onglet Évènements" aria-label="Quantité">`:S.edit.type==="soumission"&&["ps","pr","pro"].includes(l.svc)&&((S.edit.evenement||{}).quarts||[]).length?`<input value="${esc(fq(l.qte))}" disabled class="lk" title="Calculé à partir des quarts de travail (section Évènement)" aria-label="Quantité">`:`<input data-k="qte" inputmode="decimal" value="${esc(l.qteTxt??fq(l.qte))}" aria-label="Quantité" title="Tu peux écrire un calcul, ex. 85+55 ou 5,5*6">`}</div>
  ${libre&&l.svc!==""?`<input data-k="tarif" inputmode="decimal" value="${esc(l.tarifTxt??fq(l.tarif))}" aria-label="Montant" placeholder="Montant $">`:`<div class="rate">${l.svc?money(l.tarif)+`<span> ${uLab(l.unite).replace("$","")}</span>`:""}</div>`}
  <div class="lt">${isNaN(l.qte)?"Calcul invalide":money(r2(l.qte*l.tarif))}</div>
  ${hl?`<span title="Ligne reliée aux heures de l'onglet Évènements"></span>`:`<button class="btn g del" data-del="${i}" aria-label="Retirer la ligne">✕</button>`}
@@ -563,7 +576,10 @@ function bindEditor(){
   document.querySelectorAll("[data-jdel]").forEach(b=>b.onclick=()=>{sync();e.jours.splice(+b.dataset.jdel,1);render()});
   document.querySelectorAll("[data-jt]").forEach(inp=>inp.onchange=()=>{sync();const j=e.jours[+inp.dataset.jt];j[inp.dataset.jk]=inp.value;const o=document.querySelector(`[data-jdur="${inp.dataset.jt}"]`);if(o)o.value=jDur(j)});
   $("#e-ed").addEventListener("change",()=>{sync()});
-  $("#e-inf").oninput=ev=>{e.infos=ev.target.value}}
+  $("#e-inf").oninput=ev=>{e.infos=ev.target.value};
+  $("#qAdd").onclick=()=>{sync();e.quarts=e.quarts||[];const L=e.quarts[e.quarts.length-1],j0=e.jours[0]||{};e.quarts.push(L?{...L,nb:1}:{date:j0.date||e.date||"",debut:j0.debut||"",fin:j0.fin||"",cat:"ps",nb:1});syncQuarts(d);render()};
+  document.querySelectorAll("[data-qdel]").forEach(b=>b.onclick=()=>{e.quarts.splice(+b.dataset.qdel,1);if(!e.quarts.length)d.lignes.forEach(l=>delete l.auto);else syncQuarts(d);render()});
+  document.querySelectorAll(".qrow [data-qk]").forEach(inp=>inp.onchange=()=>{const q=e.quarts[+inp.closest(".qrow").dataset.qi],k=inp.dataset.qk;q[k]=k==="nb"?Math.max(1,parseInt(inp.value)||1):inp.value;syncQuarts(d);render()})}
  set("#e-no",v=>d.notes=v);
  if($("#e-tx"))$("#e-tx").onchange=e=>{d.taxes=e.target.checked;render()};
  $("#e-or").onchange=e=>{const v=e.target.value;if(v==="__new"){e.target.value=d.orgId||"";orgModal(null,o=>pickOrg(o.id));return}pickOrg(v)};
@@ -1084,7 +1100,7 @@ function renderEvent(){let s=S.ev?S.docs.find(d=>d.id===S.ev):null,f=S.evF?S.doc
  const prev=(info.lignes||[]).filter(l=>+l.qte&&l.svc!=="materiel");
  $("#app").innerHTML=`<div class="ehead stick"><div><a href="#evenements" class="note" id="evBack">← ${S.evFrom==="facture"&&f?"Retour à la facture "+label(f):"Évènements"}</a><h2 style="margin-top:4px">${isNew?"Nouvel évènement":esc(info.evenement.nom||"(sans titre)")}</h2></div><div style="display:flex;gap:8px;flex-wrap:wrap">${f&&f.id&&f.termine?`${role()==="admin"?`<button class="btn" id="evMail">${f.courrielEnvoye?"Renvoyer le courriel":"Envoyer le courriel à la comptable"}</button>`:""}<button class="btn p" id="evReopen">Modifier</button>`:`<button class="btn" id="evSave">Enregistrer</button><button class="btn p" id="evDone">Évènement terminé</button>`}</div></div>
  ${isNew?newEvCard(f):""}<div class="card" ${isNew?'style="display:none"':""}><div class="kvl" style="grid-template-columns:auto minmax(0,1fr);column-gap:18px"><span class="note">Date</span><b style="text-align:left">${fdate(info.evenement.date||info.date)}</b><span class="note">Lieu</span><b style="text-align:left">${esc(info.evenement.adresse||"–")}</b><span class="note">Client</span><b style="text-align:left">${esc(info.client.entreprise||"")}${info.client.contact?" · "+esc(info.client.contact):""}</b><span class="note">Document</span><b style="text-align:left">${s?label(s):""}${s&&f?" · ":""}${f?"facture "+label(f)+" (brouillon)":""}</b></div>
- ${(()=>{const e=info.evenement,J=evJours(e).filter(j=>j.date||j.debut||j.fin),hm=v=>v?v.replace(":","h"):"";return (J.length&&(J.length>1||J[0].debut||J[0].fin)?`<div style="margin-top:12px"><b>Horaire</b><ul style="margin:4px 0 0;padding-left:18px">${J.map(j=>`<li>${j.date?dayLong(j.date):"Date à confirmer"}${j.debut||j.fin?` : ${hm(j.debut)||"?"} à ${hm(j.fin)||"?"}${jDur(j)?` (${jDur(j)})`:""}`:""}</li>`).join("")}</ul></div>`:"")+(e.infos?`<div style="margin-top:12px"><b>Informations pertinentes</b><div style="white-space:pre-wrap;margin-top:4px">${esc(e.infos)}</div></div>`:"")})()}
+ ${(()=>{const e=info.evenement,J=evJours(e).filter(j=>j.date||j.debut||j.fin),hm=v=>v?v.replace(":","h"):"";return (J.length&&(J.length>1||J[0].debut||J[0].fin)?`<div style="margin-top:12px"><b>Horaire</b><ul style="margin:4px 0 0;padding-left:18px">${J.map(j=>`<li>${j.date?dayLong(j.date):"Date à confirmer"}${j.debut||j.fin?` : ${hm(j.debut)||"?"} à ${hm(j.fin)||"?"}${jDur(j)?` (${jDur(j)})`:""}`:""}</li>`).join("")}</ul></div>`:"")+((e.quarts||[]).length?`<div style="margin-top:12px"><b>Quarts requis</b><ul style="margin:4px 0 0;padding-left:18px">${e.quarts.map(q=>`<li><b>${+q.nb||1} ${QLAB[q.cat]||""}</b> · ${q.date?dayLong(q.date):"Date à confirmer"}${q.debut||q.fin?` : ${hm(q.debut)||"?"} à ${hm(q.fin)||"?"}${qDur(q)?` (${fq(r2(qDur(q)))} h)`:""}`:""}</li>`).join("")}</ul></div>`:"")+(e.infos?`<div style="margin-top:12px"><b>Informations pertinentes</b><div style="white-space:pre-wrap;margin-top:4px">${esc(e.infos)}</div></div>`:"")})()}
  ${prev.length?`<details class="more" style="margin-top:10px"><summary>Services prévus${s?" à la soumission":""}</summary><ul style="margin:6px 0 0;padding-left:18px">${prev.map(l=>`<li>${esc(l.desc)} : ${fq(l.qte)} ${esc(uLab(l.unite).replace("$/",""))}</li>`).join("")}</ul></details>`:""}</div>
  <div class="card"><h3>Heures des employés</h3>
  <div class="chh"><span>Employé</span><span>Gestion</span><span>PS</span><span>PR</span><span>PO</span><span>Dépl. km</span><span>Livr. véh. km</span><span></span><span></span></div>
