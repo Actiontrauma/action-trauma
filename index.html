@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122214346">
+<link rel="manifest" href="manifest.webmanifest?v=20261122215430">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122214346">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122215430">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122214346"></script>
-<script src="standalone.js?v=20261122214346"></script>
+<script src="config.js?v=20261122215430"></script>
+<script src="standalone.js?v=20261122215430"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -68,6 +68,7 @@ table.pann{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}ta
 .qbv{font-size:13px;gap:5px}.cbs{display:flex;flex-direction:column;gap:2px}.cbs .check{font-size:13px}
 .line.bvl .bvd{padding:10px 12px;border:1px dashed var(--line);border-radius:8px;color:var(--mute)}.line.bvl .rate{font-style:italic;color:var(--mute)}
 @media(max-width:700px){.qrow .qbv{grid-column:1/-2}}
+.qfrom{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--warnsoft);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:13.5px}
 .hnext{margin:8px 0 2px}.hnext .hn-in{width:100%;display:flex;align-items:center;gap:10px;flex-wrap:wrap;text-align:left;background:rgba(17,17,17,.08);border:0;border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;color:#111;cursor:pointer}
 .hnext .hn-in:hover{background:rgba(17,17,17,.14)}.hnext .hn-lab{font-weight:600;color:#333}.hnext .hn-d{color:#333}.hnext .hn-go{margin-left:auto;font-size:20px;line-height:1}
 .hnext.today .hn-in{background:#111;color:#fff;padding:10px 14px}.hnext.today .hn-d{color:#d6dbd0}.hnext.today .hn-in:hover{background:#2a2a2a}
@@ -238,6 +239,7 @@ body.noacc #nav,body.noacc #hMe{display:none!important}body.compta #hMe{display:
 select.pills{appearance:none;-webkit-appearance:none;border:0;cursor:pointer;font:inherit;font-size:12.5px;font-weight:600;padding:3px 22px 3px 10px;width:auto;min-height:0;height:auto;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 11px) 55%,calc(100% - 7px) 55%;background-size:4px 4px,4px 4px;background-repeat:no-repeat;text-decoration:none}select.pills:focus{outline:2px solid var(--brand);outline-offset:1px}
 #nav a{position:relative;background:rgba(255,255,255,.42);border:1px solid rgba(0,0,0,.14);border-bottom:0;opacity:1;color:#1d2a10;transition:background .15s}#nav a:hover{background:rgba(255,255,255,.75)}#nav a.on{background:var(--bg);color:var(--ink);border-color:rgba(0,0,0,.2);box-shadow:inset 0 3px 0 #111;font-weight:700}#nav{gap:5px;padding-top:4px}#nav a:has(.nb){padding-right:24px}#nav a .nb{position:absolute;top:3px;right:1px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#e03131;color:#fff;font:700 11px/18px Inter,system-ui,sans-serif;text-align:center;box-shadow:0 0 0 2px var(--brand,#dcf94a)}
 .req{color:#e03131;font-weight:700}
+#robar{position:sticky;top:0;z-index:51;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:center;padding:8px 14px;background:#16181a;color:#fff;font-size:14px}#robar.bk{background:#fff3bf;color:#5c4400}#robar .btn{padding:6px 12px;text-decoration:none;color:#16181a}#robar.bk .btn.g{color:#5c4400}
 #pvbar{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:center;padding:8px 14px;background:#1d2a10;color:#fff;font-size:14px}#pvbar .btn{padding:6px 12px;font-size:13px;background:#dcf94a;color:#111;border-color:#dcf94a}
 .dm{display:none}@media(max-width:820px){.dm{display:inline}.row .c,.evrow .c{white-space:normal;overflow:visible;text-overflow:clip}}
 .rp3{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px;align-items:end}.rp3 label{line-height:1.2}.stats.rp3{align-items:stretch}
@@ -316,6 +318,11 @@ async function closeAllQuotes(){setTimeout(clearPaidDates,2500);if(S._closing||S
  const t=today(),Q=S.docs.filter(d=>d.type==="soumission"&&d.statut!=="fermee"&&!((d.evenement&&d.evenement.date||"")>=t));
  try{for(const q of Q)await S.db.collection("docs").doc(q.id).update({statut:"fermee",statutAvant:q.statut||""});
   await S.db.doc("config/entreprise").update({soumissionsFermees:t});S._closed=true;if(Q.length)toast(`${Q.length} soumissions fermées`)}catch(e){console.error(e)}finally{S._closing=false}}
+function roBar(){let b=$("#robar");const bk=window.AT_SA&&role()==="admin"&&S.ready.g&&!S.bkHide&&(()=>{const l=cfg().derniereSauvegarde;return !l||Date.parse(today())-Date.parse(l)>7*864e5})();
+ if(!S.ro&&!bk){if(b)b.remove();return}if(!b){b=document.createElement("div");b.id="robar";document.body.prepend(b)}
+ b.className=S.ro?"":"bk";b.innerHTML=S.ro?`<span>📦 <b>Version archivée (lecture seule).</b> Les données à jour sont dans l'application Action Trauma.</span><a class="btn" href="https://actiontrauma.github.io/action-trauma/" target="_blank" rel="noopener">Ouvrir l'application</a>`
+  :`<span>💾 ${cfg().derniereSauvegarde?"Dernière sauvegarde des données le "+fdate(cfg().derniereSauvegarde):"Aucune sauvegarde des données n'a encore été faite"}. Une copie par semaine est recommandée.</span><button class="btn" id="bkGo">Télécharger une sauvegarde</button><button class="btn g" id="bkX" aria-label="Plus tard">Plus tard</button>`;
+ if($("#bkGo"))$("#bkGo").onclick=()=>exportJSON();if($("#bkX"))$("#bkX").onclick=()=>{S.bkHide=true;roBar()}}
 function pvBar(){let b=$("#pvbar");if(!S.preview){if(b)b.remove();return}if(!b){b=document.createElement("div");b.id="pvbar";document.body.prepend(b)}
  b.innerHTML=`<span>👁 Aperçu en tant que <b>${S.preview==="compta"?"comptabilité":"chef d'équipe"}</b>. Ce que tu enregistres ici est réel.</span><button class="btn" id="pvExit">Revenir à l'administrateur</button>`;
  $("#pvExit").onclick=()=>{S.preview=null;S.pvEmp=null;S.view="utilisateurs";try{history.replaceState(null,"","#utilisateurs")}catch(e){}render();scrollTo(0,0)}}
@@ -408,7 +415,7 @@ function headerNext(){const el=$("#hNext");if(!el)return;const r=role();if(!S.db
  el.innerHTML=`<button type="button" class="hn-in" title="Ouvrir l'évènement">${isT?`<span class="hn-tag">Aujourd'hui</span>`:`<span class="hn-lab">Prochain évènement :</span>`}<b>${esc(n.i.evenement.nom||"(sans titre)")}</b><span class="hn-d">${[when,evHrs(n.j),n.i.evenement.adresse].filter(Boolean).map(esc).join(" · ")}</span>${tod.length>1?`<span class="hn-more">+${tod.length-1} autre${tod.length>2?"s":""} aujourd'hui</span>`:""}<span class="hn-go" aria-hidden="true">›</span></button>`;
  el.querySelector("button").onclick=()=>{if(tod.length>1){S.evTab="cours";location.hash="#evenements";S.view="evenements";render();scrollTo(0,0)}else openEv(n.x)}}
 function headerTotal(){headerNext();const y=today().slice(0,4),F=S.docs.filter(d=>d.type==="facture"&&d.statut!=="annulee"&&d.statut!=="brouillon"&&(d.date||"").startsWith(y));const e=$("#hTot");if(e)e.innerHTML=S.db?`<span>Facturé en ${y}</span><b>${money(F.reduce((a,d)=>a+d.total,0))}</b><span>taxes incluses</span>`:""}
-function render(){headerTotal();$("#gear")&&$("#gear").classList.toggle("on",S.view==="parametres");
+function render(){headerTotal();roBar();$("#gear")&&$("#gear").classList.toggle("on",S.view==="parametres");
  try{const nb={soumission:S.docs.filter(d=>d.type==="soumission"&&statutOf(d)[0]==="envoyee").length,facture:S.docs.filter(d=>d.type==="facture"&&(d.statut==="envoyee"||d.statut==="brouillon")).length,evenements:S.db?evList().length:0,recevoir:role()==="compta"?S.docs.filter(d=>d.type==="facture"&&d.statut==="envoyee"&&Date.parse(today())-Date.parse(d.date||today())>30*864e5).length:0,employes:role()==="admin"?certAlerts().length:0,utilisateurs:role()==="admin"?Object.keys(S.dem||{}).filter(id=>!((S.acces||{}).users||{})[id]).length:0};document.querySelectorAll("#nav a").forEach(a=>{const n=nb[a.dataset.v];let b=a.querySelector(".nb");if(n){if(!b){b=document.createElement("span");b.className="nb";a.appendChild(b)}b.textContent=n>99?"99+":n;b.title=n+(a.dataset.v==="evenements"?" à compléter ou facture non envoyée":a.dataset.v==="facture"?" non payée"+(n>1?"s":""):a.dataset.v==="recevoir"?" facture"+(n>1?"s":"")+" impayée"+(n>1?"s":"")+" depuis plus de 30 jours":a.dataset.v==="employes"?" certification"+(n>1?"s":"")+" expirée"+(n>1?"s":"")+" ou bientôt":a.dataset.v==="utilisateurs"?" demande"+(n>1?"s":"")+" d'accès":" en attente de réponse")}else if(b)b.remove()})}catch(e){}
  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===(S.view==="editeur"?(S.edit&&S.edit.type):S.view==="documents"?S.f.type:(S.view==="evenement"||S.view==="evarch")?"evenements":S.view)));
  const app=$("#app");
@@ -495,24 +502,37 @@ function evJours(e){const J=(e.jours||[]).slice();if(!J.length)J.push({date:e.da
 const QCATS=[["gestion","Gestion"],["ps","PS"],["pr","PR"],["pro","PO"]],QLAB={gestion:"Gestion",ps:"PS",pr:"PR",pro:"PO"};
 function qDur(q){if(!q.debut||!q.fin)return 0;const[a,b]=[q.debut,q.fin].map(t=>{const[h,m]=t.split(":");return+h*60+ +m});let x=b-a;if(x<=0)x+=1440;return x/60}
 function qHrs(e,bv){const o={gestion:0,ps:0,pr:0,pro:0};(e.quarts||[]).forEach(q=>{if(!!q.benev===!!bv&&o[q.cat]!==undefined)o[q.cat]+=qDur(q)*(+q.nb||0)});Object.keys(o).forEach(k=>o[k]=r2(o[k]));return o}
+function horLines(d){if(d.type!=="soumission")return[];const Q=((d.evenement||{}).quarts||[]).filter(q=>q.date);if(!Q.length)return[];const by={};Q.forEach(q=>(by[q.date]=by[q.date]||[]).push(q));
+ const dl=x=>{try{return new Date(x+"T12:00:00").toLocaleDateString("fr-CA",{weekday:"short",day:"numeric",month:"short"})}catch(_){return fdate(x)}};
+ return Object.keys(by).sort().map(k=>dl(k)+" : "+by[k].sort((a,b)=>(a.debut||"").localeCompare(b.debut||"")).map(q=>`${+q.nb||1} ${QLAB[q.cat]||""}${q.benev?" bénévole"+(+q.nb>1?"s":""):""} ${q.debut?nfH(q.debut):"?"} à ${q.fin?nfH(q.fin):"?"}`).join(", "))}
 function quartsJours(e){const Q=(e.quarts||[]).filter(q=>q.date);if(!Q.length)return;const mn=t=>{const[h,m]=t.split(":");return+h*60+ +m},by={};
  Q.forEach(q=>{const o=by[q.date]=by[q.date]||{a:null,b:null};if(q.debut){const a=mn(q.debut);o.a=o.a==null?a:Math.min(o.a,a);if(q.fin){let b=mn(q.fin);if(b<=a)b+=1440;o.b=o.b==null?b:Math.max(o.b,b)}}});
  const t=x=>x==null?"":String(Math.floor(x%1440/60)).padStart(2,"0")+":"+String(x%60).padStart(2,"0");
  e.jours=Object.keys(by).sort().map(k=>({date:k,debut:t(by[k].a),fin:t(by[k].b)}));e.date=e.jours[0].date}
 function setBv(d,B){QCATS.forEach(([k])=>{const key="bv_"+k,i=d.lignes.findIndex(x=>x.svc===key);if(!B[k]){if(i>-1)d.lignes.splice(i,1);return}const sv=cfg().services[k]||{};const l={svc:key,desc:(sv.nom||QLAB[k])+" (bénévole)",detail:sv.detail||"",qte:r2(B[k]),unite:"heure",tarif:0,benev:1,auto:1};if(i>-1)d.lignes[i]=l;else{const p=d.lignes.findIndex(x=>x.svc===k);d.lignes.splice(p>-1?p+1:d.lignes.length,0,l)}})}
-function syncQuarts(d){const e=d.evenement;if(d.type!=="soumission"||!(e.quarts||[]).length)return;quartsJours(e);const H=qHrs(e);QCATS.forEach(([k])=>{let l=d.lignes.find(x=>x.svc===k);if(!l&&H[k]){l=newLine(k);const at=HCATS.indexOf(k);d.lignes.splice(d.lignes.filter(x=>HCATS.indexOf(x.svc)>-1&&HCATS.indexOf(x.svc)<at).length,0,l)}if(l&&(k!=="gestion"||H[k]||l.auto)){l.qte=H[k];delete l.qteTxt;l.auto=1}});setBv(d,qHrs(e,true))}
+function bindQuarts(d,dateSel){if(!$("#qAdd"))return;const e=d.evenement,od=e.date||e._od||"",sync=()=>{e.jours=evJours(e)};
+ const di=$(dateSel);if(di)di.addEventListener("change",()=>{if(dateSel!=="#e-ed")e.date=di.value;const nd=e.date||"";if(nd)delete e._od;if(od&&nd&&nd!==od&&(e.quarts||[]).length){const k=Math.round((Date.parse(nd)-Date.parse(od))/864e5);e.quarts.forEach(q=>{if(q.date)q.date=addDays(q.date,k)});syncQuarts(d)}else sync();render()});
+ $("#qAdd").onclick=()=>{sync();e.quarts=e.quarts||[];const F=e.quarts[0],j0=e.jours[0]||{},mx=e.quarts.map(q=>q.date).filter(Boolean).sort().pop();e.quarts.push(F?{...F,date:mx?addDays(mx,1):(F.date||"")}:{date:e.date||j0.date||"",debut:j0.debut||"",fin:j0.fin||"",cat:"ps",nb:1});syncQuarts(d);render()};
+ if($("#qFrom"))$("#qFrom").onclick=()=>{const J=evJours(e).filter(j=>j.date&&j.debut&&j.fin);const D=J.reduce((a,j)=>a+qDur(j),0);if(!D){toast("L'horaire n'a pas d'heures de début et de fin.");return}
+  const before={},after={};e.quarts=[];QCATS.forEach(([k])=>{const q=(d.lignes||[]).filter(l=>l.svc===k).reduce((a,l)=>a+(+l.qte||0),0);if(!q)return;before[k]=q;const nb=Math.max(1,Math.round(q/D));J.forEach(j=>e.quarts.push({date:j.date,debut:j.debut,fin:j.fin,cat:k,nb}));after[k]=r2(nb*D)});
+  if(!e.quarts.length)J.forEach(j=>e.quarts.push({date:j.date,debut:j.debut,fin:j.fin,cat:"ps",nb:1}));syncQuarts(d);render();
+  const diff=Object.keys(before).filter(k=>Math.abs(before[k]-after[k])>.01);toast(diff.length?"Quarts créés. Attention, les heures ont changé : "+diff.map(k=>QLAB[k]+" "+fq(before[k])+" h → "+fq(after[k])+" h").join(", ")+". Ajuste les quarts au besoin.":"Quarts créés à partir de l'horaire.")};
+ document.querySelectorAll("[data-qdel]").forEach(b=>b.onclick=()=>{e.quarts.splice(+b.dataset.qdel,1);if(!e.quarts.length)(d.lignes||[]).forEach(l=>delete l.auto);else syncQuarts(d);render()});
+ document.querySelectorAll(".qrow [data-qk]").forEach(inp=>inp.onchange=()=>{const q=e.quarts[+inp.closest(".qrow").dataset.qi],k=inp.dataset.qk;q[k]=k==="nb"?Math.max(1,parseInt(inp.value)||1):k==="benev"?inp.checked:inp.value;syncQuarts(d);render()})}
+function syncQuarts(d){const e=d.evenement;if(!(e.quarts||[]).length)return;quartsJours(e);if(d.type!=="soumission")return;const H=qHrs(e);QCATS.forEach(([k])=>{let l=d.lignes.find(x=>x.svc===k);if(!l&&H[k]){l=newLine(k);const at=HCATS.indexOf(k);d.lignes.splice(d.lignes.filter(x=>HCATS.indexOf(x.svc)>-1&&HCATS.indexOf(x.svc)<at).length,0,l)}if(l&&(k!=="gestion"||H[k]||l.auto)){l.qte=H[k];delete l.qteTxt;l.auto=1}});setBv(d,qHrs(e,true))}
 const qLock=(d,k)=>d.type==="soumission"&&HCATS.includes(k)&&((d.evenement||{}).quarts||[]).length&&(k!=="gestion"||(d.evenement.quarts||[]).some(q=>q.cat==="gestion")||(d.lignes.find(x=>x.svc==="gestion")||{}).auto);
-function quartsHTML(e){const Q=e.quarts||[],H=qHrs(e),HB=qHrs(e,true);
- return`<div class="qsec"><b>Quarts de travail requis</b><p class="note" style="margin:2px 0 8px">Inscris les postes à combler, sans nécessairement nommer d'employés. Les plages peuvent se chevaucher. Les heures de la soumission sont calculées à partir de ces quarts.</p>
+function quartsHTML(e,d){const Q=e.quarts||[],H=qHrs(e),HB=qHrs(e,true),isS=!d||d.type==="soumission",J0=evJours(e).filter(j=>j.date&&j.debut&&j.fin);
+ return`<div class="qsec"><b>Quarts de travail requis</b><p class="note" style="margin:2px 0 8px">Inscris les postes à combler, sans nécessairement nommer d'employés. Les plages peuvent se chevaucher. ${isS?"Les heures de la soumission sont calculées à partir de ces quarts.":"Pour la planification seulement : la facture est calculée avec les heures réelles des employés."}</p>
+ ${!Q.length&&isS&&J0.length?`<div class="qfrom"><span>Cette soumission a un horaire sans quarts (${J0.map(j=>fdate(j.date)+" "+nfH(j.debut)+" à "+nfH(j.fin)).join(" · ")}).</span><button class="btn" id="qFrom">Créer les quarts à partir de cet horaire</button></div>`:""}
  ${Q.length?`<div class="qh"><span>Jour</span><span>Début</span><span>Fin</span><span>Poste</span><span>Nombre</span><span>Heures</span><span></span><span></span></div>`:""}
  ${Q.map((q,i)=>`<div class="qrow" data-qi="${i}"><input type="date" data-qk="date" value="${esc(q.date||"")}" aria-label="Jour"><select data-qk="debut" aria-label="Début">${tOpts(q.debut||"")}</select><select data-qk="fin" aria-label="Fin">${tOpts(q.fin||"")}</select><select data-qk="cat" aria-label="Poste">${QCATS.map(([k,t])=>`<option value="${k}" ${q.cat===k?"selected":""}>${t}</option>`).join("")}</select><input data-qk="nb" type="number" min="1" step="1" inputmode="numeric" value="${esc(q.nb||1)}" aria-label="Nombre de personnes"><input class="lk" disabled value="${fq(r2(qDur(q)*(+q.nb||0)))} h" aria-label="Heures"><label class="check qbv" title="Quart bénévole : affiché, mais non facturé"><input type="checkbox" data-qk="benev" ${q.benev?"checked":""}><span>Bénévole</span></label><button class="btn g" data-qdel="${i}" aria-label="Retirer ce quart">✕</button></div>`).join("")}
- <div class="actions" style="margin:6px 0 4px;justify-content:space-between;align-items:center"><button class="btn" id="qAdd">+ Ajouter un quart</button>${Q.length?`<span class="note">Total soumis : ${QCATS.filter(([k])=>H[k]).map(([k,t])=>`<b>${t} ${fq(H[k])} h</b>`).join(" · ")||"0 h"}${QCATS.some(([k])=>HB[k])?` · Bénévole (non facturé) : ${QCATS.filter(([k])=>HB[k]).map(([k,t])=>`${t} ${fq(HB[k])} h`).join(" · ")}`:""}</span>`:""}</div></div>`}
+ <div class="actions" style="margin:6px 0 4px;justify-content:space-between;align-items:center"><button class="btn" id="qAdd">+ Ajouter un quart</button>${Q.length?`<span class="note">${isS?"Total soumis":"Total prévu"} : ${QCATS.filter(([k])=>H[k]).map(([k,t])=>`<b>${t} ${fq(H[k])} h</b>`).join(" · ")||"0 h"}${QCATS.some(([k])=>HB[k])?` · Bénévole (non facturé) : ${QCATS.filter(([k])=>HB[k]).map(([k,t])=>`${t} ${fq(HB[k])} h`).join(" · ")}`:""}</span>`:""}</div></div>`}
 function evCardS(d){const e=d.evenement,J=evJours(e),tm=(i,k,v)=>`<select data-jt="${i}" data-jk="${k}" aria-label="${k==="debut"?"Heure de début":"Heure de fin"}">${tOpts(v)}</select>`;
  return`<div class="card"><h3>Évènement</h3>
  <div style="margin-bottom:12px"><label for="e-en">Nom de l'évènement${d.id?"":' <span class="req">*</span>'}</label><input id="e-en" value="${esc(e.nom)}"></div>
  <div style="margin-bottom:12px"><label for="e-ea">Adresse complète</label><input id="e-ea" value="${esc(e.adresse)}"></div>
  <div style="margin-bottom:12px;max-width:260px"><label for="e-ed">Date de l'évènement (date officielle)${d.id?"":' <span class="req">*</span>'}</label><input id="e-ed" type="date" value="${esc(e.date||"")}"></div>
- ${quartsHTML(e)}
+ ${quartsHTML(e,d)}
  <div><label for="e-inf">Informations pertinentes</label><textarea id="e-inf" rows="3" placeholder="Stationnement, contact sur place, accès, consignes…">${esc(e.infos||"")}</textarea></div>
  <p class="note" style="margin-bottom:0">Seule la date officielle apparaît sur la soumission imprimée. Les quarts et les informations sont visibles dans l'onglet Évènements. Changer la date déplace aussi les quarts.</p></div>`}
 function lineHTML(l,i){if(l.benev)return`<div class="line bvl" data-i="${i}"><div class="svc bvd">${esc(l.desc||"")}</div><div class="qwrap"><input value="${esc(fq(l.qte))}" disabled class="lk" aria-label="Heures bénévoles" title="Heures bénévoles : affichées, mais non facturées"></div><div class="rate">Bénévole</div><div class="lt">${money(0)}</div><span></span><div class="det note">Heures bénévoles : affichées sur le document, mais non facturées.</div></div>`;if(l.svc==="ponct")return`<div class="line ponct" data-i="${i}">
@@ -587,12 +607,8 @@ function bindEditor(){
 
  set("#e-en",v=>d.evenement.nom=v);set("#e-ed",v=>{const y0=yearOf(d);d.evenement.date=v;if(yearOf(d)!==y0){applyRates();render()}});
  if($("#rates"))$("#rates").onclick=()=>{applyRates(true);render()};set("#e-ea",v=>d.evenement.adresse=v);
- if($("#qAdd")){const e=d.evenement,od=e.date||e._od||"",sync=()=>{e.jours=evJours(e)};
-  $("#e-ed").addEventListener("change",()=>{const nd=e.date||"";if(nd)delete e._od;if(od&&nd&&nd!==od&&(e.quarts||[]).length){const k=Math.round((Date.parse(nd)-Date.parse(od))/864e5);e.quarts.forEach(q=>{if(q.date)q.date=addDays(q.date,k)});syncQuarts(d)}else sync();render()});
-  $("#e-inf").oninput=ev=>{e.infos=ev.target.value};
-  $("#qAdd").onclick=()=>{sync();e.quarts=e.quarts||[];const F=e.quarts[0],j0=e.jours[0]||{},mx=e.quarts.map(q=>q.date).filter(Boolean).sort().pop();e.quarts.push(F?{...F,date:mx?addDays(mx,1):(F.date||"")}:{date:e.date||j0.date||"",debut:j0.debut||"",fin:j0.fin||"",cat:"ps",nb:1});syncQuarts(d);render()};
-  document.querySelectorAll("[data-qdel]").forEach(b=>b.onclick=()=>{e.quarts.splice(+b.dataset.qdel,1);if(!e.quarts.length)d.lignes.forEach(l=>delete l.auto);else syncQuarts(d);render()});
-  document.querySelectorAll(".qrow [data-qk]").forEach(inp=>inp.onchange=()=>{const q=e.quarts[+inp.closest(".qrow").dataset.qi],k=inp.dataset.qk;q[k]=k==="nb"?Math.max(1,parseInt(inp.value)||1):k==="benev"?inp.checked:inp.value;syncQuarts(d);render()})}
+ if($("#e-inf"))$("#e-inf").oninput=ev=>{d.evenement.infos=ev.target.value};
+ bindQuarts(d,"#e-ed");
  set("#e-no",v=>d.notes=v);
  if($("#e-tx"))$("#e-tx").onchange=e=>{d.taxes=e.target.checked;render()};
  $("#e-or").onchange=e=>{const v=e.target.value;if(v==="__new"){e.target.value=d.orgId||"";orgModal(null,o=>pickOrg(o.id));return}pickOrg(v)};
@@ -620,6 +636,7 @@ function pickOrg(id){const d=S.edit,o=orgById(id);d.orgId=id;const cs=o?o.contac
 function pickContact(id){S.edit.clientId=id;snap();render()}
 function checkLines(){S.edit.lignes=S.edit.lignes.filter(l=>l.svc!==""&&!(l.svc==="materiel"&&l.desc===undefined)&&!(l.svc==="ponct"&&!String(l.desc||"").trim()&&!(+l.tarif)));if(S.edit.lignes.some(l=>isNaN(l.qte))){toast("Une quantité contient un calcul invalide.");return false}return true}
 function finalize(d){const o=JSON.parse(JSON.stringify(d));delete o.datePaiement;if(o.evenement)delete o.evenement._od;if(o.type==="facture")o.taxes=true;else if(o.type==="soumission")o.taxes=false;if(o.evenement&&o.evenement.jours&&o.evenement.jours.length){o.evenement.jours[0].date=o.evenement.date||"";o.evenement.jours=o.evenement.jours.filter((j,i)=>!i||j.date||j.debut||j.fin)}o.lignes=o.lignes.map(({qteTxt,tarifTxt,...l})=>({...l,qte:r2(l.qte),tarif:+l.tarif||0}));Object.assign(o,calc(o));if(o.type==="facture"&&!o.echeance)o.echeance=addDays(o.date,cfg().delai);return o}
+async function exportJSON(){if(!S.dl){toast("Téléchargement non disponible dans cette vue.");return}try{const all={};const grab=c=>new Promise((res,rej)=>{let un=null;un=S.db.collection(c).limit(1000).onSnapshot(q=>{q.docs.forEach(d=>all[c+"/"+d.id]=d.data());res();setTimeout(()=>{try{un&&un()}catch(e){}})},rej)});await grab("docs");await grab("orgs");const cs=await S.db.doc("config/entreprise").get();if(cs.exists)all["config/entreprise"]=cs.data();const blob=new Blob([JSON.stringify({app:"facturation-action-trauma",version:1,exporte:new Date().toISOString(),docs:all})],{type:"application/json"});await S.dl.save({filename:"Action Trauma - donnees "+today()+".json",data:blob});toast(Object.keys(all).length+" éléments exportés");if(window.AT_SA&&role()==="admin"){try{await S.db.doc("config/entreprise").update({derniereSauvegarde:today()})}catch(e){}}}catch(e){if(e&&e.code==="declined")toast("Export annulé");else fail(e)}}
 async function propagateSoum(o){const hk=new Set(Object.entries(cfg().services).filter(([k,v])=>v.heures).map(([k])=>k)),isX=l=>l.svc&&!hk.has(l.svc)&&!HCATS.includes(l.svc)&&!KMS.includes(l.svc)&&l.svc!=="materiel"&&!l.benev&&!String(l.svc||"").startsWith("bv_");
  const X=(o.lignes||[]).filter(l=>isX(l)&&(+l.qte||l.svc==="ponct"||(cfg().services[l.svc]||{}).prixLibre)).map(({qteTxt,tarifTxt,auto,...l})=>l);
  const f=factOf(o),sameX=(A,B)=>JSON.stringify(A.filter(isX).map(l=>[l.svc,l.desc,+l.qte,+l.tarif]))===JSON.stringify(B.filter(isX).map(l=>[l.svc,l.desc,+l.qte,+l.tarif]));
@@ -647,7 +664,7 @@ function convert(){const s=finalize(S.edit);if(!docOrgId(s)){toast("Choisis une 
  const f=JSON.parse(JSON.stringify(s));Object.assign(f,{id:null,type:"facture",numero:nextNum("facture"),date:today(),taxes:true,statut:"brouillon",sourceId:s.id||null,factureId:null,importe:false,notes:"",heures:[],orgId:docOrgId(s),echeance:addDays(today(),cfg().delai)});
  if(!s.id){toast("Enregistre la soumission avant de la convertir.");return}
  S.edit=f;render();scrollTo(0,0);toast("Facture créée à partir de "+label(s)+". Ajuste les heures réelles puis enregistre.")}
-function fail(e){console.error(e);if(e&&e.code==="invalid_argument")toast("Tu n'as pas la permission de modifier ces données.");else if(e&&e.code==="quota_exceeded")toast("Espace plein : supprime d'anciens documents.");else toast("Erreur d'enregistrement. Réessaie dans un instant.")}
+function fail(e){if(e&&e.code==="readonly")return;console.error(e);if(e&&e.code==="invalid_argument")toast("Tu n'as pas la permission de modifier ces données.");else if(e&&e.code==="quota_exceeded")toast("Espace plein : supprime d'anciens documents.");else toast("Erreur d'enregistrement. Réessaie dans un instant.")}
 
 /* ---------- heures ---------- */
 function pt(s){s=String(s||"").trim().toLowerCase().replace("h",":");if(!s)return NaN;if(s.includes(":")){const[h,m]=s.split(":");return(+h||0)+(+m||0)/60}return parseFloat(s.replace(",","."))}
@@ -696,7 +713,7 @@ function paperHTML(d){if(newFmt(d))return paperHTML2(d);const c=cfg(),m=model(d)
  <table style="table-layout:fixed"><colgroup><col style="width:50.7%"><col style="width:16%"><col style="width:16.5%"><col style="width:16.8%"></colgroup><tr class="hd" style="background:${bg}"><td>À l'intention de:</td><td colspan="3">Pour l'évènement:</td></tr>
  <tr class="kv"><td><div><span>Client:</span><small>${esc(d.client.entreprise)}</small></div><div><span>Référence:</span><small>${esc(d.client.contact)}</small></div><div><span>Courriel:</span><small>${esc(d.client.courriel)}</small></div></td><td colspan="3"><div><span>Nom:</span><small>${esc(d.evenement.nom)}</small></div><div><span>Date:</span><small>${fdate(d.evenement.date)}</small></div><div><span>Adresse:</span><small>${esc(d.evenement.adresse)}</small></div></td></tr>
  ${m.secs.map((x,i)=>sec(x)+(i===m.secs.map(z=>z.titre!=="Matériel consommé").lastIndexOf(true)?'<tr class="padA" style="display:none"></tr>':"")).join("")}${tot}</table>
- ${d.notes?`<div class="ft" style="margin-top:8px"><b>Note :</b> ${esc(d.notes)}</div>`:""}<div class="pfoot">${foot}
+ ${horLines(d).length?`<div class="ft" style="margin-top:8px"><b>Horaire :</b> ${horLines(d).map(esc).join(" · ")}</div>`:""}${d.notes?`<div class="ft" style="margin-top:8px"><b>Note :</b> ${esc(d.notes)}</div>`:""}<div class="pfoot">${foot}
  <div class="sig">${esc((m.isF?c.salutF:c.salutS)||"Nous attendons de vos nouvelles,")}<br>${esc(c.signature).replace(/\n/g,"<br>")}</div></div></div>`}
 
 
@@ -764,7 +781,7 @@ async function buildPdf(d){if(newFmt(d))return buildPdf2(d);
  // hauteur de tout ce qui suit la dernière section de services (pour remplir la page de lignes vides)
  const fh=(()=>{const y0=y;y=0;footer(false);const h=y;y=y0;return h})();
  const matS=m.secs.find(x=>x.titre==="Matériel consommé"),matH=matS?16+Math.max(matS.rows.length,10)*11.4:0;
- const totH=m.tot.reduce((a,_,i)=>a+(i===0?17.5:16.75),0),notesH=d.notes?8+wrap("Note : "+d.notes,R-52,F,8).length*10.5:0;
+ const totH=m.tot.reduce((a,_,i)=>a+(i===0?17.5:16.75),0),horT=horLines(d).length?"Horaire : "+horLines(d).join(" · "):"",notesH=(d.notes?8+wrap("Note : "+d.notes,R-52,F,8).length*10.5:0)+(horT?8+wrap(horT,R-52,F,8).length*10.5:0);
  const lastSvc=m.secs.map(x=>x.titre!=="Matériel consommé").lastIndexOf(true);
  // sections
  const secHead=s=>{if(y+16>H-BOT-20){newPage()}const mat=s.titre==="Matériel consommé";box(L,y,mat?X2:X1,16,FILL);if(!mat)box(X1,y,X2,16,FILL);box(X2,y,X3,16,FILL);box(X3,y,R,16,FILL);T(s.titre,64,y+2.5,{s:10.5});if(!mat)T(s.cols[0],(X1+X2)/2,y+2.5,{s:10.5,c:1});T(s.cols[1],(X2+X3)/2,y+2.5,{s:10.5,c:1});T(s.cols[2],(X3+R)/2,y+2.5,{s:10.5,c:1});y+=16};
@@ -784,7 +801,7 @@ async function buildPdf(d){if(newFmt(d))return buildPdf2(d);
  m.tot.forEach(([a,b],i)=>{const h=i===0?17.5:16.75,tx=/^(TPS|TVQ)/.test(a);if(tx){box(L,y,224.5,h,FILL);box(224.5,y,X3,h,FILL);T(a.slice(0,3),64,y+3,{s:10.5});T(a.slice(3).trim(),227,y+3,{s:10.5})}else{box(L,y,X3,h,FILL);T(a,64,y+3,{s:10.5})}box(X3,y,R,h,FILL);T(money(b),(X3+R)/2,y+3,{s:10.5,c:1});y+=h});
  // pied de page
  const need=h=>{if(y+h>H-BOT){newPage()}};
- if(d.notes){y+=8;for(const l of wrap("Note : "+d.notes,R-52,F,8)){need(11);T(l,52,y,{s:8});y+=10.5}}
+ if(horT){y+=8;for(const l of wrap(horT,R-52,F,8)){need(11);T(l,52,y,{s:8});y+=10.5}}if(d.notes){y+=8;for(const l of wrap("Note : "+d.notes,R-52,F,8)){need(11);T(l,52,y,{s:8});y+=10.5}}
  y+=11;
  if(y+fh>H-BOT)newPage();
  y=H-BOT-fh;footer(true);
@@ -816,7 +833,7 @@ function model2(d){const c=cfg(),sv=c.services||{},m=model(d),isF=m.isF;
  const cond=!isF?c.conditionsS.split("\n").filter(l=>l.trim()).map((l,i)=>({t:l.trim().replace(/^[*•\-–]\s*/,""),title:i===0,sub:i>0&&/^\s{2,}/.test(l)})):[];
  const src=d.sourceId&&S.docs.find(x=>x.id===d.sourceId);
  return{isF,titre:m.titre,secs,mat,T,taxes:!!d.taxes,msg,bank,cond,
-  matTot:mat?r2(mat.reduce((a,r)=>a+r.total,0)):0,ev:nfEvLine(d),ech:isF?nfEcheance(d):"",ref:isF&&src?"Référence : soumission "+label(src):"",
+  matTot:mat?r2(mat.reduce((a,r)=>a+r.total,0)):0,ev:nfEvLine(d),hor:horLines(d),ech:isF?nfEcheance(d):"",ref:isF&&src?"Référence : soumission "+label(src):"",
   salut:(isF?c.salutF:c.salutS)||"Nous attendons de vos nouvelles,",sig:clean(c.signature).split("\n").filter(Boolean)}}
 const nfMix=(a,t)=>a.map(v=>Math.round(v+(255-v)*t)),nfDark=(a,t)=>a.map(v=>Math.round(v*t));
 
@@ -846,7 +863,7 @@ function paperHTML2(d){const c=cfg(),m=model2(d),w=m.isF?"facture":"soumission",
  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #d5dbe1;border-radius:6px;overflow:hidden;min-width:360px">${info("Numéro",{v:label(d),big:1})}${info("Date",{v:fdate(d.date)})}${m.isF?info("Échéance",{v:fdate(m.ech)},1):info("Évènement",{v:fdate(d.evenement.date)},1)}</div></div>
  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px">
  <div style="border:1px solid #d5dbe1;border-radius:6px;padding:10px 14px"><div style="${lab}">${m.isF?"Facturé à":"Préparée pour"}</div><div style="font-weight:700;font-size:12.5px">${esc(d.client.entreprise)}</div>${[d.client.contact,d.client.courriel,d.client.adresse].filter(Boolean).map((l,i)=>`<div style="color:#3b4148${i===0?";margin-top:3px":""}">${esc(l)}</div>`).join("")}</div>
- <div style="border:1px solid #d5dbe1;border-radius:6px;padding:10px 14px"><div style="${lab}">Évènement</div><div style="font-weight:700;font-size:12.5px">${esc(d.evenement.nom)}</div>${[m.ev,d.evenement.adresse,m.ref].filter(Boolean).map((l,i)=>`<div style="color:#3b4148${i===0?";margin-top:3px":""}">${esc(l)}</div>`).join("")}</div></div>
+ <div style="border:1px solid #d5dbe1;border-radius:6px;padding:10px 14px"><div style="${lab}">Évènement</div><div style="font-weight:700;font-size:12.5px">${esc(d.evenement.nom)}</div>${[m.ev,d.evenement.adresse,...(m.hor||[]),m.ref].filter(Boolean).map((l,i)=>`<div style="color:#3b4148${i===0?";margin-top:3px":""}">${esc(l)}</div>`).join("")}</div></div>
  <div style="margin-top:16px;border:1px solid #d5dbe1;border-radius:6px;overflow:hidden;flex:1;display:flex;flex-direction:column;min-height:140px">
  <div style="${G};background:#16181a;color:#fff;font-weight:600;font-size:10.5px"><div style="padding:8px 12px">Description</div><div style="padding:8px 10px;text-align:right">Tarif</div><div style="padding:8px 10px;text-align:right">${m.isF?"Qté":"Qté prévue"}</div><div style="padding:8px 12px;text-align:right">Total</div></div>
  ${rows}${fill}${m.isF?"":totBar("Total estimé",m.T.tot,"taxes en sus, ajoutées à la facture finale")}</div>
@@ -889,7 +906,7 @@ async function buildPdf2(d){
  y=tTop+46;hl(L,R,y,ACC,2.25);y+=12;
  // ---- cartes client / évènement
  const cw=(R-L-10.5)/2,card=(x,lab,name,lines)=>{const nl=[name,...lines.filter(Boolean)];const h=8+7+5+11+(nl.length-1)*11+6;return{h,draw:hh=>{rr(x,y,cw,hh,4.5,{border:LN});T(lab.toUpperCase(),x+10.5,y+8,{s:6.75,b:1,col:INK});T(fit(name,cw-21,B,9.4),x+10.5,y+19,{s:9.4,b:1});lines.filter(Boolean).forEach((l,i)=>T(fit(l,cw-21,F,8.25),x+10.5,y+32+i*11,{s:8.25,col:TX}))}}};
- const c1=card(L,m.isF?"Facturé à":"Préparée pour",d.client.entreprise||"",[d.client.contact,d.client.courriel,d.client.adresse]),c2=card(L+cw+10.5,"Évènement",d.evenement.nom||"",[m.ev,d.evenement.adresse,m.ref]);
+ const c1=card(L,m.isF?"Facturé à":"Préparée pour",d.client.entreprise||"",[d.client.contact,d.client.courriel,d.client.adresse]),c2=card(L+cw+10.5,"Évènement",d.evenement.nom||"",[m.ev,d.evenement.adresse,...(m.hor||[]),m.ref]);
  const ch=Math.max(c1.h,c2.h);c1.draw(ch);c2.draw(ch);y+=ch+12;
 
  // ---- hauteur du bas de la dernière page
@@ -1182,14 +1199,14 @@ function newEvCard(d){const e=d.evenement,og=orgById(d.orgId),ol=S.orgs.filter(o
  <div class="card"><h3>Évènement</h3>
   <div style="margin-bottom:12px"><label for="n-en">Nom de l'évènement <span class="req">*</span></label><input id="n-en" value="${esc(e.nom||"")}"></div>
   <div style="margin-bottom:12px"><label for="n-ea">Adresse complète</label><input id="n-ea" value="${esc(e.adresse||"")}"></div>
-  <div class="jrow"><div><label for="n-ed">Date <span class="req">*</span></label><input id="n-ed" type="date" value="${esc(e.date||"")}"></div><div><label for="n-d1">Début</label><select id="n-d1">${tOpts(j.debut||"")}</select></div><div><label for="n-d2">Fin</label><select id="n-d2">${tOpts(j.fin||"")}</select></div><span></span></div>
+  <div style="margin-bottom:12px;max-width:260px"><label for="n-ed">Date de l'évènement <span class="req">*</span></label><input id="n-ed" type="date" value="${esc(e.date||"")}"></div>
+  ${quartsHTML(e,d)}
   <div><label for="n-inf">Informations pertinentes</label><textarea id="n-inf" rows="3">${esc(e.infos||"")}</textarea></div></div>`}
 function bindNewEv(){const d=S.evNew;if(!d||!$("#n-or"))return;const e=d.evenement,j=()=>(e.jours=e.jours&&e.jours.length?e.jours:[{date:"",debut:"",fin:""}])[0];
  $("#n-or").onchange=ev=>{d.orgId=ev.target.value;const o=orgById(d.orgId),cs=o?o.contacts||[]:[];d.clientId=cs.length===1?cs[0].id:"";render()};
  $("#n-ct").onchange=ev=>{d.clientId=ev.target.value};
  $("#n-en").oninput=ev=>{e.nom=ev.target.value};$("#n-ea").oninput=ev=>{e.adresse=ev.target.value};$("#n-inf").oninput=ev=>{e.infos=ev.target.value};
- $("#n-ed").onchange=ev=>{e.date=ev.target.value;j().date=e.date};
- $("#n-d1").onchange=ev=>{j().debut=ev.target.value};$("#n-d2").onchange=ev=>{j().fin=ev.target.value}}
+ bindQuarts(d,"#n-ed");if(!(e.quarts||[]).length)$("#n-ed").addEventListener("change",()=>{j().date=e.date})}
 async function saveEventHours(s,f,finish){if(s&&f&&f.sourceId&&f.sourceId!==s.id){toast("Erreur : cette facture appartient à un autre évènement. Rouvre l'évènement.");return}const H=S.evH.filter(h=>h.emp||HCATS.some(k=>+h[k])||+h.km||+h.lkm);
  if(H.some(h=>!h.emp)){toast("Choisis l'employé sur chaque ligne.");return}
  if(H.filter(h=>h.chef).length>1){toast("Un seul chef d'équipe par évènement.");return}
@@ -1509,8 +1526,8 @@ function renderStats(){const c=cfg(),ys=[...new Set([today().slice(0,4),...S.doc
  const cut=Y===today().slice(0,4)?today().slice(5):"12-31",FPs=FP.filter(d=>d.date.slice(5)<=cut);
  const ht=sum(F,"sousTotal"),htP=sum(FP,"sousTotal"),htPs=sum(FPs,"sousTotal"),ttc=sum(F,"total"),tps=sum(F,"tps"),tvq=sum(F,"tvq");
  const paid=F.filter(d=>d.statut==="payee"),open=F.filter(d=>d.statut==="envoyee"),late=open.filter(d=>echeance(d)<today());
- let pay=0,payPaid=0,trans=0;const hrs={gestion:0,ps:0,pr:0,pro:0},emp={};
- F.forEach(d=>(d.heures||[]).forEach(h=>{const p=payOf(h,yearOf(d));pay+=p;if(h.paye)payPaid+=p;trans+=+h.transport||0;HCATS.forEach(k=>hrs[k]+=+h[k]||0);emp[h.emp]=(emp[h.emp]||0)+HCATS.reduce((a,k)=>a+(+h[k]||0),0)}));
+ let pay=0,payPaid=0,trans=0;const hrs={gestion:0,ps:0,pr:0,pro:0},hrsB={gestion:0,ps:0,pr:0,pro:0},emp={};
+ F.forEach(d=>(d.heures||[]).forEach(h=>{const p=payOf(h,yearOf(d));pay+=p;if(h.paye)payPaid+=p;trans+=+h.transport||0;HCATS.forEach(k=>{if(h.benev)hrsB[k]+=+h[k]||0;else hrs[k]+=+h[k]||0});emp[h.emp]=(emp[h.emp]||0)+HCATS.reduce((a,k)=>a+(+h[k]||0),0)}));
  const hb={gestion:0,ps:0,pr:0,pro:0},bySvc={},byOrg={},mat=[0];
  F.forEach(d=>{(d.lignes||[]).forEach(l=>{const t=r2((+l.qte||0)*(+l.tarif||0));if(HCATS.includes(l.svc))hb[l.svc]+=+l.qte||0;const sv1=c.services[l.svc],nm=l.svc==="materiel"?"Matériel consommé":(sv1&&!sv1.prixLibre?sv1.nom:(l.desc||"Autre"));bySvc[nm]=(bySvc[nm]||0)+t;if(l.svc==="materiel")mat[0]+=t});const o=orgOf(d),on=o?o.nom:(d.client.entreprise||"?");byOrg[on]=(byOrg[on]||0)+d.sousTotal});
  const acc=Q.filter(d=>statutOf(d)[0]==="acceptee").length,ref=Q.filter(d=>d.statut==="refusee").length,qopen=Q.filter(d=>statutOf(d)[0]==="envoyee").length;
@@ -1532,7 +1549,7 @@ function renderStats(){const c=cfg(),ys=[...new Set([today().slice(0,4),...S.doc
   <p class="note">Profit = facturé avant taxes − salaires (primes de chef et kilomètres remboursés inclus) − coût d'achat du matériel consommé. L'essence et l'entretien des véhicules ne sont pas comptés. Marge sous 15 % en rouge.</p></div>
   <div class="card"><h3>Profit par client</h3>${bars(top(byC,8),money,2)}</div>`})()}
  <h3 class="sh3"><i style="background:#2f80ed"></i>Heures</h3><div class="stats k3">
- ${HCATS.map(k=>K(SHORT[k],H(hrs[k]),"facturées : "+H(hb[k]))).join("")}</div>
+ ${HCATS.map(k=>K(SHORT[k],H(hrs[k]),"facturées : "+H(hb[k])+(hrsB[k]?" · bénévoles : "+H(hrsB[k]):""))).join("")}</div>
  <h3 class="sh3"><i style="background:#f08c2e"></i>Soumissions</h3><div class="stats k4">
  ${K("Soumissions faites",Q.length,money(sum(Q,"total")))}${K("Acceptées",acc,(acc+ref)?"taux : "+Math.round(acc/(acc+ref+qopen)*100)+" %":"")}${K("En attente",qopen)}${K("Refusées",ref)}</div>
  <div class="card"><h3>Facturé par mois (avant taxes)</h3><div class="mchart">${months.map(([a,b],i)=>`<div class="mc" title="${money(a)} en ${Y} · ${money(b)} en ${P}"><div class="mb"><div class="bw">${b?`<em class="vp">${mfull(b)}</em><em class="vps">${mshort(b)}</em>`:""}<i class="p" style="height:${b/mx*82}%"></i></div><div class="bw">${a?`<em class="vc">${mfull(a)}</em><em class="vcs">${mshort(a)}</em>`:""}<i class="c" style="height:${a/mx*82}%"></i></div></div><span>${["Jan","Fév","Mar","Avr","Mai","Juin","Juil","Août","Sep","Oct","Nov","Déc"][i]}</span></div>`).join("")}</div><p class="note"><span class="lg c"></span> ${Y} : <b>${money(ht)}</b> &nbsp; <span class="lg p"></span> ${P} : ${money(htP)}${cut<"12-31"?` (${money(htPs)} à la même date)`:""}</p></div>
@@ -1554,7 +1571,7 @@ function renderSettings(){const c=cfg();
  <div class="card"><h3>Taxes et paiement</h3><div class="trow2">${f("tps","Numéro TPS (ex. 123456789 RT0001)")}${f("tvq","Numéro TVQ (ex. 1234567890 TQ0001)")}</div><div class="trow2">${f("tauxTps","Taux TPS (%)",{num:1})}${f("tauxTvq","Taux TVQ (%)",{num:1})}</div><div class="trow1">${f("delai","Délai de paiement (jours)",{num:1})}</div><div class="trow3">${f("transit","Transit")}${f("institution","Institution")}${f("folio","Folio / compte")}</div></div>
  <div class="card"><h3>Textes</h3><div class="grid">${f("conditionsS","Conditions sur les soumissions (mets **entre astérisques doubles** pour le gras; indente une ligne pour la décaler)",{ta:9,wide:1})}${f("messageF","Message sur les factures ({delai} = délai, {banque} = ligne bancaire)",{ta:4,wide:1})}${f("salutS","Formule de fin des soumissions",{wide:1})}${f("salutF","Formule de fin des factures",{wide:1})}${f("signature","Signature",{ta:2,wide:1})}</div></div>
  <div class="card"><h3>Courriels automatiques</h3><div class="grid">${f("courrielComptable","Courriel de la comptable (reçoit les heures quand un évènement est terminé)",{wide:1})}</div></div>
- <div class="actions" style="justify-content:space-between"><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="csv">Exporter tous les documents (CSV)</button>${window.AT_SA?`<button class="btn" id="jsonIn">Importer des données (JSON)</button>`:`<button class="btn" id="jsonOut">Exporter toutes les données (JSON)</button>`}</span><button class="btn p" id="pSave">Enregistrer les paramètres</button></div>
+ <div class="actions" style="justify-content:space-between"><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="csv">Exporter tous les documents (CSV)</button><button class="btn" id="jsonOut">Exporter toutes les données (JSON)</button>${window.AT_SA?`<button class="btn" id="jsonIn">Importer des données (JSON)</button>`:""}</span><button class="btn p" id="pSave">Enregistrer les paramètres</button></div>
  <p class="note">L'export CSV s'ouvre dans Excel : garde-le comme copie de sécurité.</p>`;
  $("#pSaveTop").onclick=()=>$("#pSave").click();
  $("#pSave").onclick=async()=>{const o=JSON.parse(JSON.stringify(c));const g=id=>$(id).value;
@@ -1562,7 +1579,7 @@ function renderSettings(){const c=cfg();
   ["tauxTps","tauxTvq","delai"].forEach(k=>{const v=parseFloat(g("#p-"+k).replace(",","."));if(!isNaN(v))o[k]=v});
   
   try{await S.db.doc("config/entreprise").set(o);toast("Paramètres enregistrés");goBack()}catch(e){fail(e)}};
- if($("#jsonOut"))$("#jsonOut").onclick=async()=>{if(!S.dl){toast("Téléchargement non disponible dans cette vue.");return}try{const all={};const grab=c=>new Promise((res,rej)=>{let un=null;un=S.db.collection(c).limit(1000).onSnapshot(q=>{q.docs.forEach(d=>all[c+"/"+d.id]=d.data());res();setTimeout(()=>{try{un&&un()}catch(e){}})},rej)});await grab("docs");await grab("orgs");const cs=await S.db.doc("config/entreprise").get();if(cs.exists)all["config/entreprise"]=cs.data();const blob=new Blob([JSON.stringify({app:"facturation-action-trauma",version:1,exporte:new Date().toISOString(),docs:all})],{type:"application/json"});await S.dl.save({filename:"Action Trauma - donnees "+today()+".json",data:blob});toast(Object.keys(all).length+" éléments exportés")}catch(e){if(e&&e.code==="declined")toast("Export annulé");else fail(e)}};
+ if($("#jsonOut"))$("#jsonOut").onclick=()=>exportJSON();
  if($("#jsonIn"))$("#jsonIn").onclick=()=>AT_SA.importJSON();
  $("#csv").onclick=async()=>{if(!S.dl){toast("Téléchargement non disponible dans cette vue.");return}
   const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';const rows=[["Type","Numéro","Date","Statut","Client","Contact","Évènement","Date évènement","Sous-total","TPS","TVQ","Total","Échéance"]];
@@ -1583,7 +1600,10 @@ $("#hLogo").src=LOGO;
  if(S.U){try{S.isOwner=!!S.U.isOwner()}catch(e){}try{S.canEdit=!!S.U.canEdit()}catch(e){}try{S.me=await S.U.id()}catch(e){}if(!S.me){try{const m=await S.U.me();S.me=m&&m.id}catch(e){}}}
  S.local=!window.claude;
  if(!db){clearTimeout(tm);S.noDb=true;render();return}
- S.db=db;
+ if(!window.AT_SA&&!window.__TEST_RW){S.ro=true;const RO=()=>{if(S.roUser&&Date.now()-(S._roT||0)>2500){S._roT=Date.now();toast("Version archivée en lecture seule : fais tes modifications dans l'application Action Trauma.")}return Promise.reject({code:"readonly"})};
+  const pass=(t,k)=>typeof t[k]==="function"?t[k].bind(t):t[k],ref=r=>new Proxy(r,{get:(t,k)=>["set","update","delete"].includes(k)?RO:pass(t,k)}),col=c=>new Proxy(c,{get:(t,k)=>k==="doc"?(id=>ref(t.doc(id))):k==="add"?RO:pass(t,k)});
+  S.db=new Proxy(db,{get:(t,k)=>k==="doc"?(x=>ref(t.doc(x))):k==="collection"?(x=>col(t.collection(x))):pass(t,k)});document.addEventListener("pointerdown",()=>{S.roUser=true},{once:true,capture:true})}
+ else S.db=db;
  const err=e=>{console.error(e);if(e?.code==="revoked"){S.db=null;S.noDb=true;render()}else if(!S.ready.d){S.denied=true;render()}};
  db.doc("config/entreprise").onSnapshot(s=>{if(s.exists){const v=s.data();S.cfg={...DEF_CFG,...v,services:Object.fromEntries([...new Set([...Object.keys(DEF_CFG.services),...Object.keys(v.services||{})])].map(k=>[k,{...(DEF_CFG.services[k]||{}),...((v.services||{})[k]||{})}]))}}S.ready.g=true;if(S.view!=="editeur")render()},err);
  db.collection("orgs").limit(1000).onSnapshot(s=>{S.orgs=s.docs.map(x=>({...x.data(),id:x.id,nom:x.data().nom||"",contacts:x.data().contacts||[]}));S.ready.c=true;if(S.view!=="editeur")render();else if(!$("#modal").innerHTML){}},err);
