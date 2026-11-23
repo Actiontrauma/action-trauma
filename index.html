@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122193322">
+<link rel="manifest" href="manifest.webmanifest?v=20261122194706">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122193322">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122194706">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122193322"></script>
-<script src="standalone.js?v=20261122193322"></script>
+<script src="config.js?v=20261122194706"></script>
+<script src="standalone.js?v=20261122194706"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -46,6 +46,13 @@ header{background:var(--brand);color:#111;padding:10px max(4vw,14px) 0}
 .brand{display:flex;align-items:center;gap:10px}
 .gear{display:grid;place-items:center;width:44px;height:44px;border-radius:8px;color:#111;border:1px solid #111}.gear.on{background:#111;color:var(--brand)}.gear:hover{background:rgba(0,0,0,.08)}
 .brand .logo{height:72px;width:auto;mix-blend-mode:multiply;display:block}.brand .sub{font-size:12px;font-weight:600;opacity:.75;max-width:90px;line-height:1.2}
+.cfrow{display:grid;grid-template-columns:70px minmax(0,1.6fr) 90px 100px 100px auto;gap:12px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}.cfrow .r{text-align:right}.cfa{display:flex;gap:6px;justify-content:flex-end}
+@media(max-width:700px){.cfrow{grid-template-columns:60px minmax(0,1fr) auto;row-gap:4px}.cfrow>.note,.cfrow>.pill{display:none}.cfa{grid-column:1/-1}}
+.agegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.agegrid .stat{margin:0}
+.stat.ag2 b{color:#b08900}.stat.ag3 b{color:#e8590c}.stat.ag4 b{color:#e03131}
+.pill.ag1{background:var(--oksoft);color:var(--ok)}.pill.ag2{background:#fff3bf;color:#7a5b00}.pill.ag3{background:#ffe8cc;color:#d9480f}.pill.ag4{background:#ffe3e3;color:#c92a2a}
+.pill.imp{background:#eef0f2;color:#3b4148;font-weight:500}
+table.pann{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}table.pann th{background:#16181a;color:#fff;text-align:right;padding:8px 10px;font-weight:600;white-space:nowrap}table.pann th:first-child,table.pann td:first-child{text-align:left}table.pann td{padding:8px 10px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}table.pann tbody tr:nth-child(even){background:#fafbfc}
 .hnext{margin:8px 0 2px}.hnext .hn-in{width:100%;display:flex;align-items:center;gap:10px;flex-wrap:wrap;text-align:left;background:rgba(17,17,17,.08);border:0;border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;color:#111;cursor:pointer}
 .hnext .hn-in:hover{background:rgba(17,17,17,.14)}.hnext .hn-lab{font-weight:600;color:#333}.hnext .hn-d{color:#333}.hnext .hn-go{margin-left:auto;font-size:20px;line-height:1}
 .hnext.today .hn-in{background:#111;color:#fff;padding:10px 14px}.hnext.today .hn-d{color:#d6dbd0}.hnext.today .hn-in:hover{background:#2a2a2a}
@@ -194,7 +201,7 @@ details.more{margin-top:10px}details.more summary{cursor:pointer;color:var(--mut
 @media(max-width:820px){.srow.svh{display:none!important}.srow.svrow{display:flex!important;flex-wrap:wrap;align-items:center;gap:4px 14px}.svrow .svn{flex:1 1 0;min-width:0}.svrow .svar{order:1}.svrow .svd{order:2;flex:1 0 100%}.svrow .svu{order:3;flex:1 0 100%;font-size:13px;color:var(--mute);margin-top:4px}.svrow .svr{order:4;text-align:left}.svrow.lib .svu,.svrow.lib .svr{display:none}.svrow .svd{margin-top:0}.svrow .svr::before{content:attr(data-y)" : ";color:var(--mute);font-size:13px}}
 #salbox input{min-width:0;width:100%}
 @media(max-width:520px){#salbox .srow{column-gap:8px;padding:10px;grid-template-columns:minmax(0,1fr) repeat(var(--n),64px)!important}#salbox input{padding:8px 6px}#salbox{padding:10px!important}}
-body.chef #nav a:not([data-v="evenements"]):not([data-v="moi"]),body.chef #gear,body.chef #hTot{display:none!important}body.compta #nav a:not([data-v="paies"]):not([data-v="statistiques"]):not([data-v="employes"]),body.compta #gear,body.compta #hTot{display:none!important}body:not(.chef) #nav a[data-v="moi"],body:not(.chef):not(.compta) #hMe{display:none!important}
+body.chef #nav a:not([data-v="evenements"]):not([data-v="moi"]),body.chef #gear,body.chef #hTot{display:none!important}#nav a[data-v="cfact"],#nav a[data-v="recevoir"]{display:none}body.compta #nav a[data-v="cfact"],body.compta #nav a[data-v="recevoir"]{display:inline-flex}body.compta #nav a:not([data-v="paies"]):not([data-v="statistiques"]):not([data-v="employes"]):not([data-v="cfact"]):not([data-v="recevoir"]),body.compta #gear,body.compta #hTot{display:none!important}body:not(.chef) #nav a[data-v="moi"],body:not(.chef):not(.compta) #hMe{display:none!important}
 .steps{margin:0;padding-left:22px;line-height:1.55}.steps li{margin:0 0 12px}.steps li:last-child{margin:0}
 .urow.rqrow{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 170px 200px}@media(max-width:820px){.urow.rqrow{grid-template-columns:1fr 1fr}.urow.rqrow>div:first-child,.urow.rqrow>span{grid-column:1/-1}}
 body.noacc #nav,body.noacc #hMe{display:none!important}body.compta #hMe{display:block!important}
@@ -259,7 +266,7 @@ input:disabled.lk{background:light-dark(#f1f3f5,#1b2532);color:var(--mute);curso
   <div class="actions"><a href="#parametres" class="gear" id="gear" title="Paramètres" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a></div>
  </div>
  <div id="hNext"></div>
- <nav id="nav"><a href="#soumissions" data-v="soumission">Soumissions</a><a href="#factures" data-v="facture">Factures</a><a href="#evenements" data-v="evenements">Évènements</a><a href="#moi" data-v="moi">Statistiques</a><a href="#clients" data-v="clients">Clients</a><a href="#employes" data-v="employes">Employés</a><a href="#services" data-v="services">Services</a><a href="#materiel" data-v="materiel">Inventaire</a><a href="#statistiques" data-v="statistiques">Statistiques</a><a href="#paies" data-v="paies">Paies</a><a href="#utilisateurs" data-v="utilisateurs">Utilisateurs</a></nav>
+ <nav id="nav"><a href="#soumissions" data-v="soumission">Soumissions</a><a href="#factures" data-v="facture">Factures</a><a href="#evenements" data-v="evenements">Évènements</a><a href="#moi" data-v="moi">Statistiques</a><a href="#clients" data-v="clients">Clients</a><a href="#employes" data-v="employes">Employés</a><a href="#services" data-v="services">Services</a><a href="#materiel" data-v="materiel">Inventaire</a><a href="#statistiques" data-v="statistiques">Statistiques</a><a href="#cfactures" data-v="cfact">Factures</a><a href="#recevoir" data-v="recevoir">À recevoir</a><a href="#paies" data-v="paies">Paies</a><a href="#utilisateurs" data-v="utilisateurs">Utilisateurs</a></nav>
 </header>
 <main id="app"><div class="empty">Connexion à tes données…</div></main>
 <div id="modal"></div>
@@ -387,7 +394,7 @@ function headerNext(){const el=$("#hNext");if(!el)return;const r=role();if(!S.db
  el.querySelector("button").onclick=()=>{if(tod.length>1){S.evTab="cours";location.hash="#evenements";S.view="evenements";render();scrollTo(0,0)}else openEv(n.x)}}
 function headerTotal(){headerNext();const y=today().slice(0,4),F=S.docs.filter(d=>d.type==="facture"&&d.statut!=="annulee"&&d.statut!=="brouillon"&&(d.date||"").startsWith(y));const e=$("#hTot");if(e)e.innerHTML=S.db?`<span>Facturé en ${y}</span><b>${money(F.reduce((a,d)=>a+d.total,0))}</b><span>taxes incluses</span>`:""}
 function render(){headerTotal();$("#gear")&&$("#gear").classList.toggle("on",S.view==="parametres");
- try{const nb={soumission:S.docs.filter(d=>d.type==="soumission"&&statutOf(d)[0]==="envoyee").length,facture:S.docs.filter(d=>d.type==="facture"&&(d.statut==="envoyee"||d.statut==="brouillon")).length,evenements:S.db?evList().length:0,employes:role()==="admin"?certAlerts().length:0,utilisateurs:role()==="admin"?Object.keys(S.dem||{}).filter(id=>!((S.acces||{}).users||{})[id]).length:0};document.querySelectorAll("#nav a").forEach(a=>{const n=nb[a.dataset.v];let b=a.querySelector(".nb");if(n){if(!b){b=document.createElement("span");b.className="nb";a.appendChild(b)}b.textContent=n>99?"99+":n;b.title=n+(a.dataset.v==="evenements"?" à compléter ou facture non envoyée":a.dataset.v==="facture"?" non payée"+(n>1?"s":""):a.dataset.v==="employes"?" certification"+(n>1?"s":"")+" expirée"+(n>1?"s":"")+" ou bientôt":a.dataset.v==="utilisateurs"?" demande"+(n>1?"s":"")+" d'accès":" en attente de réponse")}else if(b)b.remove()})}catch(e){}
+ try{const nb={soumission:S.docs.filter(d=>d.type==="soumission"&&statutOf(d)[0]==="envoyee").length,facture:S.docs.filter(d=>d.type==="facture"&&(d.statut==="envoyee"||d.statut==="brouillon")).length,evenements:S.db?evList().length:0,recevoir:role()==="compta"?S.docs.filter(d=>d.type==="facture"&&d.statut==="envoyee"&&Date.parse(today())-Date.parse(d.date||today())>30*864e5).length:0,employes:role()==="admin"?certAlerts().length:0,utilisateurs:role()==="admin"?Object.keys(S.dem||{}).filter(id=>!((S.acces||{}).users||{})[id]).length:0};document.querySelectorAll("#nav a").forEach(a=>{const n=nb[a.dataset.v];let b=a.querySelector(".nb");if(n){if(!b){b=document.createElement("span");b.className="nb";a.appendChild(b)}b.textContent=n>99?"99+":n;b.title=n+(a.dataset.v==="evenements"?" à compléter ou facture non envoyée":a.dataset.v==="facture"?" non payée"+(n>1?"s":""):a.dataset.v==="recevoir"?" facture"+(n>1?"s":"")+" impayée"+(n>1?"s":"")+" depuis plus de 30 jours":a.dataset.v==="employes"?" certification"+(n>1?"s":"")+" expirée"+(n>1?"s":"")+" ou bientôt":a.dataset.v==="utilisateurs"?" demande"+(n>1?"s":"")+" d'accès":" en attente de réponse")}else if(b)b.remove()})}catch(e){}
  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===(S.view==="editeur"?(S.edit&&S.edit.type):S.view==="documents"?S.f.type:(S.view==="evenement"||S.view==="evarch")?"evenements":S.view)));
  const app=$("#app");
  if(!S.db){app.innerHTML=S.noDb?`<div class="card"><h3>Données non accessibles</h3><p>Ouvre cette application dans Claude en étant connecté à ton compte (ou au compte avec lequel elle a été partagée) pour voir tes clients, soumissions et factures.</p></div>`:`<div class="empty">Connexion à tes données…</div>`;return}
@@ -399,13 +406,16 @@ function render(){headerTotal();$("#gear")&&$("#gear").classList.toggle("on",S.v
  if($("#rqGo"))$("#rqGo").onclick=async()=>{const n=$("#rqN").value.trim();if(!n){toast("Inscris ton nom.");return}try{await S.db.doc("demandes/"+S.me).set({nom:n,le:new Date().toISOString()});toast("Demande envoyée")}catch(e){fail(e)}};
  if($("#rqX"))$("#rqX").onclick=async()=>{try{await S.db.doc("demandes/"+S.me).delete()}catch(e){fail(e)}};return}
  if(rl==="chef"&&S.view!=="evenement"&&S.view!=="evenements"&&S.view!=="moi"&&S.view!=="evarch"){S.view="evenements"}
- if(rl==="compta"&&!["paies","statistiques","employes"].includes(S.view)){S.view="paies"}
+ if(rl==="compta"&&!["paies","statistiques","employes","cfact","recevoir"].includes(S.view)){S.view="paies"}
+ if((S.view==="cfact"||S.view==="recevoir")&&rl!=="compta"&&rl!=="admin"){S.view="evenements"}
  if(S.view==="paies"&&rl!=="compta"&&rl!=="admin"){S.view="evenements"}
  if(S.view==="moi"&&rl!=="chef"){S.view="evenements"}
  meHeader();
  if(rl==="compta"&&(S.view==="employes"||S.view==="statistiques")){setTimeout(()=>readOnly($("#app")),0);if(!S._roObs){S._roObs=1;roObs.observe($("#modal"),{childList:true,subtree:true})}}
  if(S.view==="moi")return renderMoi();
  if(S.view==="paies")return renderPaies();
+ if(S.view==="cfact")return renderCFact();
+ if(S.view==="recevoir")return renderRecevoir();
  if(S.view==="evenements")return renderEvents();
  if(S.view==="evenement")return renderEvent();
  if(S.view==="evarch")return renderEvArch();
@@ -897,6 +907,54 @@ async function buildPdf2(d){
  const n=pdf.getPageCount();pdf.getPages().forEach((p,k)=>p.drawText(`Page ${k+1} de ${n}`,{x:R-wd(`Page ${k+1} de ${n}`,F,7.1),y:BOT-8,size:7.1,font:F,color:MU}));
  return pdf.save()}
 
+/* ---------- comptabilité : factures en lecture seule et comptes à recevoir ---------- */
+function renderCFact(){const y=S.cfY||today().slice(0,4),q=(S.cfQ||"").toLowerCase(),st=S.cfS||"toutes";
+ const all=S.docs.filter(d=>d.type==="facture"&&d.statut!=="brouillon"&&d.statut!=="annulee");
+ const ys=[...new Set([today().slice(0,4),...all.map(d=>(d.date||"").slice(0,4)).filter(Boolean)])].sort().reverse();
+ const L=all.filter(d=>(d.date||"").startsWith(y)&&(st==="toutes"||(st==="impayees"?d.statut==="envoyee":d.statut==="payee"))&&(!q||[label(d),d.client.entreprise,d.evenement.nom].join(" ").toLowerCase().includes(q))).sort((a,b)=>b.numero-a.numero);
+ const sum=k=>r2(L.reduce((a,d)=>a+(+d[k]||0),0));
+ $("#app").innerHTML=`<div class="ehead"><div><h2>Factures</h2><p class="note" style="margin:2px 0 0">Lecture seule · factures envoyées et payées</p></div></div>
+ <div class="chips" style="margin-bottom:10px">${ys.map(v=>`<button class="chip ${v===y?"on":""}" data-cfy="${v}">${v}</button>`).join("")}</div>
+ <div class="bar" style="margin-bottom:10px;gap:8px;flex-wrap:wrap"><input class="grow" id="cfQ" placeholder="Rechercher un numéro, un client, un évènement…" value="${esc(S.cfQ||"")}"><div class="seg" style="margin:0">${[["toutes","Toutes"],["impayees","Non payées"],["payees","Payées"]].map(([k,t])=>`<button class="${st===k?"on":""}" data-cfs="${k}">${t}</button>`).join("")}</div></div>
+ <div class="stats five st3" style="margin-bottom:12px"><div class="stat"><b>${money(sum("sousTotal"))}</b><span>Avant taxes</span></div><div class="stat"><b>${money(r2(sum("tps")+sum("tvq")))}</b><span>TPS + TVQ</span></div><div class="stat"><b>${money(sum("total"))}</b><span>${L.length} facture${L.length>1?"s":""}, taxes incluses</span></div></div>
+ <div class="card" style="padding:0"><div class="list">${L.map(d=>{const s=statutOf(d);return`<div class="cfrow"><span class="num f">${label(d)}</span><span><b>${esc(d.client.entreprise||"")}</b><div class="note">${esc(d.evenement.nom||"")}</div></span><span class="note">${fdate(d.date)}</span><b class="r">${money(d.total)}</b><span class="pill st-${s[0]}">${s[1]}</span><span class="cfa"><button class="btn" data-cfv="${esc(d.id)}">Aperçu</button><button class="btn" data-cfp="${esc(d.id)}">PDF</button></span></div>`}).join("")||`<div class="empty">Aucune facture.</div>`}</div></div>`;
+ document.querySelectorAll("[data-cfy]").forEach(b=>b.onclick=()=>{S.cfY=b.dataset.cfy;render()});
+ document.querySelectorAll("[data-cfs]").forEach(b=>b.onclick=()=>{S.cfS=b.dataset.cfs;render()});
+ const qi=$("#cfQ");qi.oninput=()=>{S.cfQ=qi.value;const p=qi.selectionStart;renderCFact();const n=$("#cfQ");n.focus();n.setSelectionRange(p,p)};
+ document.querySelectorAll("[data-cfv]").forEach(b=>b.onclick=()=>previewModal(S.docs.find(d=>d.id===b.dataset.cfv)));
+ document.querySelectorAll("[data-cfp]").forEach(b=>b.onclick=async()=>{const d=S.docs.find(x=>x.id===b.dataset.cfp);if(!S.dl){toast("Téléchargement non disponible ici.");return}b.disabled=true;try{await savePdf(d);toast("PDF enregistré")}catch(e){if(!(e&&e.code==="declined"))fail(e)}b.disabled=false})}
+
+function renderRecevoir(){const t=today(),F=S.docs.filter(d=>d.type==="facture"&&d.statut==="envoyee");
+ const age=d=>Math.max(0,Math.round((Date.parse(t)-Date.parse(d.date||t))/864e5));
+ const B=[["0-30","0 à 30 jours",0,30],["31-60","31 à 60 jours",31,60],["61-90","61 à 90 jours",61,90],["90+","Plus de 90 jours",91,1e9]];
+ const bk=d=>{const a=age(d);return B.find(b=>a>=b[2]&&a<=b[3])[0]};
+ const tot=k=>r2(F.filter(d=>!k||bk(d)===k).reduce((a,d)=>a+(+d.total||0),0));
+ const byC={};F.forEach(d=>{const o=orgOf(d),k=o?o.id:"c:"+(d.client.entreprise||"?");(byC[k]=byC[k]||{nom:o?o.nom:(d.client.entreprise||"(sans client)"),L:[]}).L.push(d)});
+ const C=Object.values(byC).map(c=>({...c,t:r2(c.L.reduce((a,d)=>a+(+d.total||0),0)),old:Math.max(...c.L.map(age))})).sort((a,b)=>b.t-a.t);
+ const ageCls=a=>a>90?"ag4":a>60?"ag3":a>30?"ag2":"ag1";
+ $("#app").innerHTML=`<div class="ehead"><div><h2>Comptes à recevoir</h2><p class="note" style="margin:2px 0 0">Factures envoyées qui ne sont pas encore payées, selon leur ancienneté (jours depuis la date de la facture)</p></div></div>
+ <div class="agegrid"><div class="stat ${tot()?"alert":""}"><b>${money(tot())}</b><span>Total à recevoir · ${F.length} facture${F.length>1?"s":""}</span></div>${B.map(b=>`<div class="stat ${"ag"+(B.indexOf(b)+1)}"><b>${money(tot(b[0]))}</b><span>${b[1]}</span></div>`).join("")}</div>
+ ${C.length?`<div class="list" style="margin-top:12px">${C.map((c,ci)=>{const op=(S.arOpen||{})[ci];return`<details class="pyd" data-ac="${ci}" ${op?"open":""}><summary><b>${esc(c.nom)}</b><span class="note">${c.L.length} facture${c.L.length>1?"s":""} · la plus ancienne : ${c.old} jours</span><b class="r due">${money(c.t)}</b><span class="pyv">${op?"Masquer":"Voir les factures"}</span></summary><div class="list" style="margin:0 14px 12px">${c.L.sort((a,b)=>age(b)-age(a)).map(d=>`<div class="cfrow"><span class="num f">${label(d)}</span><span>${esc(d.evenement.nom||"")}<div class="note">Facturée le ${fdate(d.date)} · échéance ${fdate(echeance(d))}</div></span><span class="pill ${ageCls(age(d))}">${age(d)} jours</span><b class="r">${money(d.total)}</b><span></span><span class="cfa"><button class="btn" data-cfv="${esc(d.id)}">Aperçu</button><button class="btn" data-cfp="${esc(d.id)}">PDF</button></span></div>`).join("")}</div></details>`}).join("")}</div>`:`<div class="card" style="margin-top:12px"><p class="note" style="margin:0">Aucune facture en attente de paiement.</p></div>`}`;
+ document.querySelectorAll("[data-ac]").forEach(d=>d.ontoggle=()=>{S.arOpen=S.arOpen||{};S.arOpen[d.dataset.ac]=d.open;const v=d.querySelector(".pyv");if(v)v.textContent=d.open?"Masquer":"Voir les factures"});
+ document.querySelectorAll("[data-cfv]").forEach(b=>b.onclick=()=>previewModal(S.docs.find(d=>d.id===b.dataset.cfv)));
+ document.querySelectorAll("[data-cfp]").forEach(b=>b.onclick=async()=>{const d=S.docs.find(x=>x.id===b.dataset.cfp);if(!S.dl){toast("Téléchargement non disponible ici.");return}b.disabled=true;try{await savePdf(d);toast("PDF enregistré")}catch(e){if(!(e&&e.code==="declined"))fail(e)}b.disabled=false})}
+
+/* sommaire annuel des paies par employé */
+function paieAnnuelHTML(all,y){const s=salFor(y),LB={gestion:"Gestion",ps:"PS",pr:"PR",pro:"PO"};
+ const R=all.filter(r=>yearOf(r.d)===y),byE={};
+ R.forEach(r=>{const e=byE[r.h.emp]=byE[r.h.emp]||{h:{gestion:0,ps:0,pr:0,pro:0},gains:0,prime:0,kmAmt:0,ev:new Set(),paye:0,apayer:0};const sy=salFor(yearOf(r.d)),hrs=HCATS.reduce((a,k)=>a+(+r.h[k]||0),0);
+  HCATS.forEach(k=>{e.h[k]+=+r.h[k]||0;e.gains+=(+r.h[k]||0)*(+sy[k]||0)});if(r.h.chef)e.prime+=hrs*(+sy.chef||0);e.kmAmt+=+r.h.transport||0;e.ev.add(r.d.id);const p=payOf(r.h,yearOf(r.d));if(r.h.paye)e.paye+=p;else e.apayer+=p});
+ const E=Object.entries(byE).sort((a,b)=>empName(a[0]).localeCompare(empName(b[0]),"fr"));
+ const T=E.reduce((a,[,e])=>({g:a.g+e.gains+e.prime,k:a.k+e.kmAmt,t:a.t+e.gains+e.prime+e.kmAmt}),{g:0,k:0,t:0});
+ return`<div class="stats five st3" style="margin-bottom:12px"><div class="stat"><b>${money(r2(T.g))}</b><span>Salaires ${y} (primes de chef incluses)</span></div><div class="stat"><b>${money(r2(T.k))}</b><span>Remboursements de kilomètres</span></div><div class="stat"><b>${money(r2(T.t))}</b><span>Total ${y} · ${E.length} employé${E.length>1?"s":""}</span></div></div>
+ ${E.length?`<div class="card" style="padding:0;overflow-x:auto"><table class="pann"><thead><tr><th>Employé</th><th>Évèn.</th>${HCATS.map(k=>`<th>${LB[k]} (h)</th>`).join("")}<th>Salaires</th><th>Prime chef</th><th>Rembours. km</th><th>Total</th><th>Dont à verser</th></tr></thead><tbody>${E.map(([id,e])=>`<tr><td><b>${esc(empName(id))}</b></td><td>${e.ev.size}</td>${HCATS.map(k=>`<td>${e.h[k]?fq(e.h[k]):"–"}</td>`).join("")}<td>${money(r2(e.gains))}</td><td>${e.prime?money(r2(e.prime)):"–"}</td><td>${e.kmAmt?money(r2(e.kmAmt)):"–"}</td><td><b>${money(r2(e.gains+e.prime+e.kmAmt))}</b></td><td class="${e.apayer?"due":""}">${e.apayer?money(r2(e.apayer)):"–"}</td></tr>`).join("")}</tbody></table></div>
+ <div class="actions" style="margin-top:10px;justify-content:flex-end"><button class="btn" id="annCsv">Exporter le sommaire ${y} (CSV)</button></div>`:`<div class="card"><p class="note" style="margin:0">Aucune heure enregistrée en ${y}.</p></div>`}
+ <p class="note">Les gains sont calculés avec les salaires de l'année de chaque évènement. Les remboursements de kilomètres sont séparés des salaires pour faciliter les T4 et Relevés 1.</p>`}
+function paieAnnuelCSV(all,y){const LB={gestion:"Gestion",ps:"PS",pr:"PR",pro:"PO"},rows=[["Employé","Évènements",...HCATS.map(k=>LB[k]+" (h)"),"Salaires","Prime chef","Remboursements km","Total","Dont à verser"]],byE={};
+ all.filter(r=>yearOf(r.d)===y).forEach(r=>{const e=byE[r.h.emp]=byE[r.h.emp]||{h:{gestion:0,ps:0,pr:0,pro:0},g:0,p:0,ka:0,ev:new Set(),ap:0};const sy=salFor(y),hrs=HCATS.reduce((a,k)=>a+(+r.h[k]||0),0);HCATS.forEach(k=>{e.h[k]+=+r.h[k]||0;e.g+=(+r.h[k]||0)*(+sy[k]||0)});if(r.h.chef)e.p+=hrs*(+sy.chef||0);e.ka+=+r.h.transport||0;e.ev.add(r.d.id);if(!r.h.paye)e.ap+=payOf(r.h,y)});
+ Object.entries(byE).sort((a,b)=>empName(a[0]).localeCompare(empName(b[0]),"fr")).forEach(([id,e])=>rows.push([empName(id),e.ev.size,...HCATS.map(k=>fq(e.h[k])),fq(r2(e.g)),fq(r2(e.p)),fq(r2(e.ka)),fq(r2(e.g+e.p+e.ka)),fq(r2(e.ap))]));
+ return"﻿"+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(";")).join("\r\n")}
+
 /* ---------- évènements (chefs d'équipe) ---------- */
 function evTabs(){const n=S.docs.filter(isArch).length;return`<div class="seg" style="margin-bottom:12px"><button class="${S.evTab!=="arch"?"on":""}" data-evt="cours">En cours</button><button class="${S.evTab==="arch"?"on":""}" data-evt="arch">Archivés <span class="note">${n}</span></button></div>`}
 function bindEvTabs(){document.querySelectorAll("[data-evt]").forEach(b=>b.onclick=()=>{S.evTab=b.dataset.evt;render();scrollTo(0,0)})}
@@ -931,12 +989,13 @@ function renderPaies(){const all=paieRows(),show=S.payShow||"apayer",y=S.payY||t
  const byE={};rows.forEach(r=>{(byE[r.h.emp]=byE[r.h.emp]||[]).push(r)});const E=Object.entries(byE).sort((a,b)=>empName(a[0]).localeCompare(empName(b[0]),"fr"));
  const tot=r2(rows.reduce((a,r)=>a+amt(r),0)),evs=new Set(rows.map(r=>r.d.id)).size;
  $("#app").innerHTML=`<div class="ehead"><div><h2>Paies</h2></div></div>
- <div class="seg" style="margin-bottom:12px"><button class="${show==="apayer"?"on":""}" data-ps="apayer">À payer</button><button class="${show==="paye"?"on":""}" data-ps="paye">Déjà payées</button></div>
- ${show==="paye"?`<div class="chips" style="margin-bottom:12px">${ys.map(v=>`<button class="chip ${v===y?"on":""}" data-py="${v}">${v}</button>`).join("")}</div>`:""}
- <div class="stats five st3" style="margin-bottom:12px"><div class="stat ${show==="apayer"&&tot?"alert":""}"><b>${money(tot)}</b><span>${show==="apayer"?"Total à payer":"Total versé en "+y}</span></div><div class="stat"><b>${E.length}</b><span>Employé${E.length>1?"s":""}</span></div><div class="stat"><b>${evs}</b><span>Évènement${evs>1?"s":""} terminé${evs>1?"s":""}</span></div></div>
- ${E.length?(`<div class="list">${E.map(([emp,L])=>{const t=r2(L.reduce((a,r)=>a+amt(r),0)),ap=show==="apayer";L.sort((a,b)=>{const x=(a.d.evenement||{}).date||a.d.date,z=(b.d.evenement||{}).date||b.d.date;return ap?x.localeCompare(z):z.localeCompare(x)});const op=(S.payOpen||{})[show+emp],vt=ap?"Voir les évènements":"Voir les paiements";return`<details class="pyd" data-pe="${esc(emp)}" data-vt="${vt}" ${op?"open":""}><summary><b>${esc(empName(emp))}</b><span class="note">${L.length} ${ap?"évènement"+(L.length>1?"s":"")+" à payer":"paiement"+(L.length>1?"s":"")}</span><b class="r ${ap?"due":""}">${money(t)}</b><span class="pyv">${op?"Masquer":vt}</span></summary><div style="margin:0 14px 12px">${ap?`<div class="actions" style="justify-content:flex-end;margin-bottom:8px"><button class="btn" data-pall="${esc(emp)}">Tout marquer payé (${money(t)})</button></div>`:""}<div class="list">${L.map(r=>pyRow(r,amt)).join("")}</div></div></details>`}).join("")}</div>`):`<div class="card"><p class="note" style="margin:0">${show==="apayer"?"Aucune paie à faire pour les évènements terminés.":"Aucune paie versée en "+y+"."}</p></div>`}
+ <div class="seg" style="margin-bottom:12px"><button class="${show==="apayer"?"on":""}" data-ps="apayer">À payer</button><button class="${show==="paye"?"on":""}" data-ps="paye">Déjà payées</button><button class="${show==="annuel"?"on":""}" data-ps="annuel">Sommaire annuel</button></div>
+ ${show!=="apayer"?`<div class="chips" style="margin-bottom:12px">${ys.map(v=>`<button class="chip ${v===y?"on":""}" data-py="${v}">${v}</button>`).join("")}</div>`:""}
+ ${show==="annuel"?paieAnnuelHTML(all,y):`<div class="stats five st3" style="margin-bottom:12px"><div class="stat ${show==="apayer"&&tot?"alert":""}"><b>${money(tot)}</b><span>${show==="apayer"?"Total à payer":"Total versé en "+y}</span></div><div class="stat"><b>${E.length}</b><span>Employé${E.length>1?"s":""}</span></div><div class="stat"><b>${evs}</b><span>Évènement${evs>1?"s":""} terminé${evs>1?"s":""}</span></div></div>
+ ${E.length?(`<div class="list">${E.map(([emp,L])=>{const t=r2(L.reduce((a,r)=>a+amt(r),0)),ap=show==="apayer";L.sort((a,b)=>{const x=(a.d.evenement||{}).date||a.d.date,z=(b.d.evenement||{}).date||b.d.date;return ap?x.localeCompare(z):z.localeCompare(x)});const op=(S.payOpen||{})[show+emp],vt=ap?"Voir les évènements":"Voir les paiements";return`<details class="pyd" data-pe="${esc(emp)}" data-vt="${vt}" ${op?"open":""}><summary><b>${esc(empName(emp))}</b>${(()=>{const ee=(cfg().employes||[]).find(x=>x.id===emp);return ee&&ee.impot?`<span class="pill imp" title="Retrait d'impôt désiré (fiche employé)">Impôt : ${esc(ee.impot)}</span>`:""})()}<span class="note">${L.length} ${ap?"évènement"+(L.length>1?"s":"")+" à payer":"paiement"+(L.length>1?"s":"")}</span><b class="r ${ap?"due":""}">${money(t)}</b><span class="pyv">${op?"Masquer":vt}</span></summary><div style="margin:0 14px 12px">${ap?`<div class="actions" style="justify-content:flex-end;margin-bottom:8px"><button class="btn" data-pall="${esc(emp)}">Tout marquer payé (${money(t)})</button></div>`:""}<div class="list">${L.map(r=>pyRow(r,amt)).join("")}</div></div></details>`}).join("")}</div>`):`<div class="card"><p class="note" style="margin:0">${show==="apayer"?"Aucune paie à faire pour les évènements terminés.":"Aucune paie versée en "+y+"."}</p></div>`}`}
  <p class="note">Montants calculés avec les salaires de l'année de chaque évènement, prime de chef d'équipe et remboursement des kilomètres inclus. Seuls les évènements terminés (ou dont la facture est envoyée ou payée) apparaissent.</p>`;
  document.querySelectorAll("[data-ps]").forEach(b=>b.onclick=()=>{S.payShow=b.dataset.ps;render()});
+ if($("#annCsv"))$("#annCsv").onclick=async()=>{if(!S.dl){toast("Téléchargement non disponible ici.");return}try{await S.dl.save({filename:`Sommaire des paies ${y}.csv`,data:new Blob([paieAnnuelCSV(all,y)],{type:"text/csv"})});toast("Sommaire exporté")}catch(e){if(!(e&&e.code==="declined"))fail(e)}};
  document.querySelectorAll("[data-py]").forEach(b=>b.onclick=()=>{S.payY=b.dataset.py;render()});
  document.querySelectorAll("[data-pe]").forEach(d=>d.ontoggle=()=>{S.payOpen=S.payOpen||{};S.payOpen[show+d.dataset.pe]=d.open;const v=d.querySelector(".pyv");if(v)v.textContent=d.open?"Masquer":d.dataset.vt});
  const setPaid=async(list,v)=>{const by={};list.forEach(([id,i])=>{(by[id]=by[id]||[]).push(+i)});try{for(const id in by){const d=S.docs.find(x=>x.id===id);if(!d)continue;const H=JSON.parse(JSON.stringify(d.heures||[]));by[id].forEach(i=>{if(H[i])H[i].paye=v});await S.db.collection("docs").doc(id).update({heures:H})}toast(v?"Marqué payé":"Remis à payer")}catch(e){fail(e);render()}};
@@ -1442,7 +1501,7 @@ function renderSettings(){const c=cfg();
 }
 
 /* ---------- démarrage ---------- */
-function route(){const pv=S.view;let h=location.hash.slice(1);if(h==="tarifs")h="services";if(h==="soumissions"||h==="factures"||h==="documents"){const t=h==="soumissions"?"soumission":"facture";if(S.f.type!==t){S.f.type=t;S.f.statut="tous"}h="documents"}if(["documents","statistiques","clients","services","materiel","tarifs","employes","parametres","evenements","utilisateurs","moi","paies"].includes(h)){if(h==="parametres"&&pv!=="parametres")S.prevView=pv==="editeur"||pv==="evenement"?"documents":pv;S.view=h;S.edit=null}render()}
+function route(){const pv=S.view;let h=location.hash.slice(1);if(h==="tarifs")h="services";if(h==="soumissions"||h==="factures"||h==="documents"){const t=h==="soumissions"?"soumission":"facture";if(S.f.type!==t){S.f.type=t;S.f.statut="tous"}h="documents"}if(["documents","statistiques","clients","services","materiel","tarifs","employes","parametres","evenements","utilisateurs","moi","paies","cfact","recevoir"].includes(h==="cfactures"?(h="cfact"):h)){if(h==="parametres"&&pv!=="parametres")S.prevView=pv==="editeur"||pv==="evenement"?"documents":pv;S.view=h;S.edit=null}render()}
 window.addEventListener("hashchange",route);document.querySelectorAll("#nav a").forEach(a=>a.addEventListener("click",e=>{if(a.getAttribute("href")===location.hash){e.preventDefault();route()}}));
 $("#hLogo").src=LOGO;
 
