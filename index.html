@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122200432">
+<link rel="manifest" href="manifest.webmanifest?v=20261122201021">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122200432">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122201021">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122200432"></script>
-<script src="standalone.js?v=20261122200432"></script>
+<script src="config.js?v=20261122201021"></script>
+<script src="standalone.js?v=20261122201021"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -1527,7 +1527,7 @@ function renderSettings(){const c=cfg();
   <ol class="note" style="margin:10px 0 6px;padding-left:20px;line-height:1.6"><li>Ouvre <b>outlook.office.com</b> avec le compte <b>evenement@actiontrauma.ca</b>, puis va dans <b>Calendrier</b>.</li><li>Clique <b>Ajouter un calendrier</b> → <b>S'abonner à partir du web</b>.</li><li>Colle le lien, nomme-le « Action Trauma – Évènements », puis clique <b>Importer</b>.</li></ol>
   <p class="note" style="margin:0 0 8px">Garde ce lien privé : toute personne qui l'a peut voir les évènements.</p><button class="btn" id="icsNew">Générer un nouveau lien (désactive l'ancien)</button>`;
   $("#icsUrl").onclick=e=>e.target.select();$("#icsCp").onclick=()=>navigator.clipboard.writeText(url).then(()=>toast("Lien copié")).catch(()=>{$("#icsUrl").select();toast("Sélectionne le lien pour le copier")});
-  $("#icsNew").onclick=async()=>{if(await ask("Générer un nouveau lien?","Générer",true,"<p>L'ancien lien cessera de fonctionner : il faudra refaire l'abonnement dans Outlook.</p>"))icsShow(true)}}catch(e){fail(e)}};
+  $("#icsNew").onclick=async()=>{if(await ask("Générer un nouveau lien?","Générer",true,"<p>L'ancien lien cessera de fonctionner : il faudra refaire l'abonnement dans Outlook.</p>"))icsShow(true)}}catch(e){console.error(e);const m=String((e&&(e.message||e.code))||"");box.insertAdjacentHTML("beforeend",`<p class="note" style="color:var(--warn);margin:8px 0 0">${/at_ics_token|PGRST202|schema cache|does not exist/i.test(m)?"La configuration du calendrier n'est pas encore terminée dans Supabase (étape SQL).":"Impossible d'obtenir le lien : "+esc(m||"erreur inconnue")}</p>`)}};
  if($("#icsGet"))$("#icsGet").onclick=()=>icsShow(false);
  $("#csv").onclick=async()=>{if(!S.dl){toast("Téléchargement non disponible dans cette vue.");return}
   const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';const rows=[["Type","Numéro","Date","Statut","Client","Contact","Évènement","Date évènement","Sous-total","TPS","TVQ","Total","Échéance"]];
