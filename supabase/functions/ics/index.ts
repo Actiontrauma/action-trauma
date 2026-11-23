@@ -60,7 +60,9 @@ function buildIcs(docs: any[], nowIso: string) {
 
 Deno.serve(async (req) => {
   const t = new URL(req.url).searchParams.get("t") || "";
-  const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
+  let key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+  try { const o = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") || "{}"); key = o.default || Object.values(o)[0] || key; } catch (_) { /* clés classiques */ }
+  const sb = createClient(Deno.env.get("SUPABASE_URL")!, key as string, { auth: { persistSession: false } });
   const { data: tok } = await sb.from("at_ics").select("token").eq("id", 1).maybeSingle();
   if (!t || !tok || t !== tok.token) return new Response("Lien d'abonnement invalide.", { status: 403 });
   const docs: any[] = [];
