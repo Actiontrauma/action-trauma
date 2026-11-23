@@ -172,7 +172,7 @@ window.AT_SA={
   <p class="note" style="margin-top:0">Crée son compte ici, puis donne-lui son courriel, son mot de passe et le lien de l'application. Il pourra se connecter tout de suite.</p>
   <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 14px;align-items:end">
    <div><label for="nu-e">Employé</label><select id="nu-e"><option value="">— Choisir —</option>${emps.map(e=>`<option value="${esc(e.id)}" data-mail="${esc(e.courriel||"")}">${esc(e.nom)}</option>`).join("")}</select></div>
-   <div><label for="nu-r">Type d'utilisateur</label><select id="nu-r"><option value="chef">Chef d'équipe</option><option value="compta">Comptabilité</option><option value="admin">Administrateur</option></select></div>
+   <div><label for="nu-r">Type d'utilisateur</label><select id="nu-r"><option value="employe">Employé</option><option value="chef">Chef d'équipe</option><option value="compta">Comptabilité</option><option value="admin">Administrateur</option></select></div>
    <div><label for="nu-m">Courriel (sert à se connecter)</label><input id="nu-m" type="email" autocomplete="off"></div>
    <div><label for="nu-p">Mot de passe</label><div class="atpw"><input id="nu-p" type="text" autocomplete="off" placeholder="8 caractères minimum"><button class="btn" id="nu-g" type="button" title="Générer un mot de passe">🎲</button></div></div>
   </div><div class="actions" style="margin-top:12px;justify-content:flex-end"><button class="btn p" id="nu-ok">Créer le compte</button></div>

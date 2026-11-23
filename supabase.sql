@@ -21,7 +21,7 @@ begin
   select data->>'ownerId' into owner from at_docs where path = 'config/entreprise';
   if owner = auth.uid()::text then return 'admin'; end if;
   select data->'users'->auth.uid()::text->>'role' into r from at_docs where path = 'acces/roles';
-  if r in ('admin','chef','compta') then return r; end if;
+  if r in ('admin','chef','compta','employe') then return r; end if;
   -- Démarrage : tant qu'aucun propriétaire n'est défini, le tout premier utilisateur est administrateur
   if owner is null then
     select count(*) into nb from at_docs where path = 'acces/roles' and jsonb_typeof(data->'users') = 'object' and data->'users' <> '{}'::jsonb;
