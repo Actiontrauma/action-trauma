@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122215430">
+<link rel="manifest" href="manifest.webmanifest?v=20261122220535">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122215430">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122220535">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122215430"></script>
-<script src="standalone.js?v=20261122215430"></script>
+<script src="config.js?v=20261122220535"></script>
+<script src="standalone.js?v=20261122220535"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -58,7 +58,7 @@ table.pann{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}ta
 .cday{background:var(--card,#fff);border:1px solid var(--line);border-radius:8px;min-height:92px;padding:4px;display:flex;flex-direction:column;gap:3px;min-width:0}.cday.off{background:transparent;border-color:transparent}.cday.past{opacity:.75}.cday.tod{border:2px solid #16181a}
 .cdn{font-size:12px;font-weight:600;color:var(--mute);padding:0 2px}.cday.tod .cdn{color:#16181a}
 .cev{all:unset;cursor:pointer;font-size:11.5px;line-height:1.25;padding:3px 5px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}.cev:hover{filter:brightness(.93)}
-.cup{background:#dcf34a;color:#1d2a10}.cpast{background:#e6e9ee;color:#495057}.cdot{display:inline-block;width:10px;height:10px;border-radius:3px;border:1px solid rgba(0,0,0,.15);vertical-align:-1px;margin:0 4px 0 8px}
+.cup{background:#dcf34a;color:#1d2a10}.csent{background:#d0e4ff;color:#163d73}.cdraft{background:#fff;color:#5a626b;border:1px dashed #9aa3ad;box-sizing:border-box}.cpast{background:#e6e9ee;color:#495057}.cdot{display:inline-block;width:10px;height:10px;border-radius:3px;border:1px solid rgba(0,0,0,.15);vertical-align:-1px;margin:0 4px 0 8px}
 .callist{display:none}button.cli{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:60px 1fr;gap:12px;padding:10px 14px;border-top:1px solid var(--line)}
 @media(max-width:700px){.calg .cev{font-size:0;padding:0;height:6px;border-radius:3px}.calg .cev b{display:none}.cday{min-height:52px}.callist{display:block}.calbar .note{display:none}}
 .qsec{border-top:1px solid var(--line);padding-top:12px;margin:4px 0 14px}
@@ -69,6 +69,7 @@ table.pann{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}ta
 .line.bvl .bvd{padding:10px 12px;border:1px dashed var(--line);border-radius:8px;color:var(--mute)}.line.bvl .rate{font-style:italic;color:var(--mute)}
 @media(max-width:700px){.qrow .qbv{grid-column:1/-2}}
 .qfrom{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--warnsoft);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:13.5px}
+.card.donecard{border-color:#ffd43b;background:#fff9db}
 .hnext{margin:8px 0 2px}.hnext .hn-in{width:100%;display:flex;align-items:center;gap:10px;flex-wrap:wrap;text-align:left;background:rgba(17,17,17,.08);border:0;border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;color:#111;cursor:pointer}
 .hnext .hn-in:hover{background:rgba(17,17,17,.14)}.hnext .hn-lab{font-weight:600;color:#333}.hnext .hn-d{color:#333}.hnext .hn-go{margin-left:auto;font-size:20px;line-height:1}
 .hnext.today .hn-in{background:#111;color:#fff;padding:10px 14px}.hnext.today .hn-d{color:#d6dbd0}.hnext.today .hn-in:hover{background:#2a2a2a}
@@ -354,7 +355,7 @@ const svcList=(all)=>Object.entries(cfg().services||{}).filter(([k,v])=>all||v.a
 const rateSvcs=()=>svcList().filter(([k,v])=>!v.prixLibre);
 const matList=()=>(cfg().materiel||[]).filter(m=>m.actif!==false).slice().sort((a,b)=>a.nom.localeCompare(b.nom,"fr"));
 const SHORT={gestion:"Gestion",ps:"Premiers soins",pr:"Premier répondant",pro:"Professionnel",amb:"Voiturette",livr:"Livraison voiturette",depl:"Déplacement",autre:"Autre",materiel:"Matériel"};
-const STAT={soumission:[["envoyee","Envoyée"],["acceptee","Acceptée"],["refusee","Refusée"],["fermee","Fermée"]],facture:[["brouillon","Brouillon"],["envoyee","Envoyée"],["payee","Payée"],["annulee","Annulée"]]};
+const STAT={soumission:[["brouillon","Brouillon"],["envoyee","Envoyée"],["acceptee","Acceptée"],["refusee","Refusée"],["fermee","Fermée"]],facture:[["brouillon","Brouillon"],["envoyee","Envoyée"],["payee","Payée"],["annulee","Annulée"]]};
 const S={orgs:[],docs:[],cfg:DEF_CFG,view:"documents",f:{type:"facture",statut:"tous",annee:"toutes",q:""},cq:"",edit:null,ready:{c:false,d:false,g:false},db:null,dl:null,ro:false};
 const $=s=>document.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -371,7 +372,7 @@ function toast(m){const t=document.createElement("div");t.className="toast";t.te
 function evalQ(s){s=String(s??"").trim().replace(/,/g,".");if(s==="")return 0;if(!/^[\d\s.+\-*/()]+$/.test(s))return NaN;try{const v=Function('"use strict";return('+s+')')();return isFinite(v)?r2(v):NaN}catch(e){return NaN}}
 function calc(d){const st=r2((d.lignes||[]).reduce((a,l)=>a+r2((+l.qte||0)*(+l.tarif||0)),0));const tps=d.taxes?r2(st*cfg().tauxTps/100):0,tvq=d.taxes?r2(st*cfg().tauxTvq/100):0;return{sousTotal:st,tps,tvq,total:r2(st+tps+tvq)}}
 function echeance(d){return d.echeance||addDays(d.date,cfg().delai)}
-function statutOf(d){if(d.type==="facture"&&d.statut==="envoyee"&&echeance(d)<today())return["retard","En retard"];if(d.type==="soumission"&&(d.statut==="facturee"||d.statut==="archivee"))return["acceptee","Acceptée"];if(d.type==="soumission"&&d.statut==="brouillon")return["envoyee","Envoyée"];const s=STAT[d.type].find(x=>x[0]===d.statut);return s||["brouillon","Brouillon"]}
+function statutOf(d){if(d.type==="facture"&&d.statut==="envoyee"&&echeance(d)<today())return["retard","En retard"];if(d.type==="soumission"&&(d.statut==="facturee"||d.statut==="archivee"))return["acceptee","Acceptée"];const s=STAT[d.type].find(x=>x[0]===d.statut);return s||["brouillon","Brouillon"]}
 function nextNum(type){const ns=S.docs.filter(d=>d.type===type).map(d=>+d.numero||0);return ns.length?Math.max(...ns)+1:(type==="facture"?190:305)}
 const yearOf=d=>((d.evenement&&d.evenement.date)||d.date||today()).slice(0,4);
 const gridYears=()=>Object.keys(cfg().grilles||{}).sort();
@@ -416,7 +417,7 @@ function headerNext(){const el=$("#hNext");if(!el)return;const r=role();if(!S.db
  el.querySelector("button").onclick=()=>{if(tod.length>1){S.evTab="cours";location.hash="#evenements";S.view="evenements";render();scrollTo(0,0)}else openEv(n.x)}}
 function headerTotal(){headerNext();const y=today().slice(0,4),F=S.docs.filter(d=>d.type==="facture"&&d.statut!=="annulee"&&d.statut!=="brouillon"&&(d.date||"").startsWith(y));const e=$("#hTot");if(e)e.innerHTML=S.db?`<span>Facturé en ${y}</span><b>${money(F.reduce((a,d)=>a+d.total,0))}</b><span>taxes incluses</span>`:""}
 function render(){headerTotal();roBar();$("#gear")&&$("#gear").classList.toggle("on",S.view==="parametres");
- try{const nb={soumission:S.docs.filter(d=>d.type==="soumission"&&statutOf(d)[0]==="envoyee").length,facture:S.docs.filter(d=>d.type==="facture"&&(d.statut==="envoyee"||d.statut==="brouillon")).length,evenements:S.db?evList().length:0,recevoir:role()==="compta"?S.docs.filter(d=>d.type==="facture"&&d.statut==="envoyee"&&Date.parse(today())-Date.parse(d.date||today())>30*864e5).length:0,employes:role()==="admin"?certAlerts().length:0,utilisateurs:role()==="admin"?Object.keys(S.dem||{}).filter(id=>!((S.acces||{}).users||{})[id]).length:0};document.querySelectorAll("#nav a").forEach(a=>{const n=nb[a.dataset.v];let b=a.querySelector(".nb");if(n){if(!b){b=document.createElement("span");b.className="nb";a.appendChild(b)}b.textContent=n>99?"99+":n;b.title=n+(a.dataset.v==="evenements"?" à compléter ou facture non envoyée":a.dataset.v==="facture"?" non payée"+(n>1?"s":""):a.dataset.v==="recevoir"?" facture"+(n>1?"s":"")+" impayée"+(n>1?"s":"")+" depuis plus de 30 jours":a.dataset.v==="employes"?" certification"+(n>1?"s":"")+" expirée"+(n>1?"s":"")+" ou bientôt":a.dataset.v==="utilisateurs"?" demande"+(n>1?"s":"")+" d'accès":" en attente de réponse")}else if(b)b.remove()})}catch(e){}
+ try{const nb={soumission:S.docs.filter(d=>d.type==="soumission"&&statutOf(d)[0]==="envoyee").length,facture:S.docs.filter(d=>d.type==="facture"&&(d.statut==="envoyee"||d.statut==="brouillon")).length,evenements:S.db?evList().length:0,paies:role()==="compta"?doneNew().length:0,recevoir:role()==="compta"?S.docs.filter(d=>d.type==="facture"&&d.statut==="envoyee"&&Date.parse(today())-Date.parse(d.date||today())>30*864e5).length:0,employes:role()==="admin"?certAlerts().length:0,utilisateurs:role()==="admin"?Object.keys(S.dem||{}).filter(id=>!((S.acces||{}).users||{})[id]).length:0};document.querySelectorAll("#nav a").forEach(a=>{const n=nb[a.dataset.v];let b=a.querySelector(".nb");if(n){if(!b){b=document.createElement("span");b.className="nb";a.appendChild(b)}b.textContent=n>99?"99+":n;b.title=n+(a.dataset.v==="evenements"?" à compléter ou facture non envoyée":a.dataset.v==="facture"?" non payée"+(n>1?"s":""):a.dataset.v==="paies"?" évènement"+(n>1?"s":"")+" terminé"+(n>1?"s":"")+" depuis ta dernière visite":a.dataset.v==="recevoir"?" facture"+(n>1?"s":"")+" impayée"+(n>1?"s":"")+" depuis plus de 30 jours":a.dataset.v==="employes"?" certification"+(n>1?"s":"")+" expirée"+(n>1?"s":"")+" ou bientôt":a.dataset.v==="utilisateurs"?" demande"+(n>1?"s":"")+" d'accès":" en attente de réponse")}else if(b)b.remove()})}catch(e){}
  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===(S.view==="editeur"?(S.edit&&S.edit.type):S.view==="documents"?S.f.type:(S.view==="evenement"||S.view==="evarch")?"evenements":S.view)));
  const app=$("#app");
  if(!S.db){app.innerHTML=S.noDb?`<div class="card"><h3>Données non accessibles</h3><p>Ouvre cette application dans Claude en étant connecté à ton compte (ou au compte avec lequel elle a été partagée) pour voir tes clients, soumissions et factures.</p></div>`:`<div class="empty">Connexion à tes données…</div>`;return}
@@ -713,7 +714,7 @@ function paperHTML(d){if(newFmt(d))return paperHTML2(d);const c=cfg(),m=model(d)
  <table style="table-layout:fixed"><colgroup><col style="width:50.7%"><col style="width:16%"><col style="width:16.5%"><col style="width:16.8%"></colgroup><tr class="hd" style="background:${bg}"><td>À l'intention de:</td><td colspan="3">Pour l'évènement:</td></tr>
  <tr class="kv"><td><div><span>Client:</span><small>${esc(d.client.entreprise)}</small></div><div><span>Référence:</span><small>${esc(d.client.contact)}</small></div><div><span>Courriel:</span><small>${esc(d.client.courriel)}</small></div></td><td colspan="3"><div><span>Nom:</span><small>${esc(d.evenement.nom)}</small></div><div><span>Date:</span><small>${fdate(d.evenement.date)}</small></div><div><span>Adresse:</span><small>${esc(d.evenement.adresse)}</small></div></td></tr>
  ${m.secs.map((x,i)=>sec(x)+(i===m.secs.map(z=>z.titre!=="Matériel consommé").lastIndexOf(true)?'<tr class="padA" style="display:none"></tr>':"")).join("")}${tot}</table>
- ${horLines(d).length?`<div class="ft" style="margin-top:8px"><b>Horaire :</b> ${horLines(d).map(esc).join(" · ")}</div>`:""}${d.notes?`<div class="ft" style="margin-top:8px"><b>Note :</b> ${esc(d.notes)}</div>`:""}<div class="pfoot">${foot}
+ ${d.notes?`<div class="ft" style="margin-top:8px"><b>Note :</b> ${esc(d.notes)}</div>`:""}<div class="pfoot">${foot}
  <div class="sig">${esc((m.isF?c.salutF:c.salutS)||"Nous attendons de vos nouvelles,")}<br>${esc(c.signature).replace(/\n/g,"<br>")}</div></div></div>`}
 
 
@@ -781,7 +782,7 @@ async function buildPdf(d){if(newFmt(d))return buildPdf2(d);
  // hauteur de tout ce qui suit la dernière section de services (pour remplir la page de lignes vides)
  const fh=(()=>{const y0=y;y=0;footer(false);const h=y;y=y0;return h})();
  const matS=m.secs.find(x=>x.titre==="Matériel consommé"),matH=matS?16+Math.max(matS.rows.length,10)*11.4:0;
- const totH=m.tot.reduce((a,_,i)=>a+(i===0?17.5:16.75),0),horT=horLines(d).length?"Horaire : "+horLines(d).join(" · "):"",notesH=(d.notes?8+wrap("Note : "+d.notes,R-52,F,8).length*10.5:0)+(horT?8+wrap(horT,R-52,F,8).length*10.5:0);
+ const totH=m.tot.reduce((a,_,i)=>a+(i===0?17.5:16.75),0),notesH=d.notes?8+wrap("Note : "+d.notes,R-52,F,8).length*10.5:0;
  const lastSvc=m.secs.map(x=>x.titre!=="Matériel consommé").lastIndexOf(true);
  // sections
  const secHead=s=>{if(y+16>H-BOT-20){newPage()}const mat=s.titre==="Matériel consommé";box(L,y,mat?X2:X1,16,FILL);if(!mat)box(X1,y,X2,16,FILL);box(X2,y,X3,16,FILL);box(X3,y,R,16,FILL);T(s.titre,64,y+2.5,{s:10.5});if(!mat)T(s.cols[0],(X1+X2)/2,y+2.5,{s:10.5,c:1});T(s.cols[1],(X2+X3)/2,y+2.5,{s:10.5,c:1});T(s.cols[2],(X3+R)/2,y+2.5,{s:10.5,c:1});y+=16};
@@ -801,7 +802,7 @@ async function buildPdf(d){if(newFmt(d))return buildPdf2(d);
  m.tot.forEach(([a,b],i)=>{const h=i===0?17.5:16.75,tx=/^(TPS|TVQ)/.test(a);if(tx){box(L,y,224.5,h,FILL);box(224.5,y,X3,h,FILL);T(a.slice(0,3),64,y+3,{s:10.5});T(a.slice(3).trim(),227,y+3,{s:10.5})}else{box(L,y,X3,h,FILL);T(a,64,y+3,{s:10.5})}box(X3,y,R,h,FILL);T(money(b),(X3+R)/2,y+3,{s:10.5,c:1});y+=h});
  // pied de page
  const need=h=>{if(y+h>H-BOT){newPage()}};
- if(horT){y+=8;for(const l of wrap(horT,R-52,F,8)){need(11);T(l,52,y,{s:8});y+=10.5}}if(d.notes){y+=8;for(const l of wrap("Note : "+d.notes,R-52,F,8)){need(11);T(l,52,y,{s:8});y+=10.5}}
+ if(d.notes){y+=8;for(const l of wrap("Note : "+d.notes,R-52,F,8)){need(11);T(l,52,y,{s:8});y+=10.5}}
  y+=11;
  if(y+fh>H-BOT)newPage();
  y=H-BOT-fh;footer(true);
@@ -833,7 +834,7 @@ function model2(d){const c=cfg(),sv=c.services||{},m=model(d),isF=m.isF;
  const cond=!isF?c.conditionsS.split("\n").filter(l=>l.trim()).map((l,i)=>({t:l.trim().replace(/^[*•\-–]\s*/,""),title:i===0,sub:i>0&&/^\s{2,}/.test(l)})):[];
  const src=d.sourceId&&S.docs.find(x=>x.id===d.sourceId);
  return{isF,titre:m.titre,secs,mat,T,taxes:!!d.taxes,msg,bank,cond,
-  matTot:mat?r2(mat.reduce((a,r)=>a+r.total,0)):0,ev:nfEvLine(d),hor:horLines(d),ech:isF?nfEcheance(d):"",ref:isF&&src?"Référence : soumission "+label(src):"",
+  matTot:mat?r2(mat.reduce((a,r)=>a+r.total,0)):0,ev:nfEvLine(d),ech:isF?nfEcheance(d):"",ref:isF&&src?"Référence : soumission "+label(src):"",
   salut:(isF?c.salutF:c.salutS)||"Nous attendons de vos nouvelles,",sig:clean(c.signature).split("\n").filter(Boolean)}}
 const nfMix=(a,t)=>a.map(v=>Math.round(v+(255-v)*t)),nfDark=(a,t)=>a.map(v=>Math.round(v*t));
 
@@ -863,7 +864,7 @@ function paperHTML2(d){const c=cfg(),m=model2(d),w=m.isF?"facture":"soumission",
  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #d5dbe1;border-radius:6px;overflow:hidden;min-width:360px">${info("Numéro",{v:label(d),big:1})}${info("Date",{v:fdate(d.date)})}${m.isF?info("Échéance",{v:fdate(m.ech)},1):info("Évènement",{v:fdate(d.evenement.date)},1)}</div></div>
  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px">
  <div style="border:1px solid #d5dbe1;border-radius:6px;padding:10px 14px"><div style="${lab}">${m.isF?"Facturé à":"Préparée pour"}</div><div style="font-weight:700;font-size:12.5px">${esc(d.client.entreprise)}</div>${[d.client.contact,d.client.courriel,d.client.adresse].filter(Boolean).map((l,i)=>`<div style="color:#3b4148${i===0?";margin-top:3px":""}">${esc(l)}</div>`).join("")}</div>
- <div style="border:1px solid #d5dbe1;border-radius:6px;padding:10px 14px"><div style="${lab}">Évènement</div><div style="font-weight:700;font-size:12.5px">${esc(d.evenement.nom)}</div>${[m.ev,d.evenement.adresse,...(m.hor||[]),m.ref].filter(Boolean).map((l,i)=>`<div style="color:#3b4148${i===0?";margin-top:3px":""}">${esc(l)}</div>`).join("")}</div></div>
+ <div style="border:1px solid #d5dbe1;border-radius:6px;padding:10px 14px"><div style="${lab}">Évènement</div><div style="font-weight:700;font-size:12.5px">${esc(d.evenement.nom)}</div>${[m.ev,d.evenement.adresse,m.ref].filter(Boolean).map((l,i)=>`<div style="color:#3b4148${i===0?";margin-top:3px":""}">${esc(l)}</div>`).join("")}</div></div>
  <div style="margin-top:16px;border:1px solid #d5dbe1;border-radius:6px;overflow:hidden;flex:1;display:flex;flex-direction:column;min-height:140px">
  <div style="${G};background:#16181a;color:#fff;font-weight:600;font-size:10.5px"><div style="padding:8px 12px">Description</div><div style="padding:8px 10px;text-align:right">Tarif</div><div style="padding:8px 10px;text-align:right">${m.isF?"Qté":"Qté prévue"}</div><div style="padding:8px 12px;text-align:right">Total</div></div>
  ${rows}${fill}${m.isF?"":totBar("Total estimé",m.T.tot,"taxes en sus, ajoutées à la facture finale")}</div>
@@ -906,7 +907,7 @@ async function buildPdf2(d){
  y=tTop+46;hl(L,R,y,ACC,2.25);y+=12;
  // ---- cartes client / évènement
  const cw=(R-L-10.5)/2,card=(x,lab,name,lines)=>{const nl=[name,...lines.filter(Boolean)];const h=8+7+5+11+(nl.length-1)*11+6;return{h,draw:hh=>{rr(x,y,cw,hh,4.5,{border:LN});T(lab.toUpperCase(),x+10.5,y+8,{s:6.75,b:1,col:INK});T(fit(name,cw-21,B,9.4),x+10.5,y+19,{s:9.4,b:1});lines.filter(Boolean).forEach((l,i)=>T(fit(l,cw-21,F,8.25),x+10.5,y+32+i*11,{s:8.25,col:TX}))}}};
- const c1=card(L,m.isF?"Facturé à":"Préparée pour",d.client.entreprise||"",[d.client.contact,d.client.courriel,d.client.adresse]),c2=card(L+cw+10.5,"Évènement",d.evenement.nom||"",[m.ev,d.evenement.adresse,...(m.hor||[]),m.ref]);
+ const c1=card(L,m.isF?"Facturé à":"Préparée pour",d.client.entreprise||"",[d.client.contact,d.client.courriel,d.client.adresse]),c2=card(L+cw+10.5,"Évènement",d.evenement.nom||"",[m.ev,d.evenement.adresse,m.ref]);
  const ch=Math.max(c1.h,c2.h);c1.draw(ch);c2.draw(ch);y+=ch+12;
 
  // ---- hauteur du bas de la dernière page
@@ -1021,23 +1022,23 @@ function paieAnnuelCSV(all,y){const LB={gestion:"Gestion",ps:"PS",pr:"PR",pro:"P
  return"﻿"+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(";")).join("\r\n")}
 
 /* calendrier des évènements acceptés */
-function calItems(){const I=[];S.docs.forEach(d=>{if(d.type==="soumission"&&statutOf(d)[0]==="acceptee"){const f=factOf(d);if(f&&f.statut==="annulee")return;I.push({s:d,f})}else if(d.type==="facture"&&!d.sourceId&&d.statut!=="annulee")I.push({s:null,f:d})});return I}
+function calItems(){const I=[];S.docs.forEach(d=>{const st=d.type==="soumission"?statutOf(d)[0]:"";if(st==="brouillon"||st==="envoyee"){I.push({s:d,f:null,st})}else if(st==="acceptee"){const f=factOf(d);if(f&&f.statut==="annulee")return;I.push({s:d,f})}else if(d.type==="facture"&&!d.sourceId&&d.statut!=="annulee")I.push({s:null,f:d})});return I}
 function renderCal(){const t=today(),m=S.calM||t.slice(0,7),[Y,M]=m.split("-").map(Number),first=new Date(Y,M-1,1),start=first.getDay(),nd=new Date(Y,M,0).getDate();
  const by={};calItems().forEach(x=>{const i=x.s||x.f;evDaysOf(i).forEach(j=>{(by[j.date]=by[j.date]||[]).push({x,j})})});
  const p2=n=>String(n).padStart(2,"0"),mv=k=>{const d=new Date(Y,M-1+k,1);return d.getFullYear()+"-"+p2(d.getMonth()+1)};
  const MN=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
- const cls=x=>{const f=x.f;return f&&isArch(f)?"cpast":"cup"};
+ const cls=x=>x.st==="brouillon"?"cdraft":x.st==="envoyee"?"csent":x.f&&isArch(x.f)?"cpast":"cup";
  let cells="";for(let k=0;k<start;k++)cells+=`<div class="cday off"></div>`;
  for(let d=1;d<=nd;d++){const ds=m+"-"+p2(d),E=(by[ds]||[]).sort((a,b)=>(a.j.debut||"").localeCompare(b.j.debut||""));
   cells+=`<div class="cday ${ds===t?"tod":""} ${ds<t?"past":""}"><span class="cdn">${d}</span>${E.map(({x,j})=>{const i=x.s||x.f;return`<button class="cev ${cls(x)}" data-cs="${x.s?esc(x.s.id):""}" data-cf="${x.f?esc(x.f.id):""}" title="${esc((i.evenement.nom||"")+" · "+(i.client.entreprise||"")+(evHrs(j)?" · "+evHrs(j):""))}">${j.debut?`<b>${nfH(j.debut)}</b> `:""}${esc(i.evenement.nom||i.client.entreprise||"Évènement")}</button>`}).join("")}</div>`}
  const tot=Object.keys(by).filter(k=>k.startsWith(m)).reduce((a,k)=>a+by[k].length,0);
  const list=Object.keys(by).filter(k=>k.startsWith(m)).sort().flatMap(k=>by[k].map(o=>({k,...o})));
  $("#app").innerHTML=`<div class="ehead"><div><h2>Évènements</h2></div></div>${evTabs()}
- <div class="calbar"><button class="btn" id="calP" aria-label="Mois précédent">‹</button><h3>${MN[M-1]} ${Y}</h3><button class="btn" id="calN" aria-label="Mois suivant">›</button><button class="btn" id="calT">Aujourd'hui</button><span class="note grow" style="text-align:right">${tot} journée${tot>1?"s":""} d'évènement · <span class="cdot cup"></span>à venir / à facturer <span class="cdot cpast"></span>facturé</span></div>
+ <div class="calbar"><button class="btn" id="calP" aria-label="Mois précédent">‹</button><h3>${MN[M-1]} ${Y}</h3><button class="btn" id="calN" aria-label="Mois suivant">›</button><button class="btn" id="calT">Aujourd'hui</button><span class="note grow" style="text-align:right">${tot} journée${tot>1?"s":""} d'évènement · <span class="cdot cdraft"></span>soumission brouillon <span class="cdot csent"></span>soumission envoyée <span class="cdot cup"></span>acceptée, à venir / à facturer <span class="cdot cpast"></span>facturé</span></div>
  <div class="calg"><div class="cdh">dim</div><div class="cdh">lun</div><div class="cdh">mar</div><div class="cdh">mer</div><div class="cdh">jeu</div><div class="cdh">ven</div><div class="cdh">sam</div>${cells}</div>
- <div class="card callist" style="padding:0">${list.map(({k,x,j})=>{const i=x.s||x.f;return`<button class="cfrow cli" data-cs="${x.s?esc(x.s.id):""}" data-cf="${x.f?esc(x.f.id):""}"><span class="num f">${fdate(k).slice(0,5)}</span><span><b>${esc(i.evenement.nom||"")}</b><div class="note">${esc(i.client.entreprise||"")}${evHrs(j)?" · "+evHrs(j):""}</div></span></button>`}).join("")||`<div class="empty">Aucun évènement ce mois-ci.</div>`}</div>`;
+ <div class="card callist" style="padding:0">${list.map(({k,x,j})=>{const i=x.s||x.f;return`<button class="cfrow cli ${cls(x)}" data-cs="${x.s?esc(x.s.id):""}" data-cf="${x.f?esc(x.f.id):""}"><span class="num f">${fdate(k).slice(0,5)}</span><span><b>${esc(i.evenement.nom||"")}</b><div class="note">${esc(i.client.entreprise||"")}${evHrs(j)?" · "+evHrs(j):""}</div></span></button>`}).join("")||`<div class="empty">Aucun évènement ce mois-ci.</div>`}</div>`;
  bindEvTabs();$("#calP").onclick=()=>{S.calM=mv(-1);render()};$("#calN").onclick=()=>{S.calM=mv(1);render()};$("#calT").onclick=()=>{S.calM=t.slice(0,7);render()};
- document.querySelectorAll("[data-cs],[data-cf]").forEach(b=>{if(!b.matches("button"))return;b.onclick=()=>{const sd=S.docs.find(d=>d.id===b.dataset.cs)||null,fd=S.docs.find(d=>d.id===b.dataset.cf)||null;if(fd&&isArch(fd)){S.evA=fd.id;S.arFrom="cal";S.view="evarch";render();scrollTo(0,0)}else openEv({s:sd,f:fd})}})}
+ document.querySelectorAll("[data-cs],[data-cf]").forEach(b=>{if(!b.matches("button"))return;b.onclick=()=>{const sd=S.docs.find(d=>d.id===b.dataset.cs)||null,fd=S.docs.find(d=>d.id===b.dataset.cf)||null;if(sd&&["brouillon","envoyee"].includes(statutOf(sd)[0])){S.calBack=1;openDoc(sd.id)}else if(fd&&isArch(fd)){S.evA=fd.id;S.arFrom="cal";S.view="evarch";render();scrollTo(0,0)}else openEv({s:sd,f:fd})}})}
 
 /* ---------- évènements (chefs d'équipe) ---------- */
 function evTabs(){const n=S.docs.filter(isArch).length;return`<div class="seg" style="margin-bottom:12px"><button class="${S.evTab!=="arch"&&S.evTab!=="cal"?"on":""}" data-evt="cours">En cours</button><button class="${S.evTab==="arch"?"on":""}" data-evt="arch">Archivés <span class="note">${n}</span></button><button class="${S.evTab==="cal"?"on":""}" data-evt="cal" title="Calendrier des évènements acceptés"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Calendrier</button></div>`}
@@ -1068,17 +1069,22 @@ async function setEmpChef(emp){const c=cfg(),e=(c.employes||[]).find(x=>x.id===e
 function selfChef(H,h){if(role()==="chef"&&h.emp&&h.emp===myEmp()&&canChef(h)){h.chef=true;H.forEach(x=>{if(x!==h)x.chef=false})}}
 function paieRows(){return S.docs.filter(d=>d.type==="facture"&&d.statut!=="annulee"&&(d.termine||d.statut==="envoyee"||d.statut==="payee")&&(d.heures||[]).length).flatMap(d=>(d.heures||[]).map((h,i)=>({d,h,i}))).filter(r=>r.h.emp&&!(r.h.benev&&!(+r.h.transport)))}
 function pyRow(r,amt){const LB={gestion:"Gestion",ps:"PS",pr:"PR",pro:"PO"},e=r.d.evenement||{},hrs=HCATS.filter(k=>+r.h[k]).map(k=>`${LB[k]} ${fq(r.h[k])} h`),km=(+r.h.km||0)+(+r.h.lkm||0);return`<div class="pyr"><span><b>${esc(e.nom||"")}</b><div class="note">${e.date?fdate(e.date):""} · ${label(r.d)}${r.h.chef?" · chef d'équipe":""}</div></span><span class="note">${hrs.join(" · ")||"–"}${km?` · ${fq(km)} km (${money(+r.h.transport||0)})`:""}</span><b class="r">${money(amt(r))}</b><label class="check r" style="justify-content:flex-end"><input type="checkbox" data-pp="${esc(r.d.id)}" data-pi="${r.i}" ${r.h.paye?"checked":""}> Payé</label></div>`}
+function doneKey(){return"at_doneSeen_"+(S.me||"x")}
+function doneSeen(){let v=null;try{v=localStorage.getItem(doneKey())}catch(e){}if(!v){v=new Date().toISOString();try{localStorage.setItem(doneKey(),v)}catch(e){}}return v}
+function doneNew(){if(!S.ready||!S.ready.d)return[];const t=doneSeen();return S.docs.filter(d=>d.type==="facture"&&d.termine&&d.termineLe&&d.termineLe>t).sort((a,b)=>b.termineLe.localeCompare(a.termineLe))}
+function doneCard(){if(role()!=="compta")return"";const L=doneNew();if(!L.length)return"";return`<div class="card donecard"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h3 style="margin:0">🔔 ${L.length} nouvel${L.length>1?"s":""} évènement${L.length>1?"s":""} terminé${L.length>1?"s":""}</h3><button class="btn" id="doneOk">Marquer comme vu${L.length>1?"s":""}</button></div><ul style="margin:8px 0 0;padding-left:18px">${L.map(d=>`<li><b>${esc(d.evenement.nom||"")}</b> · ${fdate(d.evenement.date||d.date)} · facture ${label(d)} · terminé le ${fdate(new Date(d.termineLe).toLocaleDateString("fr-CA"))} · ${(d.heures||[]).filter(h=>h.emp).length} employé${(d.heures||[]).filter(h=>h.emp).length>1?"s":""}</li>`).join("")}</ul></div>`}
 function renderPaies(){const all=paieRows(),show=S.payShow||"apayer",y=S.payY||today().slice(0,4),ys=[...new Set([today().slice(0,4),...all.map(r=>yearOf(r.d))])].sort().reverse();
  const rows=all.filter(r=>show==="apayer"?!r.h.paye:(r.h.paye&&yearOf(r.d)===y)),LB={gestion:"Gestion",ps:"PS",pr:"PR",pro:"PO"},amt=r=>payOf(r.h,yearOf(r.d));
  const byE={};rows.forEach(r=>{(byE[r.h.emp]=byE[r.h.emp]||[]).push(r)});const E=Object.entries(byE).sort((a,b)=>empName(a[0]).localeCompare(empName(b[0]),"fr"));
  const tot=r2(rows.reduce((a,r)=>a+amt(r),0)),evs=new Set(rows.map(r=>r.d.id)).size;
- $("#app").innerHTML=`<div class="ehead"><div><h2>Paies</h2></div></div>
+ $("#app").innerHTML=`<div class="ehead"><div><h2>Paies</h2></div></div>${doneCard()}
  <div class="seg" style="margin-bottom:12px"><button class="${show==="apayer"?"on":""}" data-ps="apayer">À payer</button><button class="${show==="paye"?"on":""}" data-ps="paye">Déjà payées</button><button class="${show==="annuel"?"on":""}" data-ps="annuel">Sommaire annuel</button></div>
  ${show!=="apayer"?`<div class="chips" style="margin-bottom:12px">${ys.map(v=>`<button class="chip ${v===y?"on":""}" data-py="${v}">${v}</button>`).join("")}</div>`:""}
  ${show==="annuel"?paieAnnuelHTML(all,y):`<div class="stats five st3" style="margin-bottom:12px"><div class="stat ${show==="apayer"&&tot?"alert":""}"><b>${money(tot)}</b><span>${show==="apayer"?"Total à payer":"Total versé en "+y}</span></div><div class="stat"><b>${E.length}</b><span>Employé${E.length>1?"s":""}</span></div><div class="stat"><b>${evs}</b><span>Évènement${evs>1?"s":""} terminé${evs>1?"s":""}</span></div></div>
  ${E.length?(`<div class="list">${E.map(([emp,L])=>{const t=r2(L.reduce((a,r)=>a+amt(r),0)),ap=show==="apayer";L.sort((a,b)=>{const x=(a.d.evenement||{}).date||a.d.date,z=(b.d.evenement||{}).date||b.d.date;return ap?x.localeCompare(z):z.localeCompare(x)});const op=(S.payOpen||{})[show+emp],vt=ap?"Voir les évènements":"Voir les paiements";return`<details class="pyd" data-pe="${esc(emp)}" data-vt="${vt}" ${op?"open":""}><summary><b>${esc(empName(emp))}</b>${(()=>{const ee=(cfg().employes||[]).find(x=>x.id===emp);return ee&&ee.impot?`<span class="pill imp" title="Retrait d'impôt désiré (fiche employé)">Impôt : ${esc(ee.impot)}</span>`:""})()}<span class="note">${L.length} ${ap?"évènement"+(L.length>1?"s":"")+" à payer":"paiement"+(L.length>1?"s":"")}</span><b class="r ${ap?"due":""}">${money(t)}</b><span class="pyv">${op?"Masquer":vt}</span></summary><div style="margin:0 14px 12px">${ap?`<div class="actions" style="justify-content:flex-end;margin-bottom:8px"><button class="btn" data-pall="${esc(emp)}">Tout marquer payé (${money(t)})</button></div>`:""}<div class="list">${L.map(r=>pyRow(r,amt)).join("")}</div></div></details>`}).join("")}</div>`):`<div class="card"><p class="note" style="margin:0">${show==="apayer"?"Aucune paie à faire pour les évènements terminés.":"Aucune paie versée en "+y+"."}</p></div>`}`}
  <p class="note">Montants calculés avec les salaires de l'année de chaque évènement, prime de chef d'équipe et remboursement des kilomètres inclus. Seuls les évènements terminés (ou dont la facture est envoyée ou payée) apparaissent.</p>`;
  document.querySelectorAll("[data-ps]").forEach(b=>b.onclick=()=>{S.payShow=b.dataset.ps;render()});
+ if($("#doneOk"))$("#doneOk").onclick=()=>{try{localStorage.setItem(doneKey(),new Date().toISOString())}catch(e){}render()};
  if($("#annCsv"))$("#annCsv").onclick=async()=>{if(!S.dl){toast("Téléchargement non disponible ici.");return}try{await S.dl.save({filename:`Sommaire des paies ${y}.csv`,data:new Blob([paieAnnuelCSV(all,y)],{type:"text/csv"})});toast("Sommaire exporté")}catch(e){if(!(e&&e.code==="declined"))fail(e)}};
  document.querySelectorAll("[data-py]").forEach(b=>b.onclick=()=>{S.payY=b.dataset.py;render()});
  document.querySelectorAll("[data-pe]").forEach(d=>d.ontoggle=()=>{S.payOpen=S.payOpen||{};S.payOpen[show+d.dataset.pe]=d.open;const v=d.querySelector(".pyv");if(v)v.textContent=d.open?"Masquer":d.dataset.vt});
@@ -1098,7 +1104,8 @@ function hoursText(o){const e=o.evenement||{},LB={gestion:"Gestion",ps:"Premiers
  const L=["Évènement : "+(e.nom||""),"Date : "+(e.date?dayLong(e.date):"–"),"Client : "+((o.client||{}).entreprise||""),"Facture : "+label(o),"","Heures des employés :"];
  H.forEach(h=>{const svc=HCATS.filter(k=>+h[k]).map(k=>`${LB[k]} ${fq(h[k])} h`);if(+h.km)svc.push(`Déplacement ${fq(h.km)} km`);if(+h.lkm)svc.push(`Livraison de véhicule ${fq(h.lkm)} km`);L.push(`- ${empName(h.emp)}${h.chef?" (chef d'équipe)":""}${h.benev?" (bénévole, non facturé ni payé)":""} : ${svc.join(", ")||"aucune heure"}`)});
  const tot=HCATS.map(k=>[k,r2(H.filter(h=>!h.benev).reduce((a,h)=>a+(+h[k]||0),0))]).filter(x=>x[1]);L.push("","Total : "+(tot.map(([k,v])=>`${LB[k]} ${fq(v)} h`).join(", ")||"–"));return{subject:"Heures "+(e.nom||"évènement"),text:L.join("\n")}}
-function confirmDone(s,f,info){const H=(S.evH||[]).filter(h=>h.emp);if(!H.length){toast("Ajoute au moins un employé avant de terminer l'évènement.");return}
+const evHasSvc=()=>(S.evL||[]).some(l=>l.svc&&l.svc!=="materiel"&&(l.svc!=="ponct"||String(l.desc||"").trim()||+l.tarif));
+function confirmDone(s,f,info){const H=(S.evH||[]).filter(h=>h.emp);if(!H.length&&!evHasSvc()){toast("Ajoute au moins un employé ou un service (même un service « autre ») avant de terminer l'évènement.");return}
  if(H.filter(h=>h.chef).length>1){toast("Un seul chef d'équipe par évènement.");return}
  const y=yearOf(info),HH=H.map(h=>{const o={...h,km:+h.km||0,lkm:+h.lkm||0};return o});const num=f&&f.id?f.numero:nextNum("facture");
  const tmp={evenement:info.evenement,client:info.client||{},heures:HH,numero:num,type:"facture"};const to=(cfg().courrielComptable||"").trim(),{subject,text}=hoursText(tmp);
@@ -1140,7 +1147,7 @@ function renderEvent(){let s=S.ev?S.docs.find(d=>d.id===S.ev):null,f=S.evF?S.doc
  const opts=h=>`<option value="">— Employé —</option>`+all.map(e=>`<option value="${esc(e.id)}" ${h.emp===e.id?"selected":""}>${esc(e.nom)}</option>`).join("");
  const tot=k=>r2(H.filter(h=>!HCATS.includes(k)||!h.benev).reduce((a,h)=>a+(+h[k]||0),0)),totB=k=>r2(H.filter(h=>h.benev).reduce((a,h)=>a+(+h[k]||0),0)),num=(h,k,ph)=>{const a=HCATS.includes(k)&&h.emp?empCats(h.emp):null,no=a&&!a.has(k);if(no&&!+h[k])return`<input data-ck="${k}" class="nocomp" disabled value="" placeholder="–" aria-label="${ph} : compétence non cochée" title="Compétence non cochée ou certification expirée à la date de l'évènement">`;return`<input data-ck="${k}" inputmode="decimal" value="${h[k]?fq(h[k]):""}" placeholder="${ph}" aria-label="${ph}"${no?` class="badcomp" title="Compétence non cochée dans la fiche : retire ces heures"`:""}>`};
  const prev=(info.lignes||[]).filter(l=>+l.qte&&l.svc!=="materiel");
- $("#app").innerHTML=`<div class="ehead stick"><div><a href="#evenements" class="note" id="evBack">← ${S.evFrom==="facture"&&f?"Retour à la facture "+label(f):"Évènements"}</a><h2 style="margin-top:4px">${isNew?"Nouvel évènement":esc(info.evenement.nom||"(sans titre)")}</h2></div><div style="display:flex;gap:8px;flex-wrap:wrap">${f&&f.id&&f.termine?`${role()==="admin"?`<button class="btn" id="evMail">${f.courrielEnvoye?"Renvoyer le courriel":"Envoyer le courriel à la comptable"}</button>`:""}<button class="btn p" id="evReopen">Modifier</button>`:`<button class="btn" id="evSave">Enregistrer</button><button class="btn p" id="evDone">Évènement terminé</button>`}</div></div>
+ $("#app").innerHTML=`<div class="ehead stick"><div><a href="#evenements" class="note" id="evBack">← ${S.evFrom==="facture"&&f?"Retour à la facture "+label(f):"Évènements"}</a><h2 style="margin-top:4px">${isNew?"Nouvel évènement":esc(info.evenement.nom||"(sans titre)")}</h2></div><div style="display:flex;gap:8px;flex-wrap:wrap">${f&&f.id&&f.termine?`<button class="btn p" id="evReopen">Modifier</button>`:`<button class="btn" id="evSave">Enregistrer</button><button class="btn p" id="evDone">Évènement terminé</button>`}</div></div>
  ${isNew?newEvCard(f):""}<div class="card" ${isNew?'style="display:none"':""}><div class="kvl" style="grid-template-columns:auto minmax(0,1fr);column-gap:18px"><span class="note">Date</span><b style="text-align:left">${fdate(info.evenement.date||info.date)}</b><span class="note">Lieu</span><b style="text-align:left">${esc(info.evenement.adresse||"–")}</b><span class="note">Client</span><b style="text-align:left">${esc(info.client.entreprise||"")}${info.client.contact?" · "+esc(info.client.contact):""}</b><span class="note">Document</span><b style="text-align:left">${s?label(s):""}${s&&f?" · ":""}${f?"facture "+label(f)+" (brouillon)":""}</b></div>
  ${(()=>{const e=info.evenement,J=evJours(e).filter(j=>j.date||j.debut||j.fin),hm=v=>v?v.replace(":","h"):"";return (!(e.quarts||[]).length&&J.length&&(J.length>1||J[0].debut||J[0].fin)?`<div style="margin-top:12px"><b>Horaire</b><ul style="margin:4px 0 0;padding-left:18px">${J.map(j=>`<li>${j.date?dayLong(j.date):"Date à confirmer"}${j.debut||j.fin?` : ${hm(j.debut)||"?"} à ${hm(j.fin)||"?"}${jDur(j)?` (${jDur(j)})`:""}`:""}</li>`).join("")}</ul></div>`:"")+((e.quarts||[]).length?`<div style="margin-top:12px"><b>Quarts requis</b><ul style="margin:4px 0 0;padding-left:18px">${e.quarts.map(q=>`<li><b>${+q.nb||1} ${QLAB[q.cat]||""}${q.benev?" bénévole"+(+q.nb>1?"s":""):""}</b> · ${q.date?dayLong(q.date):"Date à confirmer"}${q.debut||q.fin?` : ${hm(q.debut)||"?"} à ${hm(q.fin)||"?"}${qDur(q)?` (${fq(r2(qDur(q)))} h)`:""}`:""}</li>`).join("")}</ul></div>`:"")+(e.infos?`<div style="margin-top:12px"><b>Informations pertinentes</b><div style="white-space:pre-wrap;margin-top:4px">${esc(e.infos)}</div></div>`:"")})()}
  ${prev.length?`<details class="more" style="margin-top:10px"><summary>Services prévus${s?" à la soumission":""}</summary><ul style="margin:6px 0 0;padding-left:18px">${prev.map(l=>`<li>${esc(l.desc)} : ${fq(l.qte)} ${esc(uLab(l.unite).replace("$/",""))}</li>`).join("")}</ul></details>`:""}</div>
@@ -1176,7 +1183,7 @@ function renderEvent(){let s=S.ev?S.docs.find(d=>d.id===S.ev):null,f=S.evF?S.doc
   if(k==="emp")inp.onchange=()=>{h.emp=inp.value;if(!canChef(h))h.chef=false;selfChef(H,h);const b=badCats(h);if(b.length){b.forEach(k=>h[k]=0);toast("Heures retirées en "+b.map(k=>CATLAB[k]).join(", ")+" : compétence non cochée pour cet employé.")}render()};else if(k==="chef")inp.onchange=()=>{h.chef=inp.checked;if(h.chef){H.forEach(x=>{if(x!==h)x.chef=false});render()}};else if(k==="benev")inp.onchange=()=>{h.benev=inp.checked;render()};
   else inp.onchange=()=>{const v=inp.value.trim()===""?0:evalQ(inp.value);if(isNaN(v)){toast("Nombre invalide");inp.focus();return}const ok=HCATS.includes(k)&&h.emp?empCats(h.emp):null;if(ok&&v&&!ok.has(k)){h[k]=0;toast(`Impossible : compétence ${CATLAB[k]} non cochée ou certification expirée pour cet employé.`);setTimeout(render,0);return}h[k]=v;const a=document.activeElement,key=a&&a.dataset?a.dataset.ck:null;setTimeout(()=>{render();const n=document.querySelector(`.chr[data-ci="${inp.closest(".chr").dataset.ci}"] [data-ck="${key||k}"]`);if(n&&key)n.focus()},0)}});
  if(f&&f.id&&f.termine){document.querySelectorAll("#app input,#app select,#app textarea").forEach(x=>x.disabled=true);document.querySelectorAll("#evAdd,[data-cdel],[data-eadd],[data-edel]").forEach(x=>x.style.display="none");
-  const bn=document.createElement("div");bn.className="card";bn.style.cssText="background:light-dark(#ebfbee,#16301c);border-color:light-dark(#b2f2bb,#2b8a3e)";bn.innerHTML=`<b>Évènement terminé</b>${f.termineLe?` le ${fdate(f.termineLe.slice(0,10))}`:""} · facture ${label(f)} en brouillon${f.courrielEnvoye?` · courriel préparé le ${fdate(f.courrielEnvoye.slice(0,10))}`:""}. Clique « Modifier » pour le remettre dans « Heures à entrer ».`;const hd=document.querySelector("#app .ehead");hd&&hd.after(bn);
+  const bn=document.createElement("div");bn.className="card";bn.style.cssText="background:light-dark(#ebfbee,#16301c);border-color:light-dark(#b2f2bb,#2b8a3e)";bn.innerHTML=`<b>Évènement terminé</b>${f.termineLe?` le ${fdate(f.termineLe.slice(0,10))}`:""} · facture ${label(f)} en brouillon. Clique « Modifier » pour le remettre dans « Heures à entrer ».`;const hd=document.querySelector("#app .ehead");hd&&hd.after(bn);
   $("#evReopen").onclick=async()=>{const src=f.sourceId?S.docs.find(d=>d.id===f.sourceId):null;
    if(!await ask("Remettre l'évènement dans « Heures à entrer »?","Modifier",false,src?`<p>Le brouillon de la facture ${label(f)} sera supprimé. Les heures, les services et le rapport restent sur l'évènement. Une nouvelle facture sera créée au prochain « Évènement terminé ».</p>`:`<p>Cet évènement n'a pas de soumission : sa facture ${label(f)} reste en brouillon, elle redevient simplement modifiable.</p>`))return;
    try{if(src){const hk=new Set(Object.entries(cfg().services).filter(([k,v])=>v.heures).map(([k])=>k));
@@ -1184,7 +1191,7 @@ function renderEvent(){let s=S.ev?S.docs.find(d=>d.id===S.ev):null,f=S.evF?S.doc
      await S.db.collection("docs").doc(f.id).delete();S.ev=src.id;S.evF=null}
     else await S.db.collection("docs").doc(f.id).update({termine:false});
     toast(src?`Brouillon ${label(f)} supprimé : évènement remis dans « Heures à entrer »`:"Évènement remis dans « Heures à entrer »");S.evH=null;S.evRk=null;S.evFrom=null;render()}catch(e){fail(e)}};
-  if($("#evMail"))$("#evMail").onclick=()=>mailModal(f);}
+}
  else $("#evSave").onclick=()=>saveEventHours(s,f,false);if($("#evDone"))$("#evDone").onclick=()=>confirmDone(s,f,info);document.querySelectorAll("[data-rp]").forEach(i=>i.oninput=()=>{const k=i.dataset.rp;if(k==="commentaires")S.evR[k]=i.value;else{const v=i.value.replace(/\D/g,"");if(v!==i.value)i.value=v;S.evR[k]=v===""?"":+v}});bindNewEv();
 }
 function evLine(l,i){if(l.svc==="ponct")return`<div class="evl lib" data-ei="${i}"><input data-ek="desc" value="${esc(l.desc||"")}" placeholder="Description du service « autre »" aria-label="Description du service « autre »"><input data-ek="qte" inputmode="decimal" value="${esc(fq(l.qte))}" aria-label="Quantité" placeholder="Qté"><input class="amt" data-ek="tarif" inputmode="decimal" value="${l.tarif?esc(fq(l.tarif)):""}" placeholder="Prix unitaire $" aria-label="Prix unitaire"><button class="btn g" data-edel="${i}" aria-label="Retirer">✕</button><div class="det note">Service « autre » : quantité × prix unitaire${+l.qte&&+l.tarif?" = "+money(r2(l.qte*l.tarif)):""}</div></div>`;const isM=l.svc==="materiel",sv=cfg().services[l.svc],libre=isM?(!l.matId&&!l.nouv):(sv&&sv.prixLibre);
@@ -1214,7 +1221,7 @@ async function saveEventHours(s,f,finish){if(s&&f&&f.sourceId&&f.sourceId!==s.id
  const EL=(S.evL||[]).filter(l=>l.svc&&(l.svc!=="materiel"||l.matId||l.desc));if(EL.some(l=>!l.desc&&(l.svc==="materiel"||l.svc==="ponct"||(cfg().services[l.svc]||{}).prixLibre))){toast("Ajoute une description aux lignes à montant libre et aux services « autre ».");return}
  const RP=rapClean(S.evR);
  const done=()=>{S.evH=null;S.evRk=null;S.evNew=null;if(S.evFrom==="facture"&&S._lastF){S.edit=JSON.parse(JSON.stringify(S._lastF));S.view="editeur"}else S.view="evenements";render();scrollTo(0,0)};
- if(finish&&!H.length){toast("Ajoute au moins un employé avant de terminer l'évènement.");return}
+ if(finish&&!H.length&&!evHasSvc()){toast("Ajoute au moins un employé ou un service (même un service « autre ») avant de terminer l'évènement.");return}
  
  if(!finish&&s&&!(f&&f.id)){const y0=yearOf(s);const HH=H.map(h=>{const o={paye:false,transport:0,...h,km:+h.km||0,lkm:+h.lkm||0};setTransport(o,y0);return o});
   try{await S.db.collection("docs").doc(s.id).update({heures:HH,evLignes:EL.map(({nouv,libre,...l})=>l),rapport:RP||null});toast("Évènement enregistré");S._lastF=null;done()}catch(e){fail(e)}return}
@@ -1225,7 +1232,7 @@ async function saveEventHours(s,f,finish){if(s&&f&&f.sourceId&&f.sourceId!==s.id
   d.client={entreprise:o?o.nom:"",contact:c?c.nom:"",adresse:o?o.adresse||"":"",courriel:c?c.courriel||"":""};if(S.docs.some(x=>x.id===d.id)){toast("Numéro de facture déjà utilisé, réessaie.");return}}
  else if(f){d=JSON.parse(JSON.stringify(f))}else{d=JSON.parse(JSON.stringify(s));const n=nextNum("facture");Object.assign(d,{type:"facture",numero:n,date:today(),taxes:true,statut:"brouillon",sourceId:s.id,factureId:null,importe:false,notes:"",orgId:docOrgId(s),echeance:addDays(today(),cfg().delai)});d.id="f"+n;if(S.docs.some(x=>x.id===d.id)){toast("Numéro de facture déjà utilisé, réessaie.");return}}
  const hk=new Set(Object.entries(cfg().services).filter(([k,v])=>v.heures).map(([k])=>k));d.lignes=[...(d.lignes||[]).filter(l=>hk.has(l.svc)||HCATS.includes(l.svc)||KMS.includes(l.svc)),...EL.map(({nouv,libre,...l})=>l)];
- const y=yearOf(d);d.heures=H.map(h=>{const o={paye:false,transport:0,...h,km:+h.km||0,lkm:+h.lkm||0};setTransport(o,y);return o});d.heuresFacturer=true;syncHoursOf(d);
+ const y=yearOf(d);d.heures=H.map(h=>{const o={paye:false,transport:0,...h,km:+h.km||0,lkm:+h.lkm||0};setTransport(o,y);return o});d.heuresFacturer=true;syncHoursOf(d);if(!d.heures.length)d.lignes=d.lignes.filter(l=>!l.benev&&!String(l.svc||"").startsWith("bv_")).map(l=>HCATS.includes(l.svc)||KMS.includes(l.svc)?{...l,qte:0}:l);
  const o=finalize(d);o.modifieLe=new Date().toISOString();if(!o.creeLe)o.creeLe=o.modifieLe;if(S.me)o.heuresPar=S.me;
  if(RP)o.rapport=RP;if(finish){o.termine=true;o.termineLe=new Date().toISOString()}
  try{await S.db.collection("docs").doc(o.id).set(o);if(s)await S.db.collection("docs").doc(s.id).update({statut:"acceptee",factureId:o.id,heures:o.heures,...(RP?{rapport:RP}:{})});
@@ -1570,12 +1577,11 @@ function renderSettings(){const c=cfg();
  <div class="card"><h3>Entreprise</h3><div class="grid">${f("nom","Nom",{wide:1})}${f("courriel","Courriel",{wide:1})}${f("tel","Téléphone",{wide:1})}${f("adresse","Adresse (2 lignes)",{ta:2,wide:1})}</div></div>
  <div class="card"><h3>Taxes et paiement</h3><div class="trow2">${f("tps","Numéro TPS (ex. 123456789 RT0001)")}${f("tvq","Numéro TVQ (ex. 1234567890 TQ0001)")}</div><div class="trow2">${f("tauxTps","Taux TPS (%)",{num:1})}${f("tauxTvq","Taux TVQ (%)",{num:1})}</div><div class="trow1">${f("delai","Délai de paiement (jours)",{num:1})}</div><div class="trow3">${f("transit","Transit")}${f("institution","Institution")}${f("folio","Folio / compte")}</div></div>
  <div class="card"><h3>Textes</h3><div class="grid">${f("conditionsS","Conditions sur les soumissions (mets **entre astérisques doubles** pour le gras; indente une ligne pour la décaler)",{ta:9,wide:1})}${f("messageF","Message sur les factures ({delai} = délai, {banque} = ligne bancaire)",{ta:4,wide:1})}${f("salutS","Formule de fin des soumissions",{wide:1})}${f("salutF","Formule de fin des factures",{wide:1})}${f("signature","Signature",{ta:2,wide:1})}</div></div>
- <div class="card"><h3>Courriels automatiques</h3><div class="grid">${f("courrielComptable","Courriel de la comptable (reçoit les heures quand un évènement est terminé)",{wide:1})}</div></div>
  <div class="actions" style="justify-content:space-between"><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="csv">Exporter tous les documents (CSV)</button><button class="btn" id="jsonOut">Exporter toutes les données (JSON)</button>${window.AT_SA?`<button class="btn" id="jsonIn">Importer des données (JSON)</button>`:""}</span><button class="btn p" id="pSave">Enregistrer les paramètres</button></div>
  <p class="note">L'export CSV s'ouvre dans Excel : garde-le comme copie de sécurité.</p>`;
  $("#pSaveTop").onclick=()=>$("#pSave").click();
  $("#pSave").onclick=async()=>{const o=JSON.parse(JSON.stringify(c));const g=id=>$(id).value;
-  ["nom","courriel","courrielComptable","tel","adresse","signature","tps","tvq","transit","institution","folio","conditionsS","messageF","salutS","salutF"].forEach(k=>o[k]=g("#p-"+k).trim());
+  ["nom","courriel","tel","adresse","signature","tps","tvq","transit","institution","folio","conditionsS","messageF","salutS","salutF"].forEach(k=>o[k]=g("#p-"+k).trim());
   ["tauxTps","tauxTvq","delai"].forEach(k=>{const v=parseFloat(g("#p-"+k).replace(",","."));if(!isNaN(v))o[k]=v});
   
   try{await S.db.doc("config/entreprise").set(o);toast("Paramètres enregistrés");goBack()}catch(e){fail(e)}};
