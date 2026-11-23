@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122211051">
+<link rel="manifest" href="manifest.webmanifest?v=20261122214052">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122211051">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122214052">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122211051"></script>
-<script src="standalone.js?v=20261122211051"></script>
+<script src="config.js?v=20261122214052"></script>
+<script src="standalone.js?v=20261122214052"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -1133,7 +1133,7 @@ function renderEvent(){let s=S.ev?S.docs.find(d=>d.id===S.ev):null,f=S.evF?S.doc
  ${H.length?`<div class="chr chtot" style="border-top:2px solid var(--ink)"><b>Total</b>${HCATS.map(k=>`<b class="r" data-l="${{gestion:"Gestion",ps:"PS",pr:"PR",pro:"PO"}[k]}">${fq(tot(k))} h</b>`).join("")}<b class="r" data-l="Déplacement">${fq(tot("km"))} km</b><b class="r" data-l="Livraison véh.">${fq(tot("lkm"))} km</b><span></span><span></span></div>`:""}
  ${HCATS.some(k=>totB(k))?`<p class="note" style="margin:6px 0 0">Heures bénévoles (affichées sur la facture, non facturées) : ${HCATS.filter(k=>totB(k)).map(k=>`${{gestion:"Gestion",ps:"PS",pr:"PR",pro:"PO"}[k]} ${fq(totB(k))} h`).join(" · ")}</p>`:""}
  <div class="actions" style="margin-top:10px"><button class="btn" id="evAdd">+ Ajouter un employé</button></div>
- <p class="note">Une ligne par employé. Seules les colonnes des compétences cochées dans la fiche de l'employé sont ouvertes (Gestion toujours permise). Heures en format 8,5 ou un calcul (ex. 4+3,5). Coche « Chef d'équipe » pour le chef de l'évènement (offert seulement aux employés cochés « Peut être chef d'équipe » dans l'onglet Employés). Inscris les kilomètres seulement pour l'employé qui conduit : ils sont remboursés à l'employé et facturés au client (Déplacement et Livraison des véhicules).</p></div>
+ </div>
  <div class="card"><h3>Rapport d'évènement</h3><p class="note" style="margin-top:0">Pour l'historique seulement : ces informations n'apparaissent pas sur la facture.</p>
  <div class="grid rp3"><div><label for="rp-mi">Accidents mineurs</label><input id="rp-mi" data-rp="mineurs" inputmode="numeric" value="${esc(R.mineurs??"")}" placeholder="0"></div><div><label for="rp-ma">Accidents majeurs</label><input id="rp-ma" data-rp="majeurs" inputmode="numeric" value="${esc(R.majeurs??"")}" placeholder="0"></div><div><label for="rp-am">Ambulances</label><input id="rp-am" data-rp="ambulances" inputmode="numeric" value="${esc(R.ambulances??"")}" placeholder="0"></div></div>
  <div style="margin-top:12px"><label for="rp-co">Commentaires sur l'évènement</label><textarea id="rp-co" data-rp="commentaires" rows="3" placeholder="Déroulement, incidents, points à améliorer…">${esc(R.commentaires||"")}</textarea></div></div>
