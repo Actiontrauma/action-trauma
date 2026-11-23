@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122203957">
+<link rel="manifest" href="manifest.webmanifest?v=20261122204620">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122203957">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122204620">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122203957"></script>
-<script src="standalone.js?v=20261122203957"></script>
+<script src="config.js?v=20261122204620"></script>
+<script src="standalone.js?v=20261122204620"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -509,9 +509,16 @@ function evCardS(d){const e=d.evenement,J=evJours(e),tm=(i,k,v)=>`<select data-j
  ${quartsHTML(e)}
  <div><label for="e-inf">Informations pertinentes</label><textarea id="e-inf" rows="3" placeholder="Stationnement, contact sur place, accès, consignes…">${esc(e.infos||"")}</textarea></div>
  <p class="note" style="margin-bottom:0">Seule la date officielle apparaît sur la soumission imprimée. Les quarts et les informations sont visibles dans l'onglet Évènements. Changer la date déplace aussi les quarts.</p></div>`}
-function lineHTML(l,i){const sv=cfg().services,isMat=l.svc==="materiel",s=sv[l.svc],libre=isMat?!l.matId:(!s||s.prixLibre),y=yearOf(S.edit);const hl=S.edit.type==="facture"&&HCATS.includes(l.svc)&&(S.edit.heures||[]).length&&S.edit.heuresFacturer!==false;
+function lineHTML(l,i){if(l.svc==="ponct")return`<div class="line ponct" data-i="${i}">
+ <input class="svc" data-k="desc" value="${esc(l.desc||"")}" placeholder="Description du service ponctuel" aria-label="Description du service ponctuel">
+ <div class="qwrap"><input data-k="qte" inputmode="decimal" value="${esc(l.qteTxt??fq(l.qte))}" aria-label="Quantité" title="Quantité"></div>
+ <input data-k="tarif" inputmode="decimal" value="${esc(l.tarifTxt??fq(l.tarif))}" aria-label="Prix unitaire" placeholder="Prix unitaire $">
+ <div class="lt">${isNaN(l.qte)?"Calcul invalide":money(r2(l.qte*l.tarif))}</div>
+ <button class="btn g del" data-del="${i}" aria-label="Retirer la ligne">✕</button>
+ <div class="det note">Service ponctuel : inscrit seulement sur ce document.</div>
+ </div>`;const sv=cfg().services,isMat=l.svc==="materiel",s=sv[l.svc],libre=isMat?!l.matId:(!s||s.prixLibre),y=yearOf(S.edit);const hl=S.edit.type==="facture"&&HCATS.includes(l.svc)&&(S.edit.heures||[]).length&&S.edit.heuresFacturer!==false;
  const opts=isMat?`<option value="">— Matériel —</option>${matList().map(m=>`<option value="m:${esc(m.id)}" ${l.matId===m.id?"selected":""}>${esc(m.nom)}</option>`).join("")}<option value="m:" ${isMat&&!l.matId&&l.desc!==undefined&&l.svc?"selected":""}>Matériel divers (montant libre)</option>`
-  :`<option value="">— Choisir un service —</option>${svcList().map(([k,v])=>`<option value="${k}" ${l.svc===k?"selected":""}>${esc(v.nom)}</option>`).join("")}${l.svc&&!sv[l.svc]?`<option value="${esc(l.svc)}" selected>${esc(l.desc||"Ancienne ligne")}</option>`:""}${s&&s.actif===false?`<option value="${esc(l.svc)}" selected>${esc(s.nom)} (retiré)</option>`:""}`;
+  :`<option value="">— Choisir un service —</option>${svcList().filter(([k,v])=>S.edit.type!=="soumission"||k===l.svc||!(HCATS.includes(k)||v.prixLibre)).map(([k,v])=>`<option value="${k}" ${l.svc===k?"selected":""}>${esc(v.nom)}</option>`).join("")}${l.svc&&!sv[l.svc]?`<option value="${esc(l.svc)}" selected>${esc(l.desc||"Ancienne ligne")}</option>`:""}${s&&s.actif===false?`<option value="${esc(l.svc)}" selected>${esc(s.nom)} (retiré)</option>`:""}`;
  return`<div class="line ${isMat?"mat":""}" data-i="${i}">
  <select class="svc" data-k="svc" aria-label="${isMat?"Matériel":"Service"}" ${hl?"disabled":""}>${opts}</select>
  <div class="qwrap">${S.edit.type==="facture"&&HCATS.includes(l.svc)&&(S.edit.heures||[]).length&&S.edit.heuresFacturer!==false?`<input value="${esc(fq(l.qte))}" disabled class="lk" title="Total des heures entrées dans l'onglet Évènements" aria-label="Quantité">`:S.edit.type==="soumission"&&["ps","pr","pro"].includes(l.svc)&&((S.edit.evenement||{}).quarts||[]).length?`<input value="${esc(fq(l.qte))}" disabled class="lk" title="Calculé à partir des quarts de travail (section Évènement)" aria-label="Quantité">`:`<input data-k="qte" inputmode="decimal" value="${esc(l.qteTxt??fq(l.qte))}" aria-label="Quantité" title="Tu peux écrire un calcul, ex. 85+55 ou 5,5*6">`}</div>
@@ -549,7 +556,7 @@ function renderEditor(){
  ${isF?"":`<div class="card"><h3>Services</h3>
   <div class="lhead"><span>Service</span><span>Quantité</span><span>Tarif</span><span style="text-align:right">Total</span><span></span></div>
   <div id="lines">${d.lignes.map((l,i)=>[l,i]).filter(([l])=>l.svc!=="materiel").map(([l,i])=>lineHTML(l,i)).join("")||`<p class="note">Aucun service pour l'instant.</p>`}</div>
-  <div class="addbar"><button class="btn p" data-add="svc">+ Ajouter un service</button></div>
+  <div class="addbar"><button class="btn p" data-add="svc">+ Ajouter un service</button><button class="btn" data-add="ponct">+ Service ponctuel</button></div>${!isF&&(d.evenement.quarts||[]).length?"":!isF?`<p class="note" style="margin:6px 0 0">Les heures de personnel (PS, PR, PO) s'ajoutent avec les quarts de travail, dans la section Évènement.</p>`:""}
   ${isF||d.lignes.some(l=>l.svc==="materiel")?`<h3 style="margin-top:18px">Matériel consommé</h3><div id="mlines">${d.lignes.map((l,i)=>[l,i]).filter(([l])=>l.svc==="materiel").map(([l,i])=>lineHTML(l,i)).join("")||`<p class="note">Aucun matériel.</p>`}</div><div class="addbar"><button class="btn" data-add="mat">+ Ajouter du matériel</button></div>`:""}
   <details class="more"><summary>Plus d'options</summary><div class="actions" style="margin-top:8px"><button class="btn" id="rates">Appliquer les tarifs ${yearOf(d)}</button></div></details>
  </div>`}
@@ -585,7 +592,7 @@ function bindEditor(){
  $("#e-or").onchange=e=>{const v=e.target.value;if(v==="__new"){e.target.value=d.orgId||"";orgModal(null,o=>pickOrg(o.id));return}pickOrg(v)};
  $("#e-ct").onchange=e=>{const v=e.target.value;if(v==="__new"){const o=orgOf(d);e.target.value=d.clientId||"";personModal(o,c=>pickContact(c.id));return}pickContact(v)};
  bindHours();
- document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{const m=b.dataset.add==="mat";d.lignes.push(m?{svc:"materiel",matId:null,desc:undefined,qte:1,tarif:0,unite:""}:{svc:"",desc:"",qte:0,tarif:0,unite:""});render();const ls=document.querySelectorAll(m?"#mlines .line":"#lines .line");ls[ls.length-1]?.querySelector("select").focus()});
+ document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{const m=b.dataset.add==="mat",pc=b.dataset.add==="ponct";d.lignes.push(m?{svc:"materiel",matId:null,desc:undefined,qte:1,tarif:0,unite:""}:pc?{svc:"ponct",desc:"",detail:"",qte:1,tarif:0,unite:""}:{svc:"",desc:"",qte:0,tarif:0,unite:""});render();const ls=document.querySelectorAll(m?"#mlines .line":"#lines .line");ls[ls.length-1]?.querySelector("select,input").focus()});
  document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{d.lignes.splice(+b.dataset.del,1);render()});
  document.querySelectorAll("[data-hrs]").forEach(b=>b.onclick=()=>hoursModal(+b.dataset.hrs));
  document.querySelectorAll(".line [data-k]").forEach(inp=>{
@@ -605,7 +612,7 @@ function newLine(k){const s=cfg().services[k];if(s)return s.prixLibre?{svc:k,des
 function snap(){const d=S.edit,o=orgOf(d),c=o&&(o.contacts||[]).find(x=>x.id===d.clientId);d.client={entreprise:o?o.nom:"",contact:c?c.nom:"",adresse:o?o.adresse||"":"",courriel:c?c.courriel||"":""}}
 function pickOrg(id){const d=S.edit,o=orgById(id);d.orgId=id;const cs=o?o.contacts||[]:[];d.clientId=cs.length===1?cs[0].id:"";snap();if(o)applyRates();render()}
 function pickContact(id){S.edit.clientId=id;snap();render()}
-function checkLines(){S.edit.lignes=S.edit.lignes.filter(l=>l.svc!==""&&!(l.svc==="materiel"&&l.desc===undefined));if(S.edit.lignes.some(l=>isNaN(l.qte))){toast("Une quantité contient un calcul invalide.");return false}return true}
+function checkLines(){S.edit.lignes=S.edit.lignes.filter(l=>l.svc!==""&&!(l.svc==="materiel"&&l.desc===undefined)&&!(l.svc==="ponct"&&!String(l.desc||"").trim()&&!(+l.tarif)));if(S.edit.lignes.some(l=>isNaN(l.qte))){toast("Une quantité contient un calcul invalide.");return false}return true}
 function finalize(d){const o=JSON.parse(JSON.stringify(d));delete o.datePaiement;if(o.type==="facture")o.taxes=true;else if(o.type==="soumission")o.taxes=false;if(o.evenement&&o.evenement.jours&&o.evenement.jours.length){o.evenement.jours[0].date=o.evenement.date||"";o.evenement.jours=o.evenement.jours.filter((j,i)=>!i||j.date||j.debut||j.fin)}o.lignes=o.lignes.map(({qteTxt,tarifTxt,...l})=>({...l,qte:r2(l.qte),tarif:+l.tarif||0}));Object.assign(o,calc(o));if(o.type==="facture"&&!o.echeance)o.echeance=addDays(o.date,cfg().delai);return o}
 async function saveDoc(){
  const d=S.edit;if(!checkLines())return;
