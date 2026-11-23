@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122235810">
+<link rel="manifest" href="manifest.webmanifest?v=20261122235900">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122235810">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122235900">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122235810"></script>
-<script src="standalone.js?v=20261122235810"></script>
+<script src="config.js?v=20261122235900"></script>
+<script src="standalone.js?v=20261122235900"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -219,7 +219,7 @@ details.more{margin-top:10px}details.more summary{cursor:pointer;color:var(--mut
 @media(prefers-reduced-motion:no-preference){.modal>.box{animation:pop .16s ease-out}@keyframes pop{from{transform:translateY(8px);opacity:0}}}
 .stats.st3{grid-template-columns:repeat(3,minmax(0,1fr))}.stats.st2{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:520px){.stats.st3{grid-template-columns:minmax(0,1fr)}}
-.svrow{row-gap:2px}.svrow .svd{margin-top:-8px;grid-column:1/-2;max-width:760px;line-height:1.45}
+.svrow{row-gap:2px}.svtag{display:inline-block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:1px 7px;border-radius:5px;background:light-dark(#eceff3,#263445);color:var(--mute);margin-right:8px;vertical-align:1px}.svtag.lib{background:var(--bluesoft);color:var(--blue)}.svrow .svd{margin-top:-8px;grid-column:1/-2;max-width:760px;line-height:1.45}
 @media(max-width:820px){.srow.svh{display:none!important}.srow.svrow{display:flex!important;flex-wrap:wrap;align-items:center;gap:4px 14px}.svrow .svn{flex:1 1 0;min-width:0}.svrow .svar{order:1}.svrow .svd{order:2;flex:1 0 100%}.svrow .svu{order:3;flex:1 0 100%;font-size:13px;color:var(--mute);margin-top:4px}.svrow .svr{order:4;text-align:left}.svrow.lib .svu,.svrow.lib .svr{display:none}.svrow .svd{margin-top:0}.svrow .svr::before{content:attr(data-y)" : ";color:var(--mute);font-size:13px}}
 #salbox input{min-width:0;width:100%}
 @media(max-width:520px){#salbox .srow{column-gap:8px;padding:10px;grid-template-columns:minmax(0,1fr) repeat(var(--n),64px)!important}#salbox input{padding:8px 6px}#salbox{padding:10px!important}}
@@ -1516,7 +1516,7 @@ function renderServices(){const c=cfg(),ys=shownYears(),list=svcList(),gone=svcL
  $("#app").innerHTML=`<div class="ehead stick"><div><h2>Services</h2><p class="note" style="margin:4px 0 0">Ce que tu peux ajouter dans les soumissions et factures. Les flèches changent l'ordre d'affichage sur les documents.</p></div><div class="actions"><button class="btn" id="svYear">+ Tarifs ${(+ys[ys.length-1]||+today().slice(0,4))+1}</button></div></div>
  ${SECS.map(([sec,titre,col])=>`<div class="card"><div class="bar" style="justify-content:space-between;margin-bottom:8px"><h3 style="margin:0">${titre}</h3><button class="btn" data-addsec="${sec}">+ Ajouter${sec==="service"?" un service":" une dépense"}</button></div><div class="list">
  <div class="srow ehd svh"><span>${col}</span><span>Unité</span>${ys.map(y=>`<span class="r">${isPast(y)?"🔒 ":""}Tarif ${y}</span>`).join("")}<span></span></div>
- ${list.filter(([k,v])=>secOf(v)===sec).map(([k,v],i,arr)=>`<div class="srow svrow${v.prixLibre?" lib":""}" data-sv="${k}"><div class="svn"><b>${esc(v.nom)}</b>${v.prixLibre?' <span class="pill st-envoyee">montant libre</span>':""}${v.heures?' <span class="pill st-x">heures employés</span>':""}</div><span class="svu">${v.prixLibre?"–":uLab(v.unite)}</span>${ys.map(y=>`<span class="r svr" data-y="${y}">${v.prixLibre?"–":rate(k,y)}</span>`).join("")}<span class="r svar"><button class="btn g" data-up="${k}" ${i?"":"disabled"} aria-label="Monter">↑</button><button class="btn g" data-dn="${k}" ${i<arr.length-1?"":"disabled"} aria-label="Descendre">↓</button></span>${v.detail?`<div class="note svd">${esc(v.detail)}</div>`:""}</div>`).join("")}</div></div>`).join("")}
+ ${list.filter(([k,v])=>secOf(v)===sec).map(([k,v],i,arr)=>`<div class="srow svrow${v.prixLibre?" lib":""}" data-sv="${k}"><div class="svn"><b>${esc(v.nom)}</b></div><span class="svu">${v.prixLibre?"–":uLab(v.unite)}</span>${ys.map(y=>`<span class="r svr" data-y="${y}">${v.prixLibre?"–":rate(k,y)}</span>`).join("")}<span class="r svar"><button class="btn g" data-up="${k}" ${i?"":"disabled"} aria-label="Monter">↑</button><button class="btn g" data-dn="${k}" ${i<arr.length-1?"":"disabled"} aria-label="Descendre">↓</button></span>${v.detail||v.prixLibre||v.heures?`<div class="note svd">${v.heures?'<span class="svtag">Heures des employés</span>':""}${v.prixLibre?'<span class="svtag lib">Montant libre</span>':""}${esc(v.detail||"")}</div>`:""}</div>`).join("")}</div></div>`).join("")}
  ${gone.length?`<div class="card"><h3>Services retirés</h3><p class="note">Ils restent sur les anciens documents. Clique pour les réactiver.</p>${gone.map(([k,v])=>`<button class="btn" data-re="${k}">${esc(v.nom)}</button>`).join(" ")}</div>`:""}`;
  document.querySelectorAll(".srow:not(.ehd)").forEach(r=>{r.style.gridTemplateColumns=`minmax(0,2fr) 110px ${ys.map(()=>"110px").join(" ")} 96px`;r.onclick=e=>{if(e.target.closest("button"))return;svcModal(r.dataset.sv)}});
  document.querySelectorAll(".srow.ehd").forEach(r=>r.style.gridTemplateColumns=`minmax(0,2fr) 110px ${ys.map(()=>"110px").join(" ")} 96px`);
