@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122192644">
+<link rel="manifest" href="manifest.webmanifest?v=20261122193322">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122192644">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122193322">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122192644"></script>
-<script src="standalone.js?v=20261122192644"></script>
+<script src="config.js?v=20261122193322"></script>
+<script src="standalone.js?v=20261122193322"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -46,6 +46,17 @@ header{background:var(--brand);color:#111;padding:10px max(4vw,14px) 0}
 .brand{display:flex;align-items:center;gap:10px}
 .gear{display:grid;place-items:center;width:44px;height:44px;border-radius:8px;color:#111;border:1px solid #111}.gear.on{background:#111;color:var(--brand)}.gear:hover{background:rgba(0,0,0,.08)}
 .brand .logo{height:72px;width:auto;mix-blend-mode:multiply;display:block}.brand .sub{font-size:12px;font-weight:600;opacity:.75;max-width:90px;line-height:1.2}
+.hnext{margin:8px 0 2px}.hnext .hn-in{width:100%;display:flex;align-items:center;gap:10px;flex-wrap:wrap;text-align:left;background:rgba(17,17,17,.08);border:0;border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;color:#111;cursor:pointer}
+.hnext .hn-in:hover{background:rgba(17,17,17,.14)}.hnext .hn-lab{font-weight:600;color:#333}.hnext .hn-d{color:#333}.hnext .hn-go{margin-left:auto;font-size:20px;line-height:1}
+.hnext.today .hn-in{background:#111;color:#fff;padding:10px 14px}.hnext.today .hn-d{color:#d6dbd0}.hnext.today .hn-in:hover{background:#2a2a2a}
+.hn-tag{background:#dcfa4b;color:#111;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.6px;padding:3px 8px;border-radius:6px;animation:hnp 2s ease-in-out infinite}
+.hn-more{background:#e03131;color:#fff;font-size:12px;font-weight:600;padding:2px 8px;border-radius:10px}
+@keyframes hnp{0%,100%{box-shadow:0 0 0 0 rgba(220,250,75,.7)}50%{box-shadow:0 0 0 5px rgba(220,250,75,0)}}
+@media (prefers-reduced-motion:reduce){.hn-tag{animation:none}}
+.card.evtoday{border:2px solid #111;background:linear-gradient(0deg,#fff,#fff),#fff;box-shadow:0 0 0 4px #dcfa4b}.card.evtoday h3{display:flex;align-items:center;gap:8px;font-size:20px}
+.evdot{width:12px;height:12px;border-radius:50%;background:#e03131;box-shadow:0 0 0 0 rgba(224,49,49,.6);animation:evd 1.6s infinite}@keyframes evd{70%{box-shadow:0 0 0 8px rgba(224,49,49,0)}100%{box-shadow:0 0 0 0 rgba(224,49,49,0)}}
+.evtline{margin:2px 0 10px;font-size:15px;font-weight:600}
+.pill.evtd{background:#111;color:#dcfa4b;font-weight:700}.pill.evtm{background:#fff3bf;color:#7a5b00;font-weight:600}
 .hdrtot{margin-left:auto;margin-right:8px;text-align:right;line-height:1.15}.hdrtot b{display:block;font:700 22px Outfit,sans-serif;white-space:nowrap}.hdrtot span{font-size:12px;font-weight:600;opacity:.75;white-space:nowrap}
 @media(max-width:600px){.brand .logo{height:54px}.hdrtot{order:3;width:100%;text-align:left;margin:4px 0 0}.hdrtot span{white-space:normal}.hdrtot b{font-size:18px;display:inline;margin:0 6px}.brand .sub{display:none}}
 .brand h1{font-size:22px;font-weight:700}
@@ -247,6 +258,7 @@ input:disabled.lk{background:light-dark(#f1f3f5,#1b2532);color:var(--mute);curso
   <div class="hdrtot" id="hTot" title="Total facturé cette année"></div><div class="hdrme" id="hMe"></div>
   <div class="actions"><a href="#parametres" class="gear" id="gear" title="Paramètres" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a></div>
  </div>
+ <div id="hNext"></div>
  <nav id="nav"><a href="#soumissions" data-v="soumission">Soumissions</a><a href="#factures" data-v="facture">Factures</a><a href="#evenements" data-v="evenements">Évènements</a><a href="#moi" data-v="moi">Statistiques</a><a href="#clients" data-v="clients">Clients</a><a href="#employes" data-v="employes">Employés</a><a href="#services" data-v="services">Services</a><a href="#materiel" data-v="materiel">Inventaire</a><a href="#statistiques" data-v="statistiques">Statistiques</a><a href="#paies" data-v="paies">Paies</a><a href="#utilisateurs" data-v="utilisateurs">Utilisateurs</a></nav>
 </header>
 <main id="app"><div class="empty">Connexion à tes données…</div></main>
@@ -363,7 +375,17 @@ function closeM(){$("#modal").innerHTML=""}
 new MutationObserver(()=>{const box=document.querySelector("#modal .box");if(!box||box.querySelector(":scope>.mhead"))return;const h=box.querySelector(":scope>h3"),f=box.querySelector(":scope>.mfoot");if(f&&f===box.firstElementChild){f.classList.add("mhead");return}if(!h||!f)return;const head=document.createElement("div");head.className="mhead";box.insertBefore(head,box.firstChild);head.append(h,f)}).observe(document.getElementById("modal"),{childList:true,subtree:true});
 
 /* ---------- vues ---------- */
-function headerTotal(){const y=today().slice(0,4),F=S.docs.filter(d=>d.type==="facture"&&d.statut!=="annulee"&&d.statut!=="brouillon"&&(d.date||"").startsWith(y));const e=$("#hTot");if(e)e.innerHTML=S.db?`<span>Facturé en ${y}</span><b>${money(F.reduce((a,d)=>a+d.total,0))}</b><span>taxes incluses</span>`:""}
+function evDaysOf(i){const e=i.evenement||{},J=(e.jours||[]).filter(j=>j&&j.date);return J.length?J:(e.date?[{date:e.date}]:[])}
+function nextEvents(){const t=today(),out=[];evList().forEach(x=>{const i=x.s||x.f;if(x.f&&x.f.termine)return;evDaysOf(i).forEach(j=>{if(j.date>=t)out.push({x,i,j})})});return out.sort((a,b)=>a.j.date.localeCompare(b.j.date)||(a.j.debut||"").localeCompare(b.j.debut||""))}
+const evHrs=j=>j&&j.debut&&j.fin?nfH(j.debut)+" à "+nfH(j.fin):j&&j.debut?"dès "+nfH(j.debut):"";
+function openEv(x){S.ev=x.s?x.s.id:null;S.evF=x.s?null:x.f.id;S.evNew=null;S.evFrom=null;S.evH=null;S.evRk=null;S.view="evenement";render();scrollTo(0,0)}
+function headerNext(){const el=$("#hNext");if(!el)return;const r=role();if(!S.db||!(r==="admin"||r==="chef")){el.innerHTML="";el.className="";return}
+ const N=nextEvents(),t=today(),dm=addDays(t,1);if(!N.length){el.innerHTML="";el.className="";return}
+ const tod=N.filter(n=>n.j.date===t),n=tod[0]||N[0],isT=n.j.date===t,when=isT?"":n.j.date===dm?"Demain":nfLongDate(n.j.date).replace(/ \d{4}$/,"");
+ el.className="hnext"+(isT?" today":"");
+ el.innerHTML=`<button type="button" class="hn-in" title="Ouvrir l'évènement">${isT?`<span class="hn-tag">Aujourd'hui</span>`:`<span class="hn-lab">Prochain évènement :</span>`}<b>${esc(n.i.evenement.nom||"(sans titre)")}</b><span class="hn-d">${[when,evHrs(n.j),n.i.evenement.adresse].filter(Boolean).map(esc).join(" · ")}</span>${tod.length>1?`<span class="hn-more">+${tod.length-1} autre${tod.length>2?"s":""} aujourd'hui</span>`:""}<span class="hn-go" aria-hidden="true">›</span></button>`;
+ el.querySelector("button").onclick=()=>{if(tod.length>1){S.evTab="cours";location.hash="#evenements";S.view="evenements";render();scrollTo(0,0)}else openEv(n.x)}}
+function headerTotal(){headerNext();const y=today().slice(0,4),F=S.docs.filter(d=>d.type==="facture"&&d.statut!=="annulee"&&d.statut!=="brouillon"&&(d.date||"").startsWith(y));const e=$("#hTot");if(e)e.innerHTML=S.db?`<span>Facturé en ${y}</span><b>${money(F.reduce((a,d)=>a+d.total,0))}</b><span>taxes incluses</span>`:""}
 function render(){headerTotal();$("#gear")&&$("#gear").classList.toggle("on",S.view==="parametres");
  try{const nb={soumission:S.docs.filter(d=>d.type==="soumission"&&statutOf(d)[0]==="envoyee").length,facture:S.docs.filter(d=>d.type==="facture"&&(d.statut==="envoyee"||d.statut==="brouillon")).length,evenements:S.db?evList().length:0,employes:role()==="admin"?certAlerts().length:0,utilisateurs:role()==="admin"?Object.keys(S.dem||{}).filter(id=>!((S.acces||{}).users||{})[id]).length:0};document.querySelectorAll("#nav a").forEach(a=>{const n=nb[a.dataset.v];let b=a.querySelector(".nb");if(n){if(!b){b=document.createElement("span");b.className="nb";a.appendChild(b)}b.textContent=n>99?"99+":n;b.title=n+(a.dataset.v==="evenements"?" à compléter ou facture non envoyée":a.dataset.v==="facture"?" non payée"+(n>1?"s":""):a.dataset.v==="employes"?" certification"+(n>1?"s":"")+" expirée"+(n>1?"s":"")+" ou bientôt":a.dataset.v==="utilisateurs"?" demande"+(n>1?"s":"")+" d'accès":" en attente de réponse")}else if(b)b.remove()})}catch(e){}
  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===(S.view==="editeur"?(S.edit&&S.edit.type):S.view==="documents"?S.f.type:(S.view==="evenement"||S.view==="evarch")?"evenements":S.view)));
@@ -952,9 +974,11 @@ function mailModal(o){const to=(cfg().courrielComptable||"").trim();if(!to){toas
  $("#mlC").onclick=async()=>{try{await navigator.clipboard.writeText("À : "+to+"\nObjet : "+subject+"\n\n"+text);toast("Destinataire, objet et texte copiés")}catch(e){toast("Copie impossible")}}}
 function factOf(s){if(!s)return null;let f=s.factureId?S.docs.find(x=>x.id===s.factureId):null;if(f&&f.sourceId&&f.sourceId!==s.id)f=null;return f||S.docs.find(x=>x.type==="facture"&&x.sourceId===s.id)||null}
 function evList(){const lim=addDays(today(),-7);return S.docs.filter(d=>d.type==="soumission"&&statutOf(d)[0]==="acceptee"&&(!d.importe||(d.evenement.date||d.date)>=lim)).map(s=>({s,f:factOf(s)})).filter(({s,f})=>!f||f.statut==="brouillon").concat(S.docs.filter(d=>d.type==="facture"&&d.statut==="brouillon"&&!d.sourceId).map(f=>({s:null,f}))).sort((a,b)=>{const t=Date.parse(today()),d=x=>{const i=x.s||x.f,v=(i.evenement&&i.evenement.date)||"";return v?Math.abs(Date.parse(v)-t):9e15};return d(a)-d(b)||(b.f||b.s).numero-(a.f||a.s).numero})}
-function renderEvents(){if(S.evTab==="arch")return renderArch();const L=evList(),todo=L.filter(x=>!x.f||!x.f.termine),done=L.filter(x=>x.f&&x.f.termine);
- const row=({s,f})=>{const i=s||f;return`<div class="evrow" ${s?`data-ev="${esc(s.id)}"`:`data-evf="${esc(f.id)}"`} tabindex="0"><span class="num ${s?"s":"f"}">${label(i)}</span><div class="tc"><div class="t"><b>${esc(i.evenement.nom||"(sans titre)")}</b></div><div class="c note"><span class="dm">${i.evenement.date?fdate(i.evenement.date):`<b class="tbd">Date à confirmer</b>`} · </span>${hrsTBD(i)?`<b class="tbd">Heures à confirmer</b> · `:""}${esc(i.client.entreprise||"")}${i.evenement.adresse?" · "+esc(i.evenement.adresse):""}</div></div><span class="date ed">${i.evenement.date?fdate(i.evenement.date):`<b class="tbd">À confirmer</b>`}</span><span class="sp" style="text-align:right">${f&&f.termine?`<span class="pill st-payee">Terminé</span>`:(s&&(s.heures||[]).length)||(f&&(f.heures||[]).length)?`<span class="pill st-encours">Heures en cours</span>`:`<span class="pill st-envoyee">Heures à entrer</span>`}</span></div>`};
+function renderEvents(){if(S.evTab==="arch")return renderArch();const L=evList(),TD=today(),TM=addDays(TD,1),isTod=x=>evDaysOf(x.s||x.f).some(j=>j.date===TD),isTom=x=>evDaysOf(x.s||x.f).some(j=>j.date===TM),
+  tdy=L.filter(x=>isTod(x)&&!(x.f&&x.f.termine)),todo=L.filter(x=>(!x.f||!x.f.termine)&&!isTod(x)),done=L.filter(x=>x.f&&x.f.termine);
+ const row=({s,f})=>{const i=s||f;return`<div class="evrow" ${s?`data-ev="${esc(s.id)}"`:`data-evf="${esc(f.id)}"`} tabindex="0"><span class="num ${s?"s":"f"}">${label(i)}</span><div class="tc"><div class="t"><b>${esc(i.evenement.nom||"(sans titre)")}</b></div><div class="c note"><span class="dm">${i.evenement.date?fdate(i.evenement.date):`<b class="tbd">Date à confirmer</b>`} · </span>${hrsTBD(i)?`<b class="tbd">Heures à confirmer</b> · `:""}${esc(i.client.entreprise||"")}${i.evenement.adresse?" · "+esc(i.evenement.adresse):""}</div></div><span class="date ed">${isTod({s,f})?`<span class="pill evtd">Aujourd'hui</span>`:isTom({s,f})?`<span class="pill evtm">Demain</span>`:i.evenement.date?fdate(i.evenement.date):`<b class="tbd">À confirmer</b>`}</span><span class="sp" style="text-align:right">${f&&f.termine?`<span class="pill st-payee">Terminé</span>`:(s&&(s.heures||[]).length)||(f&&(f.heures||[]).length)?`<span class="pill st-encours">Heures en cours</span>`:`<span class="pill st-envoyee">Heures à entrer</span>`}</span></div>`};
  $("#app").innerHTML=`<div class="ehead"><div><h2>Évènements</h2></div>${role()==="admin"?`<button class="btn p" id="evNew">+ Évènement</button>`:""}</div>${evTabs()}
+ ${tdy.length?`<div class="card evtoday"><h3><span class="evdot" aria-hidden="true"></span>Aujourd'hui <span class="note">${tdy.length}</span></h3>${tdy.map(x=>{const i=x.s||x.f,j=evDaysOf(i).find(j=>j.date===TD);return`<p class="evtline">${esc(i.evenement.nom||"(sans titre)")}${evHrs(j)?" · "+esc(evHrs(j)):""}${i.evenement.adresse?" · "+esc(i.evenement.adresse):""}${i.evenement.infos?`<br><span class="note">${esc(i.evenement.infos)}</span>`:""}</p>`}).join("")}<div class="list">${tdy.map(row).join("")}</div></div>`:""}
  <div class="card"><h3>Heures à entrer <span class="note">${todo.length}</span></h3><div class="list">${todo.map(row).join("")||`<div class="empty">Aucun évènement en attente.</div>`}</div></div>
  ${done.length?`<div class="card"><h3>Évènements terminés <span class="note">${done.length}</span></h3><p class="note" style="margin-top:0">Facture créée en brouillon. Encore modifiables tant que la facture n'est pas envoyée.</p><div class="list">${done.map(row).join("")}</div></div>`:""}`;
  bindEvTabs();document.querySelectorAll("[data-ar]").forEach(r=>{const o=()=>{S.evA=r.dataset.ar;S.arFrom="cours";S.view="evarch";render();scrollTo(0,0)};r.onclick=o;r.onkeydown=e=>{if(e.key==="Enter")o()}});
