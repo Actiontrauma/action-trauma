@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122233705">
+<link rel="manifest" href="manifest.webmanifest?v=20261122233952">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122233705">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122233952">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122233705"></script>
-<script src="standalone.js?v=20261122233705"></script>
+<script src="config.js?v=20261122233952"></script>
+<script src="standalone.js?v=20261122233952"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -340,12 +340,12 @@ function roBar(){let b=$("#robar");const bk=window.AT_SA&&role()==="admin"&&S.re
   :`<span>💾 ${cfg().derniereSauvegarde?"Dernière sauvegarde des données le "+fdate(cfg().derniereSauvegarde):"Aucune sauvegarde des données n'a encore été faite"}. Une copie par semaine est recommandée.</span><button class="btn" id="bkGo">Télécharger une sauvegarde</button><button class="btn g" id="bkX" aria-label="Plus tard">Plus tard</button>`;
  if($("#bkGo"))$("#bkGo").onclick=()=>exportJSON();if($("#bkX"))$("#bkX").onclick=()=>{S.bkHide=true;roBar()}}
 function pvBar(){let b=$("#pvbar");if(!S.preview){if(b)b.remove();return}if(!b){b=document.createElement("div");b.id="pvbar";document.body.prepend(b)}
- b.innerHTML=`<span>👁 Aperçu en tant que <b>${S.preview==="compta"?"comptabilité":S.preview==="employe"?"employé":"chef d'équipe"}</b>. Ce que tu enregistres ici est réel.</span><button class="btn" id="pvExit">Revenir à l'administrateur</button>`;
+ b.innerHTML=`<span>👁 Aperçu en tant ${S.preview==="employe"?"qu'":"que "}<b>${S.preview==="compta"?"comptabilité":S.preview==="employe"?"employé":"chef d'équipe"}</b>${S.pvEmp?". Ce que tu enregistres ici est réel.":" (session générique). Aucune modification n'est enregistrée."}</span><button class="btn" id="pvExit">Revenir à l'administrateur</button>`;
  $("#pvExit").onclick=()=>{S.preview=null;S.pvEmp=null;S.view="utilisateurs";try{history.replaceState(null,"","#utilisateurs")}catch(e){}render();scrollTo(0,0)}}
 function myEmp(){if(S.preview)return S.pvEmp||"";const u=((S.acces||{}).users||{})[S.me];return u?u.emp:""}
-function meHeader(){const el=$("#hMe");if(!el)return;if(role()==="compta"){const u=((S.acces||{}).users||{})[S.me],e=u&&(cfg().employes||[]).find(x=>x.id===u.emp);el.innerHTML=`<small>Comptabilité${S.preview?" (aperçu)":""}</small><b>${esc(e?e.nom:"")}</b>`;return}if(role()!=="chef"&&role()!=="employe"){el.innerHTML="";return}const e=(cfg().employes||[]).find(x=>x.id===myEmp());el.innerHTML=`<small>${role()==="chef"?"Chef d'équipe":"Employé"}${S.preview?" (aperçu)":""}</small><b>${esc(e?e.nom:S.preview?"Aperçu":"")}</b>`}
+function meHeader(){const el=$("#hMe");if(!el)return;if(role()==="compta"){const u=((S.acces||{}).users||{})[S.me],e=u&&(cfg().employes||[]).find(x=>x.id===u.emp);el.innerHTML=`<small>Comptabilité${S.preview?" (aperçu)":""}</small><b>${esc(e?e.nom:"")}</b>`;return}if(role()!=="chef"&&role()!=="employe"){el.innerHTML="";return}const e=(cfg().employes||[]).find(x=>x.id===myEmp());el.innerHTML=`<small>${role()==="chef"?"Chef d'équipe":"Employé"}${S.preview?" (aperçu)":""}</small><b>${esc(e?e.nom:S.preview?(ROLES[S.preview]||""):"")}</b>`}
 function renderMoi(){const emps=(cfg().employes||[]).slice().sort((a,b)=>a.nom.localeCompare(b.nom,"fr"));
- const id=myEmp()||(S.preview?"__apercu":""),e=emps.find(x=>x.id===id)||(S.preview&&id==="__apercu"?{id,nom:"Aperçu (aucun employé)"}:null),ys=empYears(),y=S.moiY&&ys.includes(S.moiY)?S.moiY:today().slice(0,4);
+ const id=myEmp()||(S.preview?"__apercu":""),e=emps.find(x=>x.id===id)||(S.preview&&id==="__apercu"?{id,nom:ROLES[S.preview]||"Employé"}:null),ys=empYears(),y=S.moiY&&ys.includes(S.moiY)?S.moiY:today().slice(0,4);
  const pick="";
  if(!e){$("#app").innerHTML=`<div class="ehead"><h2>Statistiques</h2></div>${pick}<div class="card"><p>${S.preview?"Aperçu générique : cette session n'est reliée à aucun employé, elle n'a donc aucune donnée personnelle. Pour voir celle d'une personne, utilise son bouton 👁 dans l'onglet Utilisateurs.":"Aucun employé n'est associé à ton compte. Demande à un administrateur de vérifier l'onglet Utilisateurs."}</p></div>`;bindPv();return}
  const rows=empRows(y).filter(r=>r.h.emp===id).sort((a,b)=>(yearOf(a.d)+(a.d.evenement.date||a.d.date)).localeCompare(yearOf(b.d)+(b.d.evenement.date||b.d.date)));
@@ -1066,7 +1066,7 @@ function renderCal(){const t=today(),m=S.calM||t.slice(0,7),[Y,M]=m.split("-").m
 /* ---------- quarts attribués, quarts à combler, rôle Employé ---------- */
 const qSlots=q=>{const n=Math.max(1,+q.nb||1),a=(q.emps||[]).slice(0,n);while(a.length<n)a.push("");return a};
 const empById=id=>(cfg().employes||[]).find(x=>x.id===id);
-const qOk=(id,q)=>{const c=empCats(id,q.date||today());return !!(c&&c.has(q.cat))};
+const qOk=(id,q)=>{if(id==="__apercu")return true;const c=empCats(id,q.date||today());return !!(c&&c.has(q.cat))};
 function slotOpts(q,j){const S0=qSlots(q),cur=S0[j],taken=new Set(S0.filter((x,k)=>x&&k!==j)),dispo=new Set(q.dispo||[]);
  const E=(cfg().employes||[]).filter(e=>(e.actif!==false&&qOk(e.id,q)&&!taken.has(e.id))||e.id===cur).sort((a,b)=>(dispo.has(b.id)-dispo.has(a.id))||a.nom.localeCompare(b.nom,"fr"));
  return`<option value="">À combler</option>`+E.map(e=>`<option value="${esc(e.id)}" ${e.id===cur?"selected":""}>${dispo.has(e.id)?"★ ":""}${esc(e.nom)}${e.id===cur&&!qOk(e.id,q)?" (compétence non valide)":""}</option>`).join("")}
@@ -1074,7 +1074,7 @@ function slotsHTML(q,attr){const S0=qSlots(q);return`<div class="qas">${S0.map((
 /* tous les quarts des évènements acceptés (et des évènements sans soumission) */
 function allQuarts(withPast){const t=today(),out=[];S.docs.forEach(d=>{let ok=false;if(d.type==="soumission"&&statutOf(d)[0]==="acceptee"){const f=factOf(d);ok=!(f&&(f.statut==="annulee"||f.termine))}else if(d.type==="facture"&&!d.sourceId&&d.statut==="brouillon"&&!d.termine)ok=true;if(!ok)return;
  ((d.evenement||{}).quarts||[]).forEach((q,qi)=>{if(!q.date||(!withPast&&q.date<t))return;out.push({d,qi,q})})});return out.sort((a,b)=>(a.q.date+(a.q.debut||"")).localeCompare(b.q.date+(b.q.debut||"")))}
-async function saveQuart(d,qi,fn){const cur=S.docs.find(x=>x.id===d.id)||d,ev=JSON.parse(JSON.stringify(cur.evenement||{}));const q=(ev.quarts||[])[qi];if(!q)return;fn(q);try{await S.db.collection("docs").doc(d.id).update({evenement:ev})}catch(e){fail(e)}}
+async function saveQuart(d,qi,fn){const cur=S.docs.find(x=>x.id===d.id)||d,ev=JSON.parse(JSON.stringify(cur.evenement||{}));const q=(ev.quarts||[])[qi];if(!q)return;fn(q);try{await S.db.collection("docs").doc(d.id).update({evenement:ev});return true}catch(e){fail(e);return false}}
 const qLine=q=>`${q.debut?nfH(q.debut):"?"} à ${q.fin?nfH(q.fin):"?"} · ${QLAB[q.cat]||""}${q.benev?" bénévole":""}`;
 const dLong=x=>{try{return new Date(x+"T12:00:00").toLocaleDateString("fr-CA",{weekday:"long",day:"numeric",month:"long"})}catch(_){return fdate(x)}};
 /* --- onglet Quarts (administrateur) --- */
@@ -1086,7 +1086,7 @@ function renderQuarts(){const only=S.qOnly!==false,L=allQuarts().filter(x=>!only
  document.querySelectorAll("[data-qo]").forEach(b=>b.onclick=()=>{S.qOnly=b.dataset.qo==="1";render()});
  document.querySelectorAll(".qline [data-qs]").forEach(sel=>sel.onchange=()=>{const r=sel.closest(".qline"),d=S.docs.find(x=>x.id===r.dataset.qd),j=+sel.dataset.qs;saveQuart(d,+r.dataset.qi,q=>{q.emps=qSlots(q);q.emps[j]=sel.value});toast(sel.value?"Quart attribué":"Quart remis à combler")})}
 /* --- onglet Mes quarts --- */
-function renderMesQuarts(){const me=myEmp()||(S.preview?"__apercu":""),e=empById(me)||(me==="__apercu"?{id:me,nom:"Aperçu"}:null);if(!e){$("#app").innerHTML=`<div class="ehead"><h2>Mes quarts</h2></div><div class="card"><p class="note" style="margin:0">${S.preview?"Aperçu générique : cette session n'est reliée à aucun employé, elle n'a donc aucune donnée personnelle. Pour voir celle d'une personne, utilise son bouton 👁 dans l'onglet Utilisateurs.":"Aucun employé n'est associé à ton compte. Avise un administrateur."}</p></div>`;return}
+function renderMesQuarts(){const me=myEmp()||(S.preview?"__apercu":""),e=empById(me)||(me==="__apercu"?{id:me,nom:ROLES[S.preview]||"Employé"}:null);if(!e){$("#app").innerHTML=`<div class="ehead"><h2>Mes quarts</h2></div><div class="card"><p class="note" style="margin:0">${S.preview?"Aperçu générique : cette session n'est reliée à aucun employé, elle n'a donc aucune donnée personnelle. Pour voir celle d'une personne, utilise son bouton 👁 dans l'onglet Utilisateurs.":"Aucun employé n'est associé à ton compte. Avise un administrateur."}</p></div>`;return}
  const A=allQuarts(true).filter(x=>qSlots(x.q).includes(me)),t=today(),up=A.filter(x=>x.q.date>=t),past=A.filter(x=>x.q.date<t).slice(-10).reverse();
  const tot=r2(up.filter(x=>!x.q.benev).reduce((a,x)=>a+qDur(x.q),0));
  const card=({d,qi,q})=>{const co=allQuarts(true).filter(x=>x.d.id===d.id&&x.q.date===q.date).flatMap(x=>qSlots(x.q).map(id=>id&&id!==me?(empById(id)||{}).nom:null)).filter(Boolean);const isT=q.date===t;
@@ -1099,13 +1099,13 @@ function renderMesQuarts(){const me=myEmp()||(S.preview?"__apercu":""),e=empById
   const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Action Trauma//Quart//FR","BEGIN:VEVENT","UID:"+id+"-"+qi+"-"+q.date+"@actiontrauma.ca","DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z","DTSTART;TZID=America/Toronto:"+z(q.date,q.debut),"DTEND;TZID=America/Toronto:"+z(ed,q.fin||q.debut),"SUMMARY:"+e2("Quart "+(QLAB[q.cat]||"")+" – "+(d.evenement.nom||"")),"LOCATION:"+e2(d.evenement.adresse),"DESCRIPTION:"+e2(d.evenement.infos),"END:VEVENT","END:VCALENDAR"].join("\r\n");
   try{await S.dl.save({filename:`Quart ${q.date} ${(d.evenement.nom||"").replace(/[\\/:*?"<>|]/g,"")}.ics`,data:new Blob([ics],{type:"text/calendar"})});toast("Fichier calendrier enregistré : ouvre-le pour l'ajouter")}catch(e){if(!(e&&e.code==="declined"))fail(e)}})}
 /* --- onglet Quarts à combler --- */
-function renderCombler(){const me=myEmp()||(S.preview?"__apercu":""),e=empById(me)||(me==="__apercu"?{id:me,nom:"Aperçu"}:null);if(!e){$("#app").innerHTML=`<div class="ehead"><h2>Quarts à combler</h2></div><div class="card"><p class="note" style="margin:0">${S.preview?"Aperçu générique : cette session n'est reliée à aucun employé, elle n'a donc aucune donnée personnelle. Pour voir celle d'une personne, utilise son bouton 👁 dans l'onglet Utilisateurs.":"Aucun employé n'est associé à ton compte."}</p></div>`;return}
+function renderCombler(){const me=myEmp()||(S.preview?"__apercu":""),e=empById(me)||(me==="__apercu"?{id:me,nom:ROLES[S.preview]||"Employé"}:null);if(!e){$("#app").innerHTML=`<div class="ehead"><h2>Quarts à combler</h2></div><div class="card"><p class="note" style="margin:0">${S.preview?"Aperçu générique : cette session n'est reliée à aucun employé, elle n'a donc aucune donnée personnelle. Pour voir celle d'une personne, utilise son bouton 👁 dans l'onglet Utilisateurs.":"Aucun employé n'est associé à ton compte."}</p></div>`;return}
  const L=allQuarts().filter(x=>qSlots(x.q).some(s=>!s)&&!qSlots(x.q).includes(me)&&qOk(me,x.q));
  $("#app").innerHTML=`<div class="ehead"><div><h2>Quarts à combler</h2><p class="note" style="margin:2px 0 0">Les quarts encore libres pour lesquels tes compétences sont valides. Indique ta disponibilité : un administrateur confirmera l'attribution.</p></div></div>
  ${L.length?`<div class="card" style="padding:0">${L.map(({d,qi,q})=>{const on=(q.dispo||[]).includes(me),n=qSlots(q).filter(s=>!s).length;return`<div class="mq"><div class="mqd"><b>${dLong(q.date)}</b></div><div class="mqt">${qLine(q)} <span class="note">(${fq(r2(qDur(q)))} h) · ${n} place${n>1?"s":""}</span></div><div><b>${esc(d.evenement.nom||"")}</b>${d.evenement.adresse?`<div class="note">📍 ${esc(d.evenement.adresse)}</div>`:""}</div><button class="btn ${on?"p":""}" data-dsp="${esc(d.id)}:${qi}">${on?"✓ Disponible":"Je suis disponible"}</button></div>`}).join("")}</div>`:`<div class="card"><p class="note" style="margin:0">Aucun quart à combler pour l'instant.</p></div>`}`;
- document.querySelectorAll("[data-dsp]").forEach(b=>b.onclick=async()=>{const[id,qi]=b.dataset.dsp.split(":"),d=S.docs.find(x=>x.id===id);let on=false;await saveQuart(d,+qi,q=>{const s=new Set(q.dispo||[]);if(s.has(me))s.delete(me);else{s.add(me);on=true}q.dispo=[...s]});toast(on?"Disponibilité envoyée":"Disponibilité retirée")})}
+ document.querySelectorAll("[data-dsp]").forEach(b=>b.onclick=async()=>{const[id,qi]=b.dataset.dsp.split(":"),d=S.docs.find(x=>x.id===id);let on=false;if(!await saveQuart(d,+qi,q=>{const s=new Set(q.dispo||[]);if(s.has(me))s.delete(me);else{s.add(me);on=true}q.dispo=[...s]}))return;toast(on?"Disponibilité envoyée":"Disponibilité retirée")})}
 /* --- onglet Ma fiche --- */
-function renderFiche(){const e=empById(myEmp())||(S.preview?{id:"__apercu",nom:"Aperçu (aucun employé)",comp:[]}:null);if(!e){$("#app").innerHTML=`<div class="ehead"><h2>Ma fiche</h2></div><div class="card"><p class="note" style="margin:0">${S.preview?"Aperçu générique : cette session n'est reliée à aucun employé, elle n'a donc aucune donnée personnelle. Pour voir celle d'une personne, utilise son bouton 👁 dans l'onglet Utilisateurs.":"Aucun employé n'est associé à ton compte."}</p></div>`;return}
+function renderFiche(){const e=empById(myEmp())||(S.preview?{id:"__apercu",nom:ROLES[S.preview]||"Employé",comp:[]}:null);if(!e){$("#app").innerHTML=`<div class="ehead"><h2>Ma fiche</h2></div><div class="card"><p class="note" style="margin:0">${S.preview?"Aperçu générique : cette session n'est reliée à aucun employé, elle n'a donc aucune donnée personnelle. Pour voir celle d'une personne, utilise son bouton 👁 dans l'onglet Utilisateurs.":"Aucun employé n'est associé à ton compte."}</p></div>`;return}
  const kv=(a,b)=>b?`<span class="note">${a}</span><b style="text-align:left">${esc(b)}</b>`:"";
  const C=(e.comp||[]).map(c=>{const st=certSt(e,c),x=(e.compExp||{})[c];return`<li><b>${esc(compLab(e,c))}</b>${x?` · expire le ${fdate(x)}`:""} ${st==="exp"?`<span class="pill st-retard">Expirée</span>`:st==="soon"?`<span class="pill st-retard">Bientôt</span>`:x?`<span class="pill st-payee">Valide</span>`:""}</li>`}).join("");
  $("#app").innerHTML=`<div class="ehead"><div><h2>Ma fiche</h2><p class="note" style="margin:2px 0 0">Pour corriger une information ou renouveler une certification, avise un administrateur.</p></div></div>
@@ -1687,10 +1687,10 @@ $("#hLogo").src=LOGO;
  if(S.U){try{S.isOwner=!!S.U.isOwner()}catch(e){}try{S.canEdit=!!S.U.canEdit()}catch(e){}try{S.me=await S.U.id()}catch(e){}if(!S.me){try{const m=await S.U.me();S.me=m&&m.id}catch(e){}}}
  S.local=!window.claude;
  if(!db){clearTimeout(tm);S.noDb=true;render();return}
- if(!window.AT_SA&&!window.__TEST_RW){S.ro=true;const RO=()=>{if(S.roUser&&Date.now()-(S._roT||0)>2500){S._roT=Date.now();toast("Version archivée en lecture seule : fais tes modifications dans l'application Action Trauma.")}return Promise.reject({code:"readonly"})};
-  const pass=(t,k)=>typeof t[k]==="function"?t[k].bind(t):t[k],ref=r=>new Proxy(r,{get:(t,k)=>["set","update","delete"].includes(k)?RO:pass(t,k)}),col=c=>new Proxy(c,{get:(t,k)=>k==="doc"?(id=>ref(t.doc(id))):k==="add"?RO:pass(t,k)});
+ S.ro=!window.AT_SA&&!window.__TEST_RW;
+ {const blocked=()=>S.ro||(S.preview&&!S.pvEmp),RO=wrap=>(...a)=>{if(!blocked())return wrap(...a);if(Date.now()-(S._roT||0)>2500){S._roT=Date.now();if(S.ro&&!S.roUser){}else toast(S.ro?"Version archivée en lecture seule : fais tes modifications dans l'application Action Trauma.":"Aperçu : aucune modification n'est enregistrée.")}return Promise.reject({code:"readonly"})};
+  const pass=(t,k)=>typeof t[k]==="function"?t[k].bind(t):t[k],ref=r=>new Proxy(r,{get:(t,k)=>["set","update","delete"].includes(k)?RO(pass(t,k)):pass(t,k)}),col=c=>new Proxy(c,{get:(t,k)=>k==="doc"?(id=>ref(t.doc(id))):k==="add"?RO(pass(t,k)):pass(t,k)});
   S.db=new Proxy(db,{get:(t,k)=>k==="doc"?(x=>ref(t.doc(x))):k==="collection"?(x=>col(t.collection(x))):pass(t,k)});document.addEventListener("pointerdown",()=>{S.roUser=true},{once:true,capture:true})}
- else S.db=db;
  const err=e=>{console.error(e);if(e?.code==="revoked"){S.db=null;S.noDb=true;render()}else if(!S.ready.d){S.denied=true;render()}};
  db.doc("config/entreprise").onSnapshot(s=>{if(s.exists){const v=s.data();S.cfg={...DEF_CFG,...v,services:Object.fromEntries([...new Set([...Object.keys(DEF_CFG.services),...Object.keys(v.services||{})])].map(k=>[k,{...(DEF_CFG.services[k]||{}),...((v.services||{})[k]||{})}]))}}S.ready.g=true;if(S.view!=="editeur")render()},err);
  db.collection("orgs").limit(1000).onSnapshot(s=>{S.orgs=s.docs.map(x=>({...x.data(),id:x.id,nom:x.data().nom||"",contacts:x.data().contacts||[]}));S.ready.c=true;if(S.view!=="editeur")render();else if(!$("#modal").innerHTML){}},err);
