@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261122185913">
+<link rel="manifest" href="manifest.webmanifest?v=20261122192644">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122185913">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261122192644">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261122185913"></script>
-<script src="standalone.js?v=20261122185913"></script>
+<script src="config.js?v=20261122192644"></script>
+<script src="standalone.js?v=20261122192644"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
 <script src="pdf-lib.min.js"></script>
 <script src="jszip.min.js"></script>
 <style>
@@ -135,7 +135,7 @@ details.more{margin-top:10px}details.more summary{cursor:pointer;color:var(--mut
 .paper .sig{font-size:14px;line-height:1.25;margin-top:6px}
 .pwrap{position:relative;overflow:hidden;width:100%;background:#e9ecef;border-radius:6px}.pscale{width:840px;transform-origin:0 0}
 .pwrap .paper{width:840px;min-height:1087px;box-sizing:border-box;padding:55px 85px;display:flex;flex-direction:column;border-radius:0;overflow:visible;box-shadow:0 1px 4px rgba(0,0,0,.15)}
-.pwrap .paper table{min-width:0}.pwrap .paper .ph img{width:185px}.pwrap .pfoot{margin-top:auto;padding-top:10px}
+.pwrap .paper table{min-width:0}.pwrap .paper.np{padding:41px 49px 33px}.pwrap .paper .ph img{width:185px}.pwrap .pfoot{margin-top:auto;padding-top:10px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:10px;z-index:40;font-weight:500;max-width:92vw}
 .note{font-size:13px;color:var(--mute)}
 .banner{background:var(--warnsoft);color:var(--warn);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:14px}
@@ -590,7 +590,7 @@ const fileName=d=>`${label(d)}_${clean(d.evenement.nom||"document").replace(/[\\
 function bankLine(){const c=cfg();return(c.transit||c.institution||c.folio)?`Information bancaire :   Transit ${c.transit}   Institution ${c.institution}   Folio : ${c.folio}`:""}
 function footText(d){const c=cfg();if(d.type==="facture")return c.messageF.replace("{delai}",c.delai).replace("{banque}",bankLine()).replace(/\n{3,}/g,"\n\n")+"\n\nAu plaisir de faire affaire avec vous,\n"+c.signature;return c.conditionsS+"\n\nNous attendons de vos nouvelles,\n"+c.signature}
 function model(d){const c=cfg(),sv=c.services,isF=d.type==="facture",z=c.zeros!==false,y=yearOf(d),L=d.lignes||[];
- const row=(l,k)=>{const s=sv[k||l.svc];let desc=l.desc||(s&&s.nom)||"";if(!isF&&s&&s.requis&&desc===s.nom)desc+=" requis";return{desc,detail:isF?"":(l.detail||""),tarif:+l.tarif||0,unite:uShort(l.unite||""),qte:+l.qte||0,total:r2((+l.qte||0)*(+l.tarif||0))}};
+ const row=(l,k)=>{const s=sv[k||l.svc];let desc=l.desc||(s&&s.nom)||"";if(!isF&&s&&s.requis&&desc===s.nom)desc+=" requis";return{svc:k||l.svc,det:l.detail||(s&&s.detail)||"",desc,detail:isF?"":(l.detail||""),tarif:+l.tarif||0,unite:uShort(l.unite||""),qte:+l.qte||0,total:r2((+l.qte||0)*(+l.tarif||0))}};
  const ph=k=>row({svc:k,desc:sv[k].nom,detail:sv[k].detail,unite:sv[k].unite,qte:0,tarif:rateFor(docOrgId(d),k,y)},k);
  const rowsOf=sec=>{const out=[];for(const[k,s]of svcList(true)){if((s.section==="service"?"service":"autre")!==sec)continue;const ls=L.filter(l=>l.svc===k);if(ls.length)out.push(...ls.map(l=>row(l)));else if(z&&s.toujours&&s.actif!==false&&!s.prixLibre)out.push(ph(k))}
   if(sec==="autre"){out.push(...L.filter(l=>l.svc&&!sv[l.svc]&&l.svc!=="materiel").map(l=>row(l)));if(!isF)out.push(...L.filter(l=>l.svc==="materiel").map(l=>row(l)))}return out};
@@ -603,7 +603,7 @@ function model(d){const c=cfg(),sv=c.services,isF=d.type==="facture",z=c.zeros!=
 const COL={facture:[67,174,226],soumission:[142,217,115]};
 const css3=a=>`rgb(${a.join(",")})`;
 function richHTML(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>")}
-function paperHTML(d){const c=cfg(),m=model(d),w=m.isF?"facture":"soumission",bg=css3(COL[d.type]);
+function paperHTML(d){if(newFmt(d))return paperHTML2(d);const c=cfg(),m=model(d),w=m.isF?"facture":"soumission",bg=css3(COL[d.type]);
  const sec=s=>{const mat=s.titre==="Matériel consommé";
   const head=`<tr class="hd" style="background:${bg}"><td ${mat?'colspan="2"':""}>${s.titre}</td>${mat?"":`<td class="c">${s.cols[0]}</td>`}<td class="c">${s.cols[1]}</td><td class="c">${s.cols[2]}</td></tr>`;
   if(mat){const n=Math.max(s.rows.length,10);let h="";for(let i=0;i<n;i++){const r=s.rows[i];h+=`<tr class="mr"><td colspan="2">${r?esc(r.desc)+(r.qte!==1||r.tarif?` <span class="sm">(${money(r.tarif)})</span>`:""):"&nbsp;"}</td><td class="c">${r?fq(r.qte):""}</td>${i===0?`<td class="c" rowspan="${n}">${money(s.rows.reduce((a,r)=>a+r.total,0))}</td>`:""}</tr>`}return head+h}
@@ -645,7 +645,7 @@ async function exportZip(list){
 
 /* ---------- PDF (même structure que le fichier Excel) ---------- */
 const clean=s=>String(s??"").replace(/[   ]/g," ").replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/–|—/g,"-").replace(/•/g,"*").replace(/[^\x0a\x20-\x7e\xa0-\xffŒœ€]/g,"");
-async function buildPdf(d){
+async function buildPdf(d){if(newFmt(d))return buildPdf2(d);
  const{PDFDocument,StandardFonts,rgb,PDFOperator,PDFNumber}=window.PDFLib;const c=cfg(),m=model(d),w=m.isF?"facture":"soumission";
  const pdf=await PDFDocument.create();pdf.setTitle(`${m.isF?"Facture":"Soumission"} ${d.numero} - ${clean(c.nom)}`);pdf.setAuthor(clean(c.nom));
  const F=await pdf.embedFont(StandardFonts.Helvetica),B=await pdf.embedFont(StandardFonts.HelveticaBold);
@@ -711,6 +711,169 @@ async function buildPdf(d){
  const n=pdf.getPageCount();if(n>1)pdf.getPages().forEach((p,k)=>p.drawText(`Page ${k+1} de ${n}`,{x:520,y:22,size:8,font:F,color:TITLE}));
  return pdf.save();
 }
+
+/* ---------- nouveau format des factures et soumissions (documents datés du 1er janvier 2027 et après) ---------- */
+const NEWFMT_DATE="2027-01-01";
+const newFmt=d=>(d&&d.date||"")>=NEWFMT_DATE;
+const mfr=n=>{const v=r2(n),neg=v<0,a=Math.abs(v).toFixed(2).split(".");return(neg?"-":"")+a[0].replace(/\B(?=(\d{3})+(?!\d))/g," ")+","+a[1]+" $"};
+const NF_J=["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"],NF_M=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+function nfLongDate(iso){if(!iso)return"";const[y,mo,da]=iso.split("-").map(Number);if(!y||!mo||!da)return fdate(iso);const s=NF_J[new Date(y,mo-1,da).getDay()]+" "+da+" "+NF_M[mo-1]+" "+y;return s[0].toUpperCase()+s.slice(1)}
+const nfH=t=>t?String(t).replace(/^0(\d)/,"$1").replace(":"," h "):"";
+function nfEvLine(d){const e=d.evenement||{},J=(e.jours||[]).filter(j=>j&&j.date).sort((a,b)=>a.date.localeCompare(b.date));
+ if(J.length===1){const j=J[0];return nfLongDate(j.date)+(j.debut&&j.fin?" · "+nfH(j.debut)+" à "+nfH(j.fin):"")}
+ if(J.length>1)return"Du "+fdate(J[0].date)+" au "+fdate(J[J.length-1].date)+" · "+J.length+" jours";return e.date?nfLongDate(e.date):""}
+function nfEcheance(d){if(d.echeance)return d.echeance;const c=cfg();if(!d.date)return"";const t=new Date(d.date+"T12:00:00");t.setDate(t.getDate()+(+c.delai||30));return t.toISOString().slice(0,10)}
+const nfUnit=u=>u==="heure"?"h":u;
+function model2(d){const c=cfg(),sv=c.services||{},m=model(d),isF=m.isF;
+ const all=[];m.secs.filter(s=>s.titre!=="Matériel consommé").forEach(s=>all.push(...s.rows));
+ const grp={service:[],autre:[],divers:[]};
+ all.filter(r=>r.qte||r.total).forEach(r=>{const s=sv[r.svc];grp[r.svc==="materiel"||!s?"divers":s.section==="service"?"service":s.section==="autre"?"autre":"divers"].push(r)});
+ const secs=[["Personnel médical",grp.service],["Véhicules et déplacement",grp.autre],["Autre",grp.divers]].filter(x=>x[1].length).map(([titre,rows])=>({titre,rows:rows.map(r=>({...r,tarifL:mfr(r.tarif)+(r.unite?" / "+nfUnit(r.unite):""),qteL:fq(r.qte)+(r.unite==="heure"?" h":""),totL:mfr(r.total)}))}));
+ const matS=m.secs.find(s=>s.titre==="Matériel consommé"),mat=isF?(matS?matS.rows:[]):null;
+ const T=Object.fromEntries(m.tot.map(([a,b])=>[a.slice(0,3)==="TPS"?"tps":a.slice(0,3)==="TVQ"?"tvq":a==="Sous-total"?"st":"tot",b]));
+ const msg=isF?c.messageF.replace("{delai}",c.delai).split("{banque}").map(x=>x.trim()).join("\n").split("\n").map(x=>x.trim()).filter(Boolean):[];
+ const bank=isF&&(c.transit||c.institution||c.folio)?{transit:c.transit||"",institution:c.institution||"",folio:c.folio||""}:null;
+ const cond=!isF?c.conditionsS.split("\n").filter(l=>l.trim()).map((l,i)=>({t:l.trim().replace(/^[*•\-–]\s*/,""),title:i===0,sub:i>0&&/^\s{2,}/.test(l)})):[];
+ const src=d.sourceId&&S.docs.find(x=>x.id===d.sourceId);
+ return{isF,titre:m.titre,secs,mat,T,taxes:!!d.taxes,msg,bank,cond,
+  matTot:mat?r2(mat.reduce((a,r)=>a+r.total,0)):0,ev:nfEvLine(d),ech:isF?nfEcheance(d):"",ref:isF&&src?"Référence : soumission "+label(src):"",
+  salut:(isF?c.salutF:c.salutS)||"Nous attendons de vos nouvelles,",sig:clean(c.signature).split("\n").filter(Boolean)}}
+const nfMix=(a,t)=>a.map(v=>Math.round(v+(255-v)*t)),nfDark=(a,t)=>a.map(v=>Math.round(v*t));
+
+/* ---- aperçu HTML ---- */
+function paperHTML2(d){const c=cfg(),m=model2(d),w=m.isF?"facture":"soumission",A=COL[d.type],acc=css3(A),soft=css3(nfMix(A,.88)),ink=css3(nfDark(A,.45));
+ const lab=`font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:${ink};margin-bottom:6px`;
+ const G="display:grid;grid-template-columns:1fr 104px 78px 92px";
+ const rows=m.secs.map(s=>`<div style="padding:5px 12px;background:${soft};font-weight:700;font-size:9.5px;text-transform:uppercase;letter-spacing:.7px;color:${ink};border-top:1px solid #e6eaee">${esc(s.titre)}</div>`+s.rows.map((r,i)=>`<div style="${G};border-top:1px solid #e6eaee;${i%2?"background:#fafbfc":""}"><div style="padding:6px 12px"><div style="font-weight:600">${esc(r.desc)}</div>${r.det?`<div style="font-size:9px;color:#6b737c">${esc(r.det)}</div>`:""}</div><div style="padding:6px 10px;text-align:right;color:#3b4148">${esc(r.tarifL)}</div><div style="padding:6px 10px;text-align:right;font-weight:600">${esc(r.qteL)}</div><div style="padding:6px 12px;text-align:right;font-weight:700">${esc(r.totL)}</div></div>`).join("")).join("");
+ const fill=`<div style="flex:1;display:flex;flex-direction:column;border-top:1px solid #e6eaee;overflow:hidden;min-height:60px">${Array.from({length:8},(_,k)=>`<div style="flex:1 1 0;min-height:20px;${G};${k?"border-top:1px solid #e6eaee;":""}${k%2===0?"background:#fafbfc":""}"><div style="border-right:1px solid #eef1f4"></div><div style="border-right:1px solid #eef1f4"></div><div style="border-right:1px solid #eef1f4"></div><div></div></div>`).join("")}</div>`;
+ const totBar=(t,amt,sub)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:#16181a;color:#fff;margin-top:auto"><span style="font-weight:600;font-size:12px">${t}${sub?` <span style="font-weight:400;font-size:10px;color:#c9ced3">· ${sub}</span>`:""}</span><span style="font-weight:700;font-size:20px;color:#dcfa4b">${mfr(amt)}</span></div>`;
+ const sigH=`<div style="display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid #d5dbe1;padding-top:10px"><div style="font-size:12px;line-height:1.45"><div style="color:#3b4148">${esc(m.salut)}</div>${m.sig.map((l,i)=>`<div style="${i===0?"font-weight:600":"color:#3b4148"}">${esc(l)}</div>`).join("")}</div></div>`;
+ let bottom;
+ if(m.isF){const n=Math.max(8,m.mat.length),MG="display:grid;grid-template-columns:1fr 60px";
+  const matRows=Array.from({length:n},(_,k)=>{const r=m.mat[k];return`<div style="${MG};border-top:1px solid #e6eaee;${k%2?"background:#fafbfc;":""}${r?"":"height:21px"}"><div style="padding:${r?"4px 12px":"0"};border-right:1px solid #eef1f4">${r?esc(r.desc):""}</div><div style="padding:${r?"4px 12px":"0"};text-align:right">${r?fq(r.qte):""}</div></div>`}).join("");
+  const line=(a,b)=>`<div style="display:flex;justify-content:space-between;padding:7px 14px;border-top:1px solid #e6eaee">${a}<span>${b}</span></div>`;
+  const totBox=m.taxes?`<div style="display:flex;justify-content:space-between;padding:7px 14px"><span>Sous-total</span><span style="font-weight:600">${mfr(m.T.st)}</span></div>${line(`<span>TPS ${String(+c.tauxTps||0).replace(".",",")} %${c.tps?` <span style="font-size:9px;color:#6b737c">· ${esc(c.tps)}</span>`:""}</span>`,mfr(m.T.tps))}${line(`<span>TVQ ${String(+c.tauxTvq||0).replace(".",",")} %${c.tvq?` <span style="font-size:9px;color:#6b737c">· ${esc(c.tvq)}</span>`:""}</span>`,mfr(m.T.tvq))}`:"";
+  bottom=`<div style="display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:14px;margin-top:14px;align-items:stretch">
+  <div style="border:1px solid #d5dbe1;border-radius:6px;overflow:hidden"><div style="${MG};background:${soft};font-weight:700;font-size:9.5px;text-transform:uppercase;letter-spacing:.7px;color:${ink}"><div style="padding:6px 12px">Matériel consommé</div><div style="padding:6px 12px;text-align:right">Qté</div></div>${matRows}<div style="display:flex;justify-content:space-between;border-top:1px solid #d5dbe1;padding:6px 12px;font-weight:700"><span>Total matériel consommé</span><span>${mfr(m.matTot)}</span></div></div>
+  <div style="display:flex;flex-direction:column;gap:10px"><div style="border:1px solid #d5dbe1;border-radius:6px;overflow:hidden;flex:1;display:flex;flex-direction:column">${totBox}${totBar("Total à payer",m.T.tot)}</div>
+  ${m.bank?`<div style="background:#f4f7f9;border-radius:6px;padding:8px 14px;font-size:10.5px"><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#5a626b;margin-bottom:3px">Informations de paiement</div><div style="display:flex;justify-content:space-between"><span>Transit <b>${esc(m.bank.transit)}</b></span><span>Institution <b>${esc(m.bank.institution)}</b></span><span>Folio <b>${esc(m.bank.folio)}</b></span></div></div>`:""}</div></div>
+  <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">${d.notes?`<div style="font-size:10.5px"><b>Note :</b> ${esc(d.notes)}</div>`:""}<div style="font-size:13px;color:#3b4148;line-height:1.5;text-align:center">${m.msg.map(l=>`<div>${richHTML(l)}</div>`).join("")}</div>${sigH}</div>`}
+ else bottom=`<div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">${d.notes?`<div style="font-size:10.5px"><b>Note :</b> ${esc(d.notes)}</div>`:""}<div style="background:#f4f7f9;border-radius:6px;padding:12px 16px;font-size:10px;line-height:1.5;color:#2b3036">${m.cond.map(x=>x.title?`<div style="font-weight:700;font-size:10.5px;color:#16181a;margin-bottom:4px">${richHTML(x.t)}</div>`:`<div style="${x.sub?"padding-left:22px":""}">${x.sub?"– ":"• "}${richHTML(x.t)}</div>`).join("")}</div>${sigH}</div>`;
+ const info=(t,a,b)=>`<div style="padding:8px 12px;${b?"background:#f4f7f9":"border-right:1px solid #d5dbe1"}"><div style="font-size:9px;text-transform:uppercase;letter-spacing:.6px;color:#5a626b">${t}</div><div style="font-weight:${a.big?700:600};font-size:${a.big?15:13}px">${esc(a.v)}</div></div>`;
+ return`<div class="paper np" style="font-family:Inter,Arial,sans-serif;color:#16181a;font-size:11px;line-height:1.35">
+ <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px"><img src="${LOGO}" alt="Action Trauma" style="width:200px;height:auto;display:block"><div style="text-align:right;font-size:10.5px;line-height:1.5;color:#3b4148"><div style="font-weight:700;font-size:12px;color:#16181a">${esc(c.nom)}</div>${esc(c.adresse).split("\n").map(l=>`<div>${l}</div>`).join("")}<div>${esc(c.tel)} · ${esc(c.courriel)}</div></div></div>
+ <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:22px;padding-bottom:14px;border-bottom:3px solid ${acc}"><div><div style="font-family:'Barlow Condensed','Arial Narrow',Arial,sans-serif;font-weight:700;font-size:44px;letter-spacing:1px;line-height:1">${m.titre}</div><div style="font-size:11px;color:#5a626b">Premiers soins évènementiels</div></div>
+ <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #d5dbe1;border-radius:6px;overflow:hidden;min-width:360px">${info("Numéro",{v:label(d),big:1})}${info("Date",{v:fdate(d.date)})}${m.isF?info("Échéance",{v:fdate(m.ech)},1):info("Évènement",{v:fdate(d.evenement.date)},1)}</div></div>
+ <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px">
+ <div style="border:1px solid #d5dbe1;border-radius:6px;padding:10px 14px"><div style="${lab}">${m.isF?"Facturé à":"Préparée pour"}</div><div style="font-weight:700;font-size:12.5px">${esc(d.client.entreprise)}</div>${[d.client.contact,d.client.courriel,d.client.adresse].filter(Boolean).map((l,i)=>`<div style="color:#3b4148${i===0?";margin-top:3px":""}">${esc(l)}</div>`).join("")}</div>
+ <div style="border:1px solid #d5dbe1;border-radius:6px;padding:10px 14px"><div style="${lab}">Évènement</div><div style="font-weight:700;font-size:12.5px">${esc(d.evenement.nom)}</div>${[m.ev,d.evenement.adresse,m.ref].filter(Boolean).map((l,i)=>`<div style="color:#3b4148${i===0?";margin-top:3px":""}">${esc(l)}</div>`).join("")}</div></div>
+ <div style="margin-top:16px;border:1px solid #d5dbe1;border-radius:6px;overflow:hidden;flex:1;display:flex;flex-direction:column;min-height:140px">
+ <div style="${G};background:#16181a;color:#fff;font-weight:600;font-size:10.5px"><div style="padding:8px 12px">Description</div><div style="padding:8px 10px;text-align:right">Tarif</div><div style="padding:8px 10px;text-align:right">${m.isF?"Qté":"Qté prévue"}</div><div style="padding:8px 12px;text-align:right">Total</div></div>
+ ${rows}${fill}${m.isF?"":totBar("Total estimé",m.T.tot,"taxes en sus, ajoutées à la facture finale")}</div>
+ ${bottom}</div>`}
+
+/* ---- PDF ---- */
+async function buildPdf2(d){
+ const{PDFDocument,StandardFonts,rgb,PDFOperator,PDFNumber}=window.PDFLib;const c=cfg(),m=model2(d);
+ const pdf=await PDFDocument.create();pdf.setTitle(`${m.isF?"Facture":"Soumission"} ${d.numero} - ${clean(c.nom)}`);pdf.setAuthor(clean(c.nom));
+ const F=await pdf.embedFont(StandardFonts.Helvetica),B=await pdf.embedFont(StandardFonts.HelveticaBold);
+ let logo=null;try{logo=await pdf.embedJpg(Uint8Array.from(atob(LOGO.split(",")[1]),ch=>ch.charCodeAt(0)))}catch(e){}
+ const C=a=>rgb(a[0]/255,a[1]/255,a[2]/255),A=COL[d.type],ACC=C(A),SOFT=C(nfMix(A,.88)),INK=C(nfDark(A,.45));
+ const K=rgb(22/255,24/255,26/255),TX=rgb(.23,.255,.28),MU=rgb(.42,.45,.49),LN=rgb(.835,.86,.88),LN2=rgb(.9,.918,.933),ZB=rgb(.98,.984,.988),PANEL=rgb(.957,.969,.976),LIME=rgb(220/255,250/255,75/255),WH=rgb(1,1,1);
+ const H=792,L=36,R=576,TOP=30,BOT=24,X3=R-69,X2=X3-58.5,X1=X2-78;
+ let pg,y;const newPage=()=>{pg=pdf.addPage([612,H]);y=TOP};
+ const wd=(s,f,sz)=>f.widthOfTextAtSize(clean(s),sz);
+ const T=(s,x,top,o={})=>{const f=o.b?B:F,sz=o.s||8.25;s=clean(s);const ww=wd(s,f,sz);let xx=x;if(o.c)xx=x-ww/2;if(o.r)xx=x-ww;pg.drawText(s,{x:xx,y:H-top-sz*.78,size:sz,font:f,color:o.col||K});return ww};
+ const fit=(s,wdt,f,sz)=>{s=clean(s);if(wd(s,f,sz)<=wdt)return s;while(s.length>1&&wd(s+"…",f,sz)>wdt)s=s.slice(0,-1);return s+"…"};
+ const wrap=(s,wdt,f,sz)=>{const out=[];for(const para of clean(s).split("\n")){let cur="";for(const word of para.trim().split(" ")){const t=cur?cur+" "+word:word;if(wd(t,f,sz)>wdt&&cur){out.push(cur);cur=word}else cur=t}out.push(cur)}return out};
+ const rect=(x,top,w,h,o={})=>pg.drawRectangle({x,y:H-top-h,width:w,height:h,color:o.fill,borderColor:o.border,borderWidth:o.border?(o.bw||.75):0});
+ const rr=(x,top,w,h,r,o={})=>{const p=`M${r},0 H${w-r} Q${w},0 ${w},${r} V${h-r} Q${w},${h} ${w-r},${h} H${r} Q0,${h} 0,${h-r} V${r} Q0,0 ${r},0 Z`;pg.drawSvgPath(p,{x,y:H-top,color:o.fill,borderColor:o.border,borderWidth:o.border?(o.bw||.75):0})};
+ const hl=(x1,x2,top,col,t)=>pg.drawLine({start:{x:x1,y:H-top},end:{x:x2,y:H-top},thickness:t||.75,color:col||LN2});
+ const vl=(x,t1,t2,col)=>pg.drawLine({start:{x,y:H-t1},end:{x,y:H-t2},thickness:.75,color:col||LN2});
+ // texte « riche » (**gras**)
+ const rich=(line,x,top,sz,col)=>{let xx=x;clean(line).split("**").forEach((part,i)=>{if(!part)return;const f=i%2?B:F;pg.drawText(part,{x:xx,y:H-top-sz*.78,size:sz,font:f,color:col||TX});xx+=f.widthOfTextAtSize(part,sz)})};
+ const richW=(line,sz)=>clean(line).split("**").reduce((a,p,i)=>a+(i%2?B:F).widthOfTextAtSize(p,sz),0);
+ const wrapRich=(s,wdt,sz)=>{const words=clean(s).split(" "),out=[];let cur="";for(const w of words){const t=cur?cur+" "+w:w;if(richW(t.replace(/\*\*/g,""),sz)>wdt&&cur){out.push(cur);cur=w}else cur=t}out.push(cur);let open=false;return out.map(l=>{let r=(open?"**":"")+l;const n=(l.match(/\*\*/g)||[]).length;if(n%2)open=!open;if(open)r+="**";return r})};
+
+ newPage();
+ // ---- en-tête (première page)
+ let lh=0;if(logo){const lw=150;lh=lw*logo.height/logo.width;pg.drawImage(logo,{x:L,y:H-TOP-lh,width:lw,height:lh})}
+ let cy=TOP+2;T(c.nom,R,cy,{s:9,b:1,r:1});cy+=12;for(const l of[...clean(c.adresse).split("\n"),`${c.tel} · ${c.courriel}`]){T(l,R,cy,{s:7.9,r:1,col:TX});cy+=11.2}
+ y=TOP+Math.max(lh,cy-TOP)+16;
+ const tTop=y;pg.pushOperators(PDFOperator.of("Tz",[PDFNumber.of(82)]));T(m.titre,L,tTop,{s:33,b:1});pg.pushOperators(PDFOperator.of("Tz",[PDFNumber.of(100)]));
+ T("Premiers soins évènementiels",L,tTop+31,{s:8.25,col:MU});
+ const bw=270,bx=R-bw,bh=34,by=tTop+6;rr(bx,by,bw,bh,4.5,{border:LN});
+ const cells=[["Numéro",label(d),1],["Date",fdate(d.date)],m.isF?["Échéance",fdate(m.ech)]:["Évènement",fdate(d.evenement.date)]];
+ pg.drawRectangle({x:bx+bw*2/3,y:H-by-bh+.4,width:bw/3-.4,height:bh-.8,color:PANEL});
+ cells.forEach(([a,v,big],i)=>{const x=bx+i*bw/3+9;if(i)vl(bx+i*bw/3,by,by+bh,LN);T(a.toUpperCase(),x,by+6,{s:6.75,col:MU});T(v,x,by+16,{s:big?11.25:9.75,b:big?1:0})});
+ y=tTop+46;hl(L,R,y,ACC,2.25);y+=12;
+ // ---- cartes client / évènement
+ const cw=(R-L-10.5)/2,card=(x,lab,name,lines)=>{const nl=[name,...lines.filter(Boolean)];const h=8+7+5+11+(nl.length-1)*11+6;return{h,draw:hh=>{rr(x,y,cw,hh,4.5,{border:LN});T(lab.toUpperCase(),x+10.5,y+8,{s:6.75,b:1,col:INK});T(fit(name,cw-21,B,9.4),x+10.5,y+19,{s:9.4,b:1});lines.filter(Boolean).forEach((l,i)=>T(fit(l,cw-21,F,8.25),x+10.5,y+32+i*11,{s:8.25,col:TX}))}}};
+ const c1=card(L,m.isF?"Facturé à":"Préparée pour",d.client.entreprise||"",[d.client.contact,d.client.courriel,d.client.adresse]),c2=card(L+cw+10.5,"Évènement",d.evenement.nom||"",[m.ev,d.evenement.adresse,m.ref]);
+ const ch=Math.max(c1.h,c2.h);c1.draw(ch);c2.draw(ch);y+=ch+12;
+
+ // ---- hauteur du bas de la dernière page
+ const sigH=6+(1+m.sig.length)*13.5+4;
+ let botH;const matN=m.isF?Math.max(8,m.mat.length):0,matH=m.isF?18+matN*16.5+22:0;
+ const notesL=d.notes?wrap("Note : "+d.notes,R-L,F,7.9):[];
+ const condL=[];if(!m.isF)m.cond.forEach(x=>{if(x.title){wrapRich(x.t,R-L-24,7.9).forEach(l=>condL.push({l,title:1}))}else{wrapRich(x.t,R-L-24-(x.sub?16.5:9),7.5).forEach((l,k)=>condL.push({l,sub:x.sub,first:k===0}))}});
+ const condH=m.isF?0:18+condL.length*11.25;
+ if(m.isF)botH=9+matH+9+notesL.length*10.5+m.msg.length*14.6+9+sigH;else botH=9+notesL.length*10.5+condH+9+sigH;
+ const totBarH=m.isF?0:30;
+
+ // ---- tableau des services
+ let tabTop;const thead=()=>{tabTop=y;pg.drawRectangle({x:L,y:H-y-22,width:R-L,height:22,color:K});T("Description",L+9,y+7,{s:7.9,b:1,col:WH});T("Tarif",X2-7.5,y+7,{s:7.9,b:1,col:WH,r:1});T(m.isF?"Qté":"Qté prévue",X3-7.5,y+7,{s:7.9,b:1,col:WH,r:1});T("Total",R-9,y+7,{s:7.9,b:1,col:WH,r:1});y+=22};
+ const closeTab=()=>rr(L,tabTop,R-L,y-tabTop,4.5,{border:LN});
+ const limit=()=>H-BOT-12;
+ thead();
+ for(const s of m.secs){
+  if(y+18+24>limit()){closeTab();newPage();thead()}
+  pg.drawRectangle({x:L+.4,y:H-y-18,width:R-L-.8,height:18,color:SOFT});hl(L,R,y);T(s.titre.toUpperCase(),L+9,y+5.5,{s:7.1,b:1,col:INK});y+=18;
+  s.rows.forEach((r,i)=>{const dl=r.det?wrap(r.det,X1-L-18,F,6.75):[];const h=Math.max(22,7+9+dl.length*8.4+6);
+   if(y+h>limit()){closeTab();newPage();thead()}
+   if(i%2)pg.drawRectangle({x:L+.4,y:H-y-h,width:R-L-.8,height:h,color:ZB});hl(L,R,y);
+   T(fit(r.desc,X1-L-18,B,8.25),L+9,y+6,{s:8.25,b:1});dl.forEach((l,k)=>T(l,L+9,y+16+k*8.4,{s:6.75,col:MU}));
+   const mid=y+h/2-4;T(r.tarifL,X2-7.5,mid,{s:8.25,r:1,col:TX});T(r.qteL,X3-7.5,mid,{s:8.25,r:1,b:1});T(r.totL,R-9,mid,{s:8.25,r:1,b:1});y+=h})}
+ // bas de page : faut-il une nouvelle page?
+ if(y+totBarH+botH+20>H-BOT){closeTab();newPage();thead()}
+ const botTop=H-BOT-botH;
+ // lignes vides égales jusqu'au bas
+ const space=botTop-y-totBarH;const k=Math.max(1,Math.round(space/19)),rh=space/k;
+ for(let i=0;i<k;i++){const t=y+i*rh;if(i%2===0)pg.drawRectangle({x:L+.4,y:H-t-rh,width:R-L-.8,height:rh,color:ZB});hl(L,R,t);[X1,X2,X3].forEach(x=>vl(x,t,t+rh,rgb(.933,.945,.957)))}
+ y=botTop-totBarH;
+ const totBar=(x,top,w,h,txt,amt,sub)=>{pg.drawRectangle({x,y:H-top-h,width:w,height:h,color:K});const tw=T(txt,x+10.5,top+h/2-4.5,{s:9,b:1,col:WH});if(sub)T("· "+sub,x+10.5+tw+5,top+h/2-3.5,{s:7.5,col:rgb(.79,.81,.83)});T(mfr(amt),x+w-10.5,top+h/2-7,{s:15,b:1,col:LIME,r:1})};
+ if(!m.isF){totBar(L,y,R-L,30,"Total estimé",m.T.tot,"taxes en sus, ajoutées à la facture finale");y+=30}
+ closeTab();
+ y=botTop+9;
+ if(m.isF){const RW=210,LW=R-L-RW-10.5,rx=L+LW+10.5,top=y;
+  // matériel
+  rr(L,top,LW,matH,4.5,{border:LN});pg.drawRectangle({x:L+.4,y:H-top-18,width:LW-.8,height:17.6,color:SOFT});
+  T("MATÉRIEL CONSOMMÉ",L+9,top+5.5,{s:7.1,b:1,col:INK});T("QTÉ",L+LW-9,top+5.5,{s:7.1,b:1,col:INK,r:1});
+  for(let i=0;i<matN;i++){const t=top+18+i*16.5,r=m.mat[i];if(i%2)pg.drawRectangle({x:L+.4,y:H-t-16.5,width:LW-.8,height:16.5,color:ZB});hl(L,L+LW,t);vl(L+LW-45,t,t+16.5,rgb(.933,.945,.957));
+   if(r){T(fit(r.desc,LW-45-18,F,7.9),L+9,t+4.5,{s:7.9});T(fq(r.qte),L+LW-9,t+4.5,{s:7.9,r:1})}}
+  const tt=top+18+matN*16.5;hl(L,L+LW,tt,LN);T("Total matériel consommé",L+9,tt+7,{s:8.25,b:1});T(mfr(m.matTot),L+LW-9,tt+7,{s:8.25,b:1,r:1});
+  // totaux + paiement
+  const payH=m.bank?38:0,tbH=matH-(payH?payH+7.5:0);rr(rx,top,RW,tbH,4.5,{border:LN});
+  let ty=top;if(m.taxes){const ln=(a,sub,b,first)=>{if(!first)hl(rx,rx+RW,ty);const aw=T(a,rx+10.5,ty+6.5,{s:8.25});if(sub)T("· "+sub,rx+10.5+aw+4,ty+7.3,{s:6.75,col:MU});T(b,rx+RW-10.5,ty+6.5,{s:8.25,r:1,b:first?1:0});ty+=20};
+   ln("Sous-total","",mfr(m.T.st),1);ln(`TPS ${String(+c.tauxTps||0).replace(".",",")} %`,c.tps,mfr(m.T.tps));ln(`TVQ ${String(+c.tauxTvq||0).replace(".",",")} %`,c.tvq,mfr(m.T.tvq))}
+  totBar(rx,top+tbH-32,RW,32,"Total à payer",m.T.tot);
+  if(m.bank){const py=top+tbH+7.5;rr(rx,py,RW,payH,4.5,{fill:PANEL});T("INFORMATIONS DE PAIEMENT",rx+10.5,py+7,{s:6.75,b:1,col:MU});
+   const parts=[["Transit ",m.bank.transit],["Institution ",m.bank.institution],["Folio ",m.bank.folio]];const sw=parts.map(([a,b])=>wd(a,F,7.9)+wd(b,B,7.9));const gap=(RW-21-sw.reduce((a,b)=>a+b,0))/2;let px=rx+10.5;
+   parts.forEach(([a,b],i)=>{const aw=T(a,px,py+20,{s:7.9});T(b,px+aw,py+20,{s:7.9,b:1});px+=sw[i]+gap})}
+  y=top+matH+9;
+  notesL.forEach(l=>{T(l,L,y,{s:7.9});y+=10.5});
+  m.msg.forEach(l=>{const w=richW(l,9.75);rich(l,(L+R)/2-w/2,y+1,9.75,TX);y+=14.6});
+ }else{
+  notesL.forEach(l=>{T(l,L,y,{s:7.9});y+=10.5});
+  rr(L,y,R-L,condH,4.5,{fill:PANEL});let cyy=y+9;
+  condL.forEach(x=>{if(x.title){pg.drawText(clean(x.l.replace(/\*\*/g,"")),{x:L+12,y:H-cyy-7.9*.78,size:7.9,font:B,color:K});cyy+=11.25;return}
+   const ind=L+12+(x.sub?16.5:0);if(x.first){if(x.sub)pg.drawLine({start:{x:ind,y:H-cyy-3.4},end:{x:ind+4,y:H-cyy-3.4},thickness:.8,color:TX});else pg.drawCircle({x:ind+1.6,y:H-cyy-3.3,size:1.2,color:TX})}
+   rich(x.l,ind+9,cyy,7.5,TX);cyy+=11.25});
+  y+=condH+9}
+ // signature
+ hl(L,R,y,LN);y+=6;T(m.salut,L,y,{s:9,col:TX});y+=13.5;m.sig.forEach((l,i)=>{T(l,L,y,{s:9,b:i===0?1:0,col:i===0?K:TX});y+=13.5});
+ const n=pdf.getPageCount();pdf.getPages().forEach((p,k)=>p.drawText(`Page ${k+1} de ${n}`,{x:R-wd(`Page ${k+1} de ${n}`,F,7.1),y:BOT-8,size:7.1,font:F,color:MU}));
+ return pdf.save()}
 
 /* ---------- évènements (chefs d'équipe) ---------- */
 function evTabs(){const n=S.docs.filter(isArch).length;return`<div class="seg" style="margin-bottom:12px"><button class="${S.evTab!=="arch"?"on":""}" data-evt="cours">En cours</button><button class="${S.evTab==="arch"?"on":""}" data-evt="arch">Archivés <span class="note">${n}</span></button></div>`}
