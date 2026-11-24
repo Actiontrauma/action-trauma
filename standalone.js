@@ -104,13 +104,15 @@ document.addEventListener("visibilitychange",async()=>{if(document.visibilitySta
 
 const snap=p=>({id:p.split("/").pop(),ref:docRef(p),exists:cache.has(p),data:()=>clone(cache.get(p)),metadata:{fromCache:false,hasPendingWrites:false}});
 async function write(p,d){const prev=cache.has(p)?cache.get(p):undefined;cache.set(p,d);schedule();
- const {error}=await sb.from(T).upsert({path:p,col:p.split("/")[0],data:d,updated_at:new Date().toISOString()});
+ const row={col:p.split("/")[0],data:d,updated_at:new Date().toISOString()};
+ let {data:rw,error}=prev!==undefined?await sb.from(T).update(row).eq("path",p).select("path"):await sb.from(T).upsert({path:p,...row}).select("path");
+ if(!error&&(!rw||!rw.length))error={message:"Écriture refusée : ton rôle ne permet pas cette modification."};
  if(error){if(prev===undefined)cache.delete(p);else cache.set(p,prev);schedule();throw Object.assign(new Error(error.message||"Écriture refusée"),{code:"permission-denied"})}}
 function docRef(p){return{id:p.split("/").pop(),path:p,
  get:async()=>snap(p),
  set:async(d,o)=>write(p,o&&o.merge?{...(clone(cache.get(p))||{}),...clone(d)}:clone(d)),
  update:async d=>{if(!cache.has(p))throw Object.assign(new Error("Document introuvable"),{code:"not-found"});return write(p,{...clone(cache.get(p)),...clone(d)})},
- delete:async()=>{const prev=cache.get(p);cache.delete(p);schedule();const {error}=await sb.from(T).delete().eq("path",p);if(error){if(prev!==undefined)cache.set(p,prev);schedule();throw new Error(error.message)}},
+ delete:async()=>{const prev=cache.get(p);cache.delete(p);schedule();let {data:rw,error}=await sb.from(T).delete().eq("path",p).select("path");if(!error&&(!rw||!rw.length)&&prev!==undefined)error={message:"Suppression refusée : réservée à l'administrateur."};if(error){if(prev!==undefined)cache.set(p,prev);schedule();throw new Error(error.message)}},
  onSnapshot:(next,err)=>{const f=()=>next(snap(p));subs.add(f);setTimeout(f);return()=>subs.delete(f)}}}
 const list=c=>[...cache.keys()].filter(k=>k.startsWith(c+"/")&&k.split("/").length===2).sort();
 function col(c){const q={limit:()=>q,where:()=>q,orderBy:()=>q,doc:id=>docRef(c+"/"+(id||rid())),
