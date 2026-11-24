@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261124174607">
+<link rel="manifest" href="manifest.webmanifest?v=20261124175216">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261124174607">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261124175216">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261124174607"></script>
-<script src="standalone.js?v=20261124174607"></script>
+<script src="config.js?v=20261124175216"></script>
+<script src="standalone.js?v=20261124175216"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -288,6 +288,7 @@ details.esec{border:1px solid var(--line,#dee2e6);border-radius:10px;padding:0 1
 .dld{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--brand,#dcf94a);color:#111;border-radius:10px;height:50px}.dld b{font:700 20px/1 Outfit,sans-serif}.dld small{font-size:11px;text-transform:uppercase}
 .dlm{display:flex;flex-direction:column;min-width:0}.dlm .note{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dlq{font-size:12.5px;font-weight:600;white-space:nowrap}.dlq.okq{color:#2b8a3e}
 @media(max-width:600px){.dash{grid-template-columns:1fr 1fr;gap:8px}.dt{padding:12px;min-height:110px}.dt>b{font-size:22px}.dtl{font-size:13px}.dl{grid-template-columns:46px minmax(0,1fr)}.dlq{grid-column:2}}
+@media(max-width:700px){.arl .cfrow>.pill{display:inline-block;grid-column:2;justify-self:start}}
 .totals .profit{border-top:1px dashed var(--line,#ddd);margin-top:8px;padding-top:8px;font-size:14px;color:#0b7a5a}.totals .profit small{color:var(--muted,#666);font-weight:400}.totals .profit .neg{color:#e03131;font-weight:700}@media print{.totals .profit{display:none}}
 .rrow{display:grid;grid-template-columns:minmax(0,2.2fr) repeat(4,minmax(0,1fr)) 70px;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line,#eee)}.rrow.hd{font-size:12px;color:var(--muted,#666);font-weight:600}.rrow .r{text-align:right}.rrow .neg{color:#e03131;font-weight:700}
 @media(max-width:700px){.rrow{grid-template-columns:minmax(0,1fr) auto auto}.rrow .rx{display:none}}
@@ -1157,13 +1158,10 @@ function renderRecevoir(){const t=today(),F=S.docs.filter(d=>d.type==="facture"&
  const B=[["0-30","0 à 30 jours",0,30],["31-60","31 à 60 jours",31,60],["61-90","61 à 90 jours",61,90],["90+","Plus de 90 jours",91,1e9]];
  const bk=d=>{const a=age(d);return B.find(b=>a>=b[2]&&a<=b[3])[0]};
  const tot=k=>r2(F.filter(d=>!k||bk(d)===k).reduce((a,d)=>a+(+d.total||0),0));
- const byC={};F.forEach(d=>{const o=orgOf(d),k=o?o.id:"c:"+(d.client.entreprise||"?");(byC[k]=byC[k]||{nom:o?o.nom:(d.client.entreprise||"(sans client)"),L:[]}).L.push(d)});
- const C=Object.values(byC).map(c=>({...c,t:r2(c.L.reduce((a,d)=>a+(+d.total||0),0)),old:Math.max(...c.L.map(age))})).sort((a,b)=>b.t-a.t);
  const ageCls=a=>a>90?"ag4":a>60?"ag3":a>30?"ag2":"ag1";
  $("#app").innerHTML=`<div class="ehead"><div><h2>Comptes à recevoir</h2><p class="note" style="margin:2px 0 0">Factures envoyées qui ne sont pas encore payées, selon leur ancienneté (jours depuis la date de la facture)</p></div></div>
  <div class="agegrid"><div class="stat ${tot()?"alert":""}"><b>${money(tot())}</b><span>Total à recevoir · ${F.length} facture${F.length>1?"s":""}</span></div>${B.map(b=>`<div class="stat ${"ag"+(B.indexOf(b)+1)}"><b>${money(tot(b[0]))}</b><span>${b[1]}</span></div>`).join("")}</div>
- ${C.length?`<div class="list" style="margin-top:12px">${C.map((c,ci)=>{const op=(S.arOpen||{})[ci];return`<details class="pyd" data-ac="${ci}" ${op?"open":""}><summary><b>${esc(c.nom)}</b><span class="note">${c.L.length} facture${c.L.length>1?"s":""} · la plus ancienne : ${c.old} jours</span><b class="r due">${money(c.t)}</b><span class="pyv">${op?"Masquer":"Voir les factures"}</span></summary><div class="list" style="margin:0 14px 12px">${c.L.sort((a,b)=>age(b)-age(a)).map(d=>`<div class="cfrow"><span class="num f">${label(d)}</span><span>${esc(d.evenement.nom||"")}<div class="note">Facturée le ${fdate(d.date)} · échéance ${fdate(echeance(d))}</div></span><span class="pill ${ageCls(age(d))}">${age(d)} jours</span><b class="r">${money(d.total)}</b><span></span><span class="cfa"><button class="btn" data-cfv="${esc(d.id)}">Aperçu</button><button class="btn" data-cfp="${esc(d.id)}">PDF</button></span></div>`).join("")}</div></details>`}).join("")}</div>`:`<div class="card" style="margin-top:12px"><p class="note" style="margin:0">Aucune facture en attente de paiement.</p></div>`}`;
- document.querySelectorAll("[data-ac]").forEach(d=>d.ontoggle=()=>{S.arOpen=S.arOpen||{};S.arOpen[d.dataset.ac]=d.open;const v=d.querySelector(".pyv");if(v)v.textContent=d.open?"Masquer":"Voir les factures"});
+ ${F.length?`<div class="list arl" style="margin-top:12px">${F.slice().sort((a,b)=>age(b)-age(a)||(+b.total||0)-(+a.total||0)).map(d=>{const e=d.evenement||{},o=orgOf(d);return`<div class="cfrow"><span class="num f">${label(d)}</span><span><b>${esc(e.nom||"(évènement sans nom)")}</b><div class="note">${esc(o?o.nom:(d.client.entreprise||""))}${e.date?" · évènement du "+fdate(e.date):""}<br>Facturée le ${fdate(d.date)} · échéance ${fdate(echeance(d))}</div></span><span class="pill ${ageCls(age(d))}">${age(d)} jours</span><b class="r">${money(d.total)}</b><span></span><span class="cfa"><button class="btn" data-cfv="${esc(d.id)}">Aperçu</button><button class="btn" data-cfp="${esc(d.id)}">PDF</button></span></div>`}).join("")}</div>`:`<div class="card" style="margin-top:12px"><p class="note" style="margin:0">Aucune facture en attente de paiement.</p></div>`}`;
  document.querySelectorAll("[data-cfv]").forEach(b=>b.onclick=()=>previewModal(S.docs.find(d=>d.id===b.dataset.cfv)));
  document.querySelectorAll("[data-cfp]").forEach(b=>b.onclick=async()=>{const d=S.docs.find(x=>x.id===b.dataset.cfp);if(!S.dl){toast("Téléchargement non disponible ici.");return}b.disabled=true;try{await savePdf(d);toast("PDF enregistré")}catch(e){if(!(e&&e.code==="declined"))fail(e)}b.disabled=false})}
 
