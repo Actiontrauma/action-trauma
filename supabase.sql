@@ -99,7 +99,7 @@ create policy at_read on public.at_docs for select to authenticated using (
   case public.at_my_role()
     when 'admin'  then true
     when 'compta' then true
-    when 'chef'   then col <> 'prive' or path = 'prive/' || coalesce(public.at_my_emp(), '-')
+    when 'chef'   then true   -- voit tout, y compris les fiches personnelles (lecture seule : prive est réservé à l'admin en écriture)
     when 'employe' then
          col in ('config', 'acces')
       or path = 'prive/' || coalesce(public.at_my_emp(), '-')
