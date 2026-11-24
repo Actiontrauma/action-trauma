@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261124173240">
+<link rel="manifest" href="manifest.webmanifest?v=20261124173646">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261124173240">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261124173646">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261124173240"></script>
-<script src="standalone.js?v=20261124173240"></script>
+<script src="config.js?v=20261124173646"></script>
+<script src="standalone.js?v=20261124173646"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -445,7 +445,7 @@ function headerNext(){const el=$("#hNext");if(!el)return;const r=role();if(!S.db
  el.querySelector("button").onclick=()=>{if(tod.length>1){S.evTab="cours";location.hash="#evenements";S.view="evenements";render();scrollTo(0,0)}else openEv(n.x)}}
 function headerTotal(){headerNext();const y=today().slice(0,4),F=S.docs.filter(d=>d.type==="facture"&&d.statut!=="annulee"&&d.statut!=="brouillon"&&(d.date||"").startsWith(y));const e=$("#hTot");if(e)e.innerHTML=S.db?`<span>Facturé en ${y}</span><b>${money(F.reduce((a,d)=>a+d.total,0))}</b><span>taxes incluses</span>`:""}
 function render(){headerTotal();roBar();$("#gear")&&$("#gear").classList.toggle("on",S.view==="parametres");
- try{const nb={soumission:S.docs.filter(d=>d.type==="soumission"&&statutOf(d)[0]==="envoyee").length,facture:S.docs.filter(d=>d.type==="facture"&&(d.statut==="envoyee"||d.statut==="brouillon")).length,evenements:S.db?evList().length:0,paies:role()==="compta"?doneNew().length:0,recevoir:role()==="compta"?S.docs.filter(d=>d.type==="facture"&&d.statut==="envoyee"&&Date.parse(today())-Date.parse(d.date||today())>30*864e5).length:0,employes:role()==="admin"?certAlerts().length:0,utilisateurs:role()==="admin"?Object.keys(S.dem||{}).filter(id=>!((S.acces||{}).users||{})[id]).length:0};document.querySelectorAll("#nav a").forEach(a=>{const n=nb[a.dataset.v];let b=a.querySelector(".nb");if(n){if(!b){b=document.createElement("span");b.className="nb";a.appendChild(b)}b.textContent=n>99?"99+":n;b.title=n+(a.dataset.v==="evenements"?" à compléter ou facture non envoyée":a.dataset.v==="facture"?" non payée"+(n>1?"s":""):a.dataset.v==="paies"?" évènement"+(n>1?"s":"")+" terminé"+(n>1?"s":"")+" depuis ta dernière visite":a.dataset.v==="recevoir"?" facture"+(n>1?"s":"")+" impayée"+(n>1?"s":"")+" depuis plus de 30 jours":a.dataset.v==="employes"?" certification"+(n>1?"s":"")+" expirée"+(n>1?"s":"")+" ou bientôt":a.dataset.v==="utilisateurs"?" demande"+(n>1?"s":"")+" d'accès":" en attente de réponse")}else if(b)b.remove()})}catch(e){}
+ try{const nb={soumission:S.docs.filter(d=>d.type==="soumission"&&statutOf(d)[0]==="envoyee").length,facture:S.docs.filter(d=>d.type==="facture"&&(d.statut==="envoyee"||d.statut==="brouillon")).length,evenements:S.db?evList().length:0,paies:role()==="compta"?doneNew().length:0,recevoir:role()==="compta"?S.docs.filter(d=>d.type==="facture"&&d.statut==="envoyee"&&Date.parse(today())-Date.parse(d.date||today())>30*864e5).length:0,employes:0,utilisateurs:role()==="admin"?Object.keys(S.dem||{}).filter(id=>!((S.acces||{}).users||{})[id]).length:0};document.querySelectorAll("#nav a").forEach(a=>{const n=nb[a.dataset.v];let b=a.querySelector(".nb");if(n){if(!b){b=document.createElement("span");b.className="nb";a.appendChild(b)}b.textContent=n>99?"99+":n;b.title=n+(a.dataset.v==="evenements"?" à compléter ou facture non envoyée":a.dataset.v==="facture"?" non payée"+(n>1?"s":""):a.dataset.v==="paies"?" évènement"+(n>1?"s":"")+" terminé"+(n>1?"s":"")+" depuis ta dernière visite":a.dataset.v==="recevoir"?" facture"+(n>1?"s":"")+" impayée"+(n>1?"s":"")+" depuis plus de 30 jours":a.dataset.v==="employes"?" certification"+(n>1?"s":"")+" expirée"+(n>1?"s":"")+" ou bientôt":a.dataset.v==="utilisateurs"?" demande"+(n>1?"s":"")+" d'accès":" en attente de réponse")}else if(b)b.remove()})}catch(e){}
  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===(S.view==="editeur"?(S.edit&&S.edit.type):S.view==="documents"?S.f.type:(S.view==="evenement"||S.view==="evarch")?"evenements":S.view)));
  const app=$("#app");
  if(!S.db){app.innerHTML=S.noDb?`<div class="card"><h3>Données non accessibles</h3><p>Ouvre cette application dans Claude en étant connecté à ton compte (ou au compte avec lequel elle a été partagée) pour voir tes clients, soumissions et factures.</p></div>`:`<div class="empty">Connexion à tes données…</div>`;return}
