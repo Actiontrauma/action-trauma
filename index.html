@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261124182049">
+<link rel="manifest" href="manifest.webmanifest?v=20261124190808">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261124182049">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261124190808">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261124182049"></script>
-<script src="standalone.js?v=20261124182049"></script>
+<script src="config.js?v=20261124190808"></script>
+<script src="standalone.js?v=20261124190808"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -363,7 +363,7 @@ function pvBar(){let b=$("#pvbar");if(!S.preview){if(b)b.remove();return}if(!b){
  b.innerHTML=`<span>👁 Aperçu en tant ${S.preview==="employe"?"qu'":"que "}<b>${S.preview==="compta"?"comptabilité":S.preview==="employe"?"employé":"chef d'équipe"}</b>${S.pvEmp?". Ce que tu enregistres ici est réel.":" (session générique). Aucune modification n'est enregistrée."}</span><button class="btn" id="pvExit">Revenir à l'administrateur</button>`;
  $("#pvExit").onclick=()=>{S.preview=null;S.pvEmp=null;S.view="utilisateurs";try{history.replaceState(null,"","#utilisateurs")}catch(e){}render();scrollTo(0,0)}}
 function myEmp(){if(S.preview)return S.pvEmp||"";const u=((S.acces||{}).users||{})[S.me];return u?u.emp:""}
-function meHeader(){const el=$("#hMe");if(!el)return;if(role()==="compta"){const u=((S.acces||{}).users||{})[S.me],e=u&&(cfg().employes||[]).find(x=>x.id===u.emp);el.innerHTML=`<small>Comptabilité${S.preview?" (aperçu)":""}</small><b>${esc(e?e.nom:"")}</b>`;return}if(role()!=="chef"&&role()!=="employe"){el.innerHTML="";return}const e=(cfg().employes||[]).find(x=>x.id===myEmp());el.innerHTML=`<small>${role()==="chef"?"Chef d'équipe":"Employé"}${S.preview?" (aperçu)":""}</small><b>${esc(e?e.nom:S.preview?(ROLES[S.preview]||""):"")}</b>`}
+function meHeader(){const el=$("#hMe");if(!el)return;if(role()==="compta"){const u=((S.acces||{}).users||{})[S.me],e=u&&(cfg().employes||[]).find(x=>x.id===u.emp);el.innerHTML=`<small>Comptabilité${S.preview?" (aperçu)":""}</small><b>${esc(e?e.nom:(u&&!S.preview&&u.nom)||"")}</b>`;return}if(role()!=="chef"&&role()!=="employe"){el.innerHTML="";return}const e=(cfg().employes||[]).find(x=>x.id===myEmp());el.innerHTML=`<small>${role()==="chef"?"Chef d'équipe":"Employé"}${S.preview?" (aperçu)":""}</small><b>${esc(e?e.nom:S.preview?(ROLES[S.preview]||""):"")}</b>`}
 function renderMoi(){const emps=(cfg().employes||[]).slice().sort((a,b)=>a.nom.localeCompare(b.nom,"fr"));
  const id=myEmp()||(S.preview?"__apercu":""),e=emps.find(x=>x.id===id)||(S.preview&&id==="__apercu"?{id,nom:ROLES[S.preview]||"Employé"}:null),ys=empYears(),y=S.moiY&&ys.includes(S.moiY)?S.moiY:today().slice(0,4);
  const pick="";
@@ -601,7 +601,7 @@ function evStart(d){const e=d.evenement||{},ds=[e.date,...(e.quarts||[]).map(q=>
 function goTo(k){S.etab=undefined;if(k.startsWith("doc:")){const[,ty,st]=k.split(":");S.f.type=ty;S.f.statut=st;S.f.annee="toutes";S.f.q="";location.hash=ty==="soumission"?"#soumissions":"#factures";route();return}
  if(k.startsWith("emp:")){S.etab=k.slice(4);location.hash="#employes";route();scrollTo(0,0);return}location.hash="#"+k;route();scrollTo(0,0)}
 function renderAccueil(){const rl=role(),t=today(),y=t.slice(0,4),me=myEmp(),emp=empById(me),c=cfg(),in30=addDays(t,30);
- const nm=rl==="admin"?(()=>{const u=((S.acces||{}).users||{})[S.me],e=u&&empById(u.emp);return e?e.nom:""})():emp?emp.nom:"";
+ const nm=(rl==="admin"||rl==="compta")&&!S.preview?(()=>{const u=((S.acces||{}).users||{})[S.me],e=u&&empById(u.emp);return e?e.nom:(u&&u.nom)||""})():emp?emp.nom:"";
  const hr=new Date().getHours(),hi=hr<12?"Bonjour":hr<18?"Bon après-midi":"Bonsoir";
  const tile=(go,ic,n,lab,sub,cls)=>`<button class="dt ${cls||""}" data-dgo="${esc(go)}"><span class="dti">${ic}</span><b>${n}</b><span class="dtl">${lab}</span>${sub?`<span class="dts">${sub}</span>`:""}</button>`;
  const T=[];let lists="";
@@ -1473,7 +1473,7 @@ async function saveEventHours(s,f,finish){if(s&&f&&f.sourceId&&f.sourceId!==s.id
 
 /* ---------- utilisateurs ---------- */
 async function renderUsers(){if(role()!=="admin"){S.view="evenements";return render()}
- const A=(S.acces&&S.acces.users)||{},ids=Object.keys(A),emps=cfg().employes||[],en=id=>{const e=emps.find(x=>x.id===id);return e?e.nom:"(employé retiré)"};
+ const A=(S.acces&&S.acces.users)||{},ids=Object.keys(A),emps=cfg().employes||[],en=(id,u)=>{if(!id&&u&&u.nom)return u.nom;const e=emps.find(x=>x.id===id);return e?e.nom:"(employé retiré)"};
  let P={};const pid=[...ids,...Object.keys(S.dem||{})];try{P=S.U&&pid.length?await S.U.profiles(pid):{}}catch(e){}
  const used=new Set(Object.values(A).map(u=>u.emp));
  $("#app").innerHTML=`<div class="ehead"><div><h2>Utilisateurs</h2><p class="note" style="margin:4px 0 0">Les employés qui ont accès à cette plateforme, et ce qu'ils peuvent faire.</p></div></div>
@@ -1488,7 +1488,7 @@ async function renderUsers(){if(role()!=="admin"){S.view="evenements";return ren
  </div>`}
  <div class="card"><div class="uhead"><h3 style="margin:0">Accès actuels</h3><div class="uhb"><button class="btn" id="pvEmpl">👁 Voir comme employé</button><button class="btn" id="pvChef">👁 Voir comme chef d'équipe</button><button class="btn" id="pvCompta">👁 Voir comme comptabilité</button></div></div><div class="list">
   <div class="urow"><div><b>${S.isOwner?"Toi":"Propriétaire de la plateforme"}</b><div class="note">${S.isOwner?"Propriétaire":"Propriétaire"}</div></div><span class="note">Accès complet</span><span class="urole">Administrateur</span><span></span></div>
-  ${ids.map(id=>{const u=A[id],p=P[id]||{};return`<div class="urow"><div><b>${esc(en(u.emp))}</b><div class="note">${esc(p.name||"")}${(p.email||u.email)?(p.name?" · ":"")+esc(p.email||u.email):""}${!p.name&&!p.email&&!u.email?"Compte Claude lié":""}</div></div><span class="note">${u.role==="chef"?"Évènements, ses quarts et ses statistiques":u.role==="employe"?"Ses quarts, ses statistiques et sa fiche":u.role==="compta"?"Paies, factures et comptes à recevoir":"Accès complet"}</span><select data-ur="${esc(id)}" class="ua" aria-label="Type d'utilisateur">${Object.entries(ROLES).map(([k,t])=>`<option value="${k}" ${u.role===k?"selected":""}>${t}</option>`).join("")}</select><span class="uacts">${u.role==="chef"||u.role==="employe"||u.role==="compta"?`<button class="btn" data-pr="${esc(u.role)}" data-pv="${esc(u.emp)}" title="Voir l'application comme ${esc(en(u.emp))}" aria-label="Voir l'application comme ${esc(en(u.emp))}">👁</button>`:`<span class="uph"></span>`}${window.AT_SA?`<button class="btn" data-upw="${esc(id)}" title="Changer le mot de passe">🔑</button>`:""}<button class="btn d" data-ux="${esc(id)}">Retirer</button></span></div>`}).join("")}
+  ${ids.map(id=>{const u=A[id],p=P[id]||{};return`<div class="urow"><div><b>${esc(en(u.emp,u))}</b><div class="note">${!u.emp&&u.nom?"Hors de la liste des employés · ":""}${esc(p.name||"")}${(p.email||u.email)?(p.name?" · ":"")+esc(p.email||u.email):""}${!p.name&&!p.email&&!u.email?"Compte Claude lié":""}</div></div><span class="note">${u.role==="chef"?"Évènements, ses quarts et ses statistiques":u.role==="employe"?"Ses quarts, ses statistiques et sa fiche":u.role==="compta"?"Paies, factures et comptes à recevoir":"Accès complet"}</span><select data-ur="${esc(id)}" class="ua" aria-label="Type d'utilisateur">${Object.entries(ROLES).map(([k,t])=>`<option value="${k}" ${u.role===k?"selected":""}>${t}</option>`).join("")}</select><span class="uacts">${u.role==="chef"||u.role==="employe"||u.role==="compta"?`<button class="btn" data-pr="${esc(u.role)}" data-pv="${esc(u.emp)}" title="Voir l'application comme ${esc(en(u.emp,u))}" aria-label="Voir l'application comme ${esc(en(u.emp,u))}">👁</button>`:`<span class="uph"></span>`}${window.AT_SA?`<button class="btn" data-upw="${esc(id)}" title="Changer le mot de passe">🔑</button>`:""}<button class="btn d" data-ux="${esc(id)}">Retirer</button></span></div>`}).join("")}
  </div><p class="note">${window.AT_SA?"Retirer un utilisateur supprime son compte : il ne pourra plus se connecter. 🔑 permet de lui donner un nouveau mot de passe.":"Retirer un utilisateur ici lui enlève son rôle dans l'application. Pour lui couper complètement l'accès, retire-le aussi du partage de la page dans Claude."}</p></div>`;
  document.querySelectorAll("[data-rq]").forEach(r=>{const id=r.dataset.rq;
   r.querySelector("[data-rqok]").onclick=async()=>{const emp=r.querySelector("[data-rqe]").value,rl=r.querySelector("[data-rqr]").value;if(!emp){toast("Choisis l'employé.");return}
@@ -1500,8 +1500,8 @@ async function renderUsers(){if(role()!=="admin"){S.view="evenements";return ren
  $("#pvChef").onclick=()=>{S.pvEmp="";S.preview="chef";S.view="evenements";try{history.replaceState(null,"","#evenements")}catch(e){}render();scrollTo(0,0)};
  if($("#u-copy"))$("#u-copy").onclick=async()=>{const v=$("#u-link").value;try{await navigator.clipboard.writeText(v);toast("Lien copié")}catch(e){$("#u-link").select();toast("Sélectionne le lien et copie-le")}};
  const save=async(users,msg)=>{try{await S.db.doc("acces/roles").set({users});toast(msg)}catch(e){fail(e)}};
- document.querySelectorAll("[data-ur]").forEach(sel=>sel.onchange=async()=>{const u=A[sel.dataset.ur];await save({...A,[sel.dataset.ur]:{...u,role:sel.value}},"Type d'utilisateur modifié");if(sel.value==="chef")await setEmpChef(u.emp)});
- document.querySelectorAll("[data-ux]").forEach(b=>b.onclick=async()=>{const u=A[b.dataset.ux];if(!await ask(`Retirer l'accès de ${en(u.emp)}?`,"Retirer",true))return;const n={...A};delete n[b.dataset.ux];await save(n,"Accès retiré");if(window.AT_SA)AT_SA.deleteUser(b.dataset.ux).catch(()=>{})});
+ document.querySelectorAll("[data-ur]").forEach(sel=>sel.onchange=async()=>{const u=A[sel.dataset.ur];if(!u.emp&&(sel.value==="employe"||sel.value==="chef")){toast("Cette personne ne fait pas partie de la liste des employés : elle peut seulement être Comptabilité ou Administrateur.");sel.value=u.role;return}await save({...A,[sel.dataset.ur]:{...u,role:sel.value}},"Type d'utilisateur modifié");if(sel.value==="chef")await setEmpChef(u.emp)});
+ document.querySelectorAll("[data-ux]").forEach(b=>b.onclick=async()=>{const u=A[b.dataset.ux];if(!await ask(`Retirer l'accès de ${en(u.emp,u)}?`,"Retirer",true))return;const n={...A};delete n[b.dataset.ux];await save(n,"Accès retiré");if(window.AT_SA)AT_SA.deleteUser(b.dataset.ux).catch(()=>{})});
  if(window.AT_SA)AT_SA.bindUsers({A,en,toast,fail,ask,setEmpChef,roles:ROLES,saveRoles:users=>S.db.doc("acces/roles").set({users})});
 }
 

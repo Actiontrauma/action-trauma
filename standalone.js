@@ -173,7 +173,8 @@ window.AT_SA={
  addCardHTML:emps=>`<div class="card"><h3>Ajouter un utilisateur</h3>
   <p class="note" style="margin-top:0">Crée son compte ici, puis donne-lui son courriel, son mot de passe et le lien de l'application. Il pourra se connecter tout de suite.</p>
   <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 14px;align-items:end">
-   <div><label for="nu-e">Employé</label><select id="nu-e"><option value="">— Choisir —</option>${emps.map(e=>`<option value="${esc(e.id)}" data-mail="${esc(e.courriel||"")}">${esc(e.nom)}</option>`).join("")}</select></div>
+   <div><label for="nu-e">Employé</label><select id="nu-e"><option value="">— Choisir —</option><option value="__ext">➕ Personne hors de la liste des employés</option>${emps.map(e=>`<option value="${esc(e.id)}" data-mail="${esc(e.courriel||"")}">${esc(e.nom)}</option>`).join("")}</select></div>
+   <div id="nu-nw" style="display:none"><label for="nu-n">Nom complet</label><input id="nu-n" autocomplete="off" placeholder="ex. Réjeanne Arseneault"></div>
    <div><label for="nu-r">Type d'utilisateur</label><select id="nu-r"><option value="employe">Employé</option><option value="chef">Chef d'équipe</option><option value="compta">Comptabilité</option><option value="admin">Administrateur</option></select></div>
    <div><label for="nu-m">Courriel (sert à se connecter)</label><input id="nu-m" type="email" autocomplete="off"></div>
    <div><label for="nu-p">Mot de passe</label><input id="nu-p" type="text" autocomplete="off" placeholder="8 caractères minimum"></div>
@@ -181,24 +182,24 @@ window.AT_SA={
   <div id="nu-done" style="margin-top:12px">${window.AT_SA._done||""}</div></div>`,
  bindUsers:({A,en,toast,fail,ask,setEmpChef,saveRoles})=>{
   const e=document.getElementById("nu-e");if(!e)return;
-  e.onchange=()=>{const o=e.selectedOptions[0];const m=document.getElementById("nu-m");if(o&&o.dataset.mail&&!m.value)m.value=o.dataset.mail};
-  document.getElementById("nu-ok").onclick=async ev=>{const emp=e.value,role=document.getElementById("nu-r").value,email=document.getElementById("nu-m").value.trim().toLowerCase(),pw=document.getElementById("nu-p").value;
-   if(!emp){toast("Choisis l'employé.");return}if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){toast("Courriel invalide.");return}if(pw.length<8){toast("Le mot de passe doit avoir au moins 8 caractères.");return}
+  e.onchange=()=>{const o=e.selectedOptions[0];const m=document.getElementById("nu-m");if(o&&o.dataset.mail&&!m.value)m.value=o.dataset.mail;const x=e.value==="__ext";document.getElementById("nu-nw").style.display=x?"":"none";const r=document.getElementById("nu-r");[...r.options].forEach(op=>op.disabled=x&&(op.value==="employe"||op.value==="chef"));if(x&&(r.value==="employe"||r.value==="chef"))r.value="compta";if(x)document.getElementById("nu-n").focus()};
+  document.getElementById("nu-ok").onclick=async ev=>{const ext=e.value==="__ext",nom=(document.getElementById("nu-n").value||"").trim(),emp=ext?"":e.value,role=document.getElementById("nu-r").value,email=document.getElementById("nu-m").value.trim().toLowerCase(),pw=document.getElementById("nu-p").value;
+   if(!ext&&!emp){toast("Choisis l'employé.");return}if(ext&&!nom){toast("Inscris le nom de la personne.");return}if(ext&&(role==="employe"||role==="chef")){toast("Un employé ou un chef d'équipe doit faire partie de la liste des employés.");return}if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){toast("Courriel invalide.");return}if(pw.length<8){toast("Le mot de passe doit avoir au moins 8 caractères.");return}
    if(Object.values(A).some(u=>(u.email||"").toLowerCase()===email)){toast("Ce courriel a déjà un accès.");return}
    const b=ev.currentTarget;b.disabled=true;b.textContent="Création…";
    try{const tmp=window.supabase.createClient(CFG.url,CFG.key,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false,storageKey:"at_tmp_signup"}});
     const {data,error}=await tmp.auth.signUp({email,password:pw});if(error)throw error;
     const nu=data&&data.user;if(!nu||(nu.identities&&nu.identities.length===0))throw new Error("already registered");
     try{await tmp.auth.signOut()}catch(x){}
-    await saveRoles({...A,[nu.id]:{emp,role,email}});if(role==="chef")await setEmpChef(emp);
+    await saveRoles({...A,[nu.id]:ext?{emp:"",nom,role,email}:{emp,role,email}});if(role==="chef"&&emp)await setEmpChef(emp);
     window.AT_SA._info=`Plateforme Action Trauma\nLien : ${location.origin+location.pathname}\nCourriel : ${email}\nMot de passe : ${pw}`;
-    window.AT_SA._done=`<div class="banner" style="margin:0"><b>Compte créé pour ${esc(en(emp))}.</b> Transmets-lui ces informations :<br>Lien : <b>${esc(location.origin+location.pathname)}</b><br>Courriel : <b>${esc(email)}</b><br>Mot de passe : <b>${esc(pw)}</b><br><button class="btn" id="nu-cp" style="margin-top:8px">Copier ces informations</button></div>`;
+    window.AT_SA._done=`<div class="banner" style="margin:0"><b>Compte créé pour ${esc(ext?nom:en(emp))}.</b> Transmets-lui ces informations :<br>Lien : <b>${esc(location.origin+location.pathname)}</b><br>Courriel : <b>${esc(email)}</b><br>Mot de passe : <b>${esc(pw)}</b><br><button class="btn" id="nu-cp" style="margin-top:8px">Copier ces informations</button></div>`;
     const d=document.getElementById("nu-done");if(d){d.innerHTML=window.AT_SA._done;bindCopy(toast)}
     toast("Compte créé");}
    catch(x){toast(frErr(x));b.disabled=false;b.textContent="Créer le compte"}};
   bindCopy(toast);
   document.querySelectorAll("[data-upw]").forEach(btn=>btn.onclick=async()=>{const id=btn.dataset.upw,u=A[id];
-   const pw=await atPrompt(`Nouveau mot de passe pour ${en(u.emp)} (8 caractères minimum) :`,genPw(),"Changer le mot de passe");if(pw===null)return;
+   const pw=await atPrompt(`Nouveau mot de passe pour ${en(u.emp,u)} (8 caractères minimum) :`,genPw(),"Changer le mot de passe");if(pw===null)return;
    if(pw.length<8){toast("8 caractères minimum.");return}
    const {error}=await sb.rpc("at_set_password",{uid:id,pw});if(error){fail(error);return}
    try{await navigator.clipboard.writeText(pw)}catch(x){}toast("Mot de passe changé"+(navigator.clipboard?" (copié)":""))});
