@@ -237,9 +237,9 @@ if("serviceWorker" in navigator&&location.protocol==="https:")window.addEventLis
 (function(){
   const cur=(()=>{const s=[...document.scripts].map(x=>x.src).find(x=>/standalone\.js\?v=\d+/.test(x));return s?s.match(/v=(\d+)/)[1]:null})();
   if(!cur)return;let shown=false;
-  async function check(){if(shown||document.hidden)return;try{const r=await fetch("index.html?chk="+Date.now(),{cache:"no-store"});if(!r.ok)return;const t=await r.text(),m=t.match(/standalone\.js\?v=(\d+)/);
-    if(m&&m[1]!==cur){shown=true;const b=document.createElement("div");b.id="atUpd";b.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#16181a;color:#fff;padding:10px 14px;border-radius:10px;display:flex;gap:12px;align-items:center;box-shadow:0 6px 24px rgba(0,0,0,.25);font:14px Inter,system-ui,sans-serif";
+  async function check(){if(shown||document.hidden)return;try{navigator.serviceWorker&&navigator.serviceWorker.getRegistration&&navigator.serviceWorker.getRegistration().then(r=>r&&r.update()).catch(()=>{})}catch(e){}try{const r=await fetch("index.html?chk="+Date.now(),{cache:"no-store"});if(!r.ok)return;const t=await r.text(),m=t.match(/standalone\.js\?v=(\d+)/);
+    if(m&&m[1]!==cur){if(document.getElementById("atF")||document.getElementById("atN")){location.reload();return}shown=true;const b=document.createElement("div");b.id="atUpd";b.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#16181a;color:#fff;padding:10px 14px;border-radius:10px;display:flex;gap:12px;align-items:center;box-shadow:0 6px 24px rgba(0,0,0,.25);font:14px Inter,system-ui,sans-serif";
       b.innerHTML='<span>Une nouvelle version de l’application est disponible.</span><button style="background:#dcf34a;color:#16181a;border:0;border-radius:8px;padding:7px 12px;font-weight:600;cursor:pointer">Mettre à jour</button>';
       b.querySelector("button").onclick=()=>location.reload();document.body.appendChild(b)}}catch(e){}}
-  setInterval(check,5*60*1000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)check()});window.addEventListener("focus",check);setTimeout(check,30000);
+  setInterval(check,2*60*1000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)check()});window.addEventListener("focus",check);window.addEventListener("online",check);window.addEventListener("pageshow",check);setTimeout(check,5000);
 })();

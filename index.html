@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261124194031">
+<link rel="manifest" href="manifest.webmanifest?v=20261124194308">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261124194031">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261124194308">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261124194031"></script>
-<script src="standalone.js?v=20261124194031"></script>
+<script src="config.js?v=20261124194308"></script>
+<script src="standalone.js?v=20261124194308"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -284,7 +284,7 @@ details.esec{border:1px solid var(--line,#dee2e6);border-radius:10px;padding:0 1
 .dt:hover,.dt:focus-visible{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.08);outline:none}.dt:focus-visible{outline:2px solid var(--ink)}
 .dt.warn{border-left-color:#f08c00}.dt.alert{border-left-color:#e03131}.dt.alert>b{color:#e03131}
 .dti{font-size:20px;line-height:1}.dt>b{font:700 28px/1.15 Outfit,Inter,sans-serif;margin-top:6px;color:var(--ink)}.dtl{font-weight:600;font-size:14px;color:var(--ink)}.dts{font-size:12.5px;color:var(--mute)}
-.dls{display:flex;flex-direction:column}.dl{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 6px;border-top:1px solid var(--line)}.dl:first-child{border-top:0}.nohrs{border-color:#e03131;background:light-dark(#fff5f5,#3a1d1d)}.nohrs h3{color:#c92a2a}.pill.nohp{background:#ffe3e3;color:#c92a2a;font-weight:700}.dl.ro{cursor:default}.dl.ro:hover{background:none}.dl:hover,.dl:focus-visible{background:light-dark(#f5f7fa,#1d2938);border-radius:10px}
+.dls{display:flex;flex-direction:column}.dl{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 6px;border-top:1px solid var(--line)}.dl:first-child{border-top:0}.nohrs{border-color:#e03131;background:light-dark(#fff5f5,#3a1d1d)}.nohrs h3{color:#c92a2a}.pill.nohp{background:#ffe3e3;color:#c92a2a;font-weight:700}.dl:hover,.dl:focus-visible{background:light-dark(#f5f7fa,#1d2938);border-radius:10px}
 .dld{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--brand,#dcf94a);color:#111;border-radius:10px;height:50px}.dld b{font:700 20px/1 Outfit,sans-serif}.dld small{font-size:11px;text-transform:uppercase}
 .dlm{display:flex;flex-direction:column;min-width:0}.dlm .note{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dlq{font-size:12.5px;font-weight:600;white-space:nowrap}.dlq.okq{color:#2b8a3e}
 @media(max-width:600px){.dash{grid-template-columns:1fr 1fr;gap:8px}.dt{padding:12px;min-height:110px}.dt>b{font-size:22px}.dtl{font-size:13px}.dl{grid-template-columns:46px minmax(0,1fr)}.dlq{grid-column:2}}
@@ -601,7 +601,7 @@ function evEnd(d){const e=d.evenement||{},ds=[e.date,...(e.quarts||[]).map(q=>q.
 function evStart(d){const e=d.evenement||{},ds=[e.date,...(e.quarts||[]).map(q=>q.date),...(e.jours||[]).map(j=>j.date)].filter(Boolean).sort();return ds[0]||d.date||""}
 function evNoHrs(x){const H=(x.f&&x.f.id&&(x.f.heures||[]).length?x.f.heures:(x.s&&x.s.heures)||(x.f&&x.f.heures)||[]);return !H.some(h=>HCATS.some(k=>+h[k]>0))}
 function evPastNoHrs(){const t=today();return evList().filter(x=>!(x.f&&x.f.termine)&&evEnd(x.s||x.f)<t&&evNoHrs(x)).sort((a,b)=>evEnd(a.s||a.f).localeCompare(evEnd(b.s||b.f)))}
-function noHrsCard(click){const L=evPastNoHrs();if(!L.length)return"";return`<div class="card nohrs"><h3 style="margin:0 0 6px">⚠ ${L.length} évènement${L.length>1?"s":""} passé${L.length>1?"s":""} sans aucune heure entrée</h3><ul style="margin:0;padding-left:18px">${L.map(x=>{const d=x.s||x.f;return`<li>${click?`<a href="#" data-nh="${esc(d.id)}">`:""}<b>${esc(d.evenement.nom||"(sans titre)")}</b>${click?"</a>":""} · ${fdate(evEnd(d))} · ${esc(d.client.entreprise||"")}</li>`}).join("")}</ul>${click?"":`<p class="note" style="margin:6px 0 0">Les heures doivent être entrées par un administrateur ou le chef d'équipe avant que les paies puissent être faites.</p>`}</div>`}
+function noHrsCard(click){const L=evPastNoHrs();if(!L.length)return"";return`<div class="card nohrs"><h3 style="margin:0 0 6px">⚠ ${L.length} évènement${L.length>1?"s":""} passé${L.length>1?"s":""} sans aucune heure entrée</h3><ul style="margin:0;padding-left:18px">${L.map(x=>{const d=x.s||x.f;return`<li><a href="#" ${click?`data-nh="${esc(d.id)}"`:`data-rsd="${esc(d.id)}"`}><b>${esc(d.evenement.nom||"(sans titre)")}</b></a> · ${fdate(evEnd(d))} · ${esc(d.client.entreprise||"")}</li>`}).join("")}</ul>${click?"":`<p class="note" style="margin:6px 0 0">Les heures doivent être entrées par un administrateur ou le chef d'équipe avant que les paies puissent être faites.</p>`}</div>`}
 function goTo(k){S.etab=undefined;if(k.startsWith("doc:")){const[,ty,st]=k.split(":");S.f.type=ty;S.f.statut=st;S.f.annee="toutes";S.f.q="";location.hash=ty==="soumission"?"#soumissions":"#factures";route();return}
  if(k.startsWith("emp:")){S.etab=k.slice(4);location.hash="#employes";route();scrollTo(0,0);return}location.hash="#"+k;route();scrollTo(0,0)}
 function renderAccueil(){const rl=role(),t=today(),y=t.slice(0,4),me=myEmp(),emp=empById(me),c=cfg(),in30=addDays(t,30);
@@ -620,7 +620,7 @@ function renderAccueil(){const rl=role(),t=today(),y=t.slice(0,4),me=myEmp(),emp
  const CA=certAlerts(),CAexp=CA.filter(a=>a.st==="exp").length;
  const dem=Object.keys(S.dem||{}).filter(id=>!((S.acces||{}).users||{})[id]).length;
  const evRow=(x,ro)=>{const d=x.s||x.f,e=d.evenement||{},qs=(e.quarts||[]),tot=qs.reduce((a,q)=>a+qSlots(q).length,0),fil=qs.reduce((a,q)=>a+qSlots(q).filter(Boolean).length,0),s0=evStart(d),s1=evEnd(d);
-  return`<${ro?"div":"button"} class="dl${ro?" ro":""}" ${ro?"":`data-dev="${esc(d.id)}"`}><span class="dld"><b>${new Date(s0+"T12:00:00").getDate()}</b><small>${new Date(s0+"T12:00:00").toLocaleDateString("fr-CA",{month:"short"}).replace(".","")}</small></span><span class="dlm"><b>${esc(e.nom||"(sans titre)")}</b><span class="note">${esc(d.client.entreprise||"")}${s1!==s0?" · jusqu'au "+fdate(s1):""}${e.adresse?" · "+esc(e.adresse):""}</span></span>${tot?`<span class="dlq ${fil<tot?"due":"okq"}">${fil<tot?`${tot-fil} à combler`:"✓ Complet"}</span>`:""}</${ro?"div":"button"}>`};
+  return`<button class="dl" ${ro?`data-rsd="${esc(d.id)}" title="Voir les détails"`:`data-dev="${esc(d.id)}"`}><span class="dld"><b>${new Date(s0+"T12:00:00").getDate()}</b><small>${new Date(s0+"T12:00:00").toLocaleDateString("fr-CA",{month:"short"}).replace(".","")}</small></span><span class="dlm"><b>${esc(e.nom||"(sans titre)")}</b><span class="note">${esc(d.client.entreprise||"")}${s1!==s0?" · jusqu'au "+fdate(s1):""}${e.adresse?" · "+esc(e.adresse):""}</span></span>${tot?`<span class="dlq ${fil<tot?"due":"okq"}">${fil<tot?`${tot-fil} à combler`:"✓ Complet"}</span>`:""}</button>`};
  if(rl==="admin"){
   T.push(tile("evenements","📅",up.filter(x=>evStart(x.s||x.f)<=in30).length,"Évènements dans les 30 prochains jours",up.length?`${up.length} à venir au total`:""));
   T.push(tile("quarts","👥",holes,"Places à combler dans les quarts",holes30?`${holes30} dans les 30 prochains jours`:"",holes30?"warn":""));
@@ -655,14 +655,15 @@ function renderAccueil(){const rl=role(),t=today(),y=t.slice(0,4),me=myEmp(),emp
  $("#app").innerHTML=`<div class="ehead"><div><h2>${hi}${nm?" "+esc(nm.split(" ")[0]):""}!</h2><p class="note" style="margin:2px 0 0;text-transform:none">${new Date(t+"T12:00:00").toLocaleDateString("fr-CA",{weekday:"long",day:"numeric",month:"long",year:"numeric"})}</p></div></div>
  <div class="dash">${T.join("")}</div>${lists}`;
  document.querySelectorAll("[data-dgo]").forEach(b=>b.onclick=()=>goTo(b.dataset.dgo));
+ document.querySelectorAll("[data-rsd]").forEach(b=>b.onclick=ev=>{ev.preventDefault();const d=S.docs.find(x=>x.id===b.dataset.rsd);if(d)routeSheet(d,true)});
  document.querySelectorAll("[data-dev]").forEach(b=>b.onclick=()=>{const d=S.docs.find(x=>x.id===b.dataset.dev);if(!d)return;openEv(d.type==="soumission"?{s:d,f:factOf(d)}:{s:null,f:d})})}
-function routeSheet(d){const e=d.evenement||{},o=orgById(docOrgId(d)),ct=o&&(o.contacts||[]).find(x=>x.id===d.clientId),staff=role()==="admin"||role()==="chef";
+function routeSheet(d,det){const e=d.evenement||{},o=orgById(docOrgId(d)),ct=o&&(o.contacts||[]).find(x=>x.id===d.clientId),staff=role()==="admin"||role()==="chef";
  const Q=(e.quarts||[]).slice().sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.debut||"").localeCompare(b.debut||"")),days=[...new Set(Q.map(q=>q.date).filter(Boolean))];
  const chef=((d.heures||[]).find(h=>h.chef)||{}).emp,team=[...new Set(Q.flatMap(q=>qSlots(q).filter(Boolean)))].map(empById).filter(Boolean).sort((a,b)=>a.nom.localeCompare(b.nom,"fr"));
  const svc=(d.lignes||[]).filter(l=>+l.qte&&!HCATS.includes(l.svc)&&!KMS.includes(l.svc)&&l.svc!=="materiel"&&!l.benev&&!String(l.svc||"").startsWith("bv_"));
  const A=(e.apporter||[]).filter(a=>apName(a));
  const sec=(t,h)=>h?`<section><h4>${t}</h4>${h}</section>`:"";
- const body=`<div class="rs"><div class="rshd"><img src="${esc(cfg().logo||($("#hLogo")||{}).src||"")}" alt="" onerror="this.remove()"><div><div class="note">Feuille de route · ${label(d)}</div><h2>${esc(e.nom||"(sans titre)")}</h2><div>${days.length?days.map(x=>dLong(x)).join(" · "):fdate(e.date||d.date)}</div></div></div>
+ const body=`<div class="rs"><div class="rshd"><img src="${esc(cfg().logo||($("#hLogo")||{}).src||"")}" alt="" onerror="this.remove()"><div><div class="note">${det?"Évènement":"Feuille de route"} · ${label(d)}</div><h2>${esc(e.nom||"(sans titre)")}</h2><div>${days.length?days.map(x=>dLong(x)).join(" · "):fdate(e.date||d.date)}</div></div></div>
  ${sec("Lieu",e.adresse?`<p>📍 ${esc(e.adresse)} <a class="nopr" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.adresse)}" target="_blank" rel="noopener">Ouvrir dans Maps</a></p>`:`<p class="note">Adresse à confirmer.</p>`)}
  ${sec("Client",`<p><b>${esc(d.client.entreprise||"")}</b>${d.client.contact?`<br>${esc(d.client.contact)}`:""}${ct&&ct.tel?` · <a href="tel:${esc(ct.tel)}">${esc(ct.tel)}</a>`:""}${d.client.courriel?`<br>${esc(d.client.courriel)}`:""}</p>`)}
  ${sec("Informations pertinentes",e.infos?`<p style="white-space:pre-wrap">${esc(e.infos)}</p>`:"")}
@@ -670,8 +671,8 @@ function routeSheet(d){const e=d.evenement||{},o=orgById(docOrgId(d)),ct=o&&(o.c
  ${staff&&team.some(t=>t.tel)?sec("Téléphones de l'équipe",`<p>${team.map(t=>`${esc(t.nom)}${t.tel?` : <a href="tel:${esc(t.tel)}">${esc(t.tel)}</a>`:""}`).join("<br>")}</p>`):""}
  ${sec("Matériel à apporter",A.length?`<ul class="rsck">${A.map(a=>`<li>☐ ${+a.qte>1?`<b>${a.qte} ×</b> `:""}${esc(apName(a))}</li>`).join("")}</ul>`:"")}
  ${sec("Services prévus",svc.length?`<ul>${svc.map(l=>`<li>${esc(l.desc||"")}${l.detail?` <span class="note">(${esc(l.detail)})</span>`:""} : ${fq(l.qte)}${l.unite?" "+esc(uLab(l.unite).replace("$/","")):""}</li>`).join("")}</ul>`:"")}
- <section><h4>Notes de l'équipe</h4><div class="rslines"></div></section></div>`;
- $("#modal").innerHTML=`<div class="modal"><div class="box wide"><h3>Feuille de route</h3><div class="mfoot"><button class="btn g" id="rsX">Fermer</button><button class="btn p" id="rsP">Imprimer</button></div>${body}</div></div>`;
+ ${det?"":`<section><h4>Notes de l'équipe</h4><div class="rslines"></div></section>`}</div>`;
+ $("#modal").innerHTML=`<div class="modal"><div class="box wide"><h3>${det?"Détails de l'évènement":"Feuille de route"}</h3><div class="mfoot"><button class="btn g" id="rsX">Fermer</button><button class="btn p" id="rsP">Imprimer</button></div>${body}</div></div>`;
  $("#rsX").onclick=closeM;$("#rsP").onclick=()=>{document.body.classList.add("printrs");const off=()=>{document.body.classList.remove("printrs");window.removeEventListener("afterprint",off)};window.addEventListener("afterprint",off);try{window.print()}catch(_){toast("Impression non disponible dans cette vue.")}setTimeout(off,60000)}}
 /* ---------- série de soumissions ---------- */
 function serieModal(src){const e0=src.evenement||{},d0=e0.date||"",m=/#\s*(\d+)/.exec(e0.nom||""),st0=statutOf(src)[0];let D=[""];
@@ -1312,6 +1313,7 @@ function renderPaies(opt){const emb=opt&&opt.emb,all=paieRows(),show=emb?"apayer
  <p class="note">Montants calculés avec les salaires de l'année de chaque évènement, prime de chef d'équipe et remboursement des kilomètres inclus. Seuls les évènements terminés (ou dont la facture est envoyée ou payée) apparaissent.</p>`;
  document.querySelectorAll("[data-ps]").forEach(b=>b.onclick=()=>{S.payShow=b.dataset.ps;render()});
  if(emb)document.querySelectorAll("[data-et]").forEach(b=>b.onclick=()=>{S.etab=b.dataset.et;render()});
+ document.querySelectorAll("[data-rsd]").forEach(b=>b.onclick=ev=>{ev.preventDefault();const d=S.docs.find(x=>x.id===b.dataset.rsd);if(d)routeSheet(d,true)});
  if($("#doneOk"))$("#doneOk").onclick=()=>{try{localStorage.setItem(doneKey(),new Date().toISOString())}catch(e){}render()};
  if($("#annCsv"))$("#annCsv").onclick=async()=>{if(!S.dl){toast("Téléchargement non disponible ici.");return}try{await S.dl.save({filename:`Sommaire des paies ${y}.csv`,data:new Blob([paieAnnuelCSV(all,y)],{type:"text/csv"})});toast("Sommaire exporté")}catch(e){if(!(e&&e.code==="declined"))fail(e)}};
  document.querySelectorAll("[data-py]").forEach(b=>b.onclick=()=>{S.payY=b.dataset.py;render()});
