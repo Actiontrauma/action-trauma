@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261124192342">
+<link rel="manifest" href="manifest.webmanifest?v=20261124193307">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261124192342">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261124193307">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261124192342"></script>
-<script src="standalone.js?v=20261124192342"></script>
+<script src="config.js?v=20261124193307"></script>
+<script src="standalone.js?v=20261124193307"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -284,7 +284,7 @@ details.esec{border:1px solid var(--line,#dee2e6);border-radius:10px;padding:0 1
 .dt:hover,.dt:focus-visible{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.08);outline:none}.dt:focus-visible{outline:2px solid var(--ink)}
 .dt.warn{border-left-color:#f08c00}.dt.alert{border-left-color:#e03131}.dt.alert>b{color:#e03131}
 .dti{font-size:20px;line-height:1}.dt>b{font:700 28px/1.15 Outfit,Inter,sans-serif;margin-top:6px;color:var(--ink)}.dtl{font-weight:600;font-size:14px;color:var(--ink)}.dts{font-size:12.5px;color:var(--mute)}
-.dls{display:flex;flex-direction:column}.dl{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 6px;border-top:1px solid var(--line)}.dl:first-child{border-top:0}.dl:hover,.dl:focus-visible{background:light-dark(#f5f7fa,#1d2938);border-radius:10px}
+.dls{display:flex;flex-direction:column}.dl{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 6px;border-top:1px solid var(--line)}.dl:first-child{border-top:0}.dl.ro{cursor:default}.dl.ro:hover{background:none}.dl:hover,.dl:focus-visible{background:light-dark(#f5f7fa,#1d2938);border-radius:10px}
 .dld{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--brand,#dcf94a);color:#111;border-radius:10px;height:50px}.dld b{font:700 20px/1 Outfit,sans-serif}.dld small{font-size:11px;text-transform:uppercase}
 .dlm{display:flex;flex-direction:column;min-width:0}.dlm .note{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dlq{font-size:12.5px;font-weight:600;white-space:nowrap}.dlq.okq{color:#2b8a3e}
 @media(max-width:600px){.dash{grid-template-columns:1fr 1fr;gap:8px}.dt{padding:12px;min-height:110px}.dt>b{font-size:22px}.dtl{font-size:13px}.dl{grid-template-columns:46px minmax(0,1fr)}.dlq{grid-column:2}}
@@ -616,8 +616,8 @@ function renderAccueil(){const rl=role(),t=today(),y=t.slice(0,4),me=myEmp(),emp
  const PR=paieRows().filter(r=>!r.h.paye),pE=new Set(PR.map(r=>r.h.emp)).size,pTot=r2(PR.reduce((a,r)=>a+payOf(r.h,yearOf(r.d)),0));
  const CA=certAlerts(),CAexp=CA.filter(a=>a.st==="exp").length;
  const dem=Object.keys(S.dem||{}).filter(id=>!((S.acces||{}).users||{})[id]).length;
- const evRow=x=>{const d=x.s||x.f,e=d.evenement||{},qs=(e.quarts||[]),tot=qs.reduce((a,q)=>a+qSlots(q).length,0),fil=qs.reduce((a,q)=>a+qSlots(q).filter(Boolean).length,0),s0=evStart(d),s1=evEnd(d);
-  return`<button class="dl" data-dev="${esc(d.id)}"><span class="dld"><b>${new Date(s0+"T12:00:00").getDate()}</b><small>${new Date(s0+"T12:00:00").toLocaleDateString("fr-CA",{month:"short"}).replace(".","")}</small></span><span class="dlm"><b>${esc(e.nom||"(sans titre)")}</b><span class="note">${esc(d.client.entreprise||"")}${s1!==s0?" · jusqu'au "+fdate(s1):""}${e.adresse?" · "+esc(e.adresse):""}</span></span>${tot?`<span class="dlq ${fil<tot?"due":"okq"}">${fil<tot?`${tot-fil} à combler`:"✓ Complet"}</span>`:""}</button>`};
+ const evRow=(x,ro)=>{const d=x.s||x.f,e=d.evenement||{},qs=(e.quarts||[]),tot=qs.reduce((a,q)=>a+qSlots(q).length,0),fil=qs.reduce((a,q)=>a+qSlots(q).filter(Boolean).length,0),s0=evStart(d),s1=evEnd(d);
+  return`<${ro?"div":"button"} class="dl${ro?" ro":""}" ${ro?"":`data-dev="${esc(d.id)}"`}><span class="dld"><b>${new Date(s0+"T12:00:00").getDate()}</b><small>${new Date(s0+"T12:00:00").toLocaleDateString("fr-CA",{month:"short"}).replace(".","")}</small></span><span class="dlm"><b>${esc(e.nom||"(sans titre)")}</b><span class="note">${esc(d.client.entreprise||"")}${s1!==s0?" · jusqu'au "+fdate(s1):""}${e.adresse?" · "+esc(e.adresse):""}</span></span>${tot?`<span class="dlq ${fil<tot?"due":"okq"}">${fil<tot?`${tot-fil} à combler`:"✓ Complet"}</span>`:""}</${ro?"div":"button"}>`};
  if(rl==="admin"){
   T.push(tile("evenements","📅",up.filter(x=>evStart(x.s||x.f)<=in30).length,"Évènements dans les 30 prochains jours",up.length?`${up.length} à venir au total`:""));
   T.push(tile("quarts","👥",holes,"Places à combler dans les quarts",holes30?`${holes30} dans les 30 prochains jours`:"",holes30?"warn":""));
@@ -637,7 +637,7 @@ function renderAccueil(){const rl=role(),t=today(),y=t.slice(0,4),me=myEmp(),emp
   T.push(tile("paies","💵",pE,"Employés à payer",pTot?money(pTot):"",pE?"alert":""));
   T.push(tile("recevoir","💰",money(feTot),"Factures à recevoir",`${FE.length} facture${FE.length>1?"s":""}${feLate.length?` · <b class="due">${feLate.length} en retard</b>`:""}`,feLate.length?"alert":""));
   T.push(tile("cfact","🧾",S.docs.filter(d=>d.type==="facture"&&d.statut!=="annulee"&&d.statut!=="brouillon"&&(d.date||"").startsWith(y)).length,`Factures émises en ${y}`,""));
-  lists=dn.length?`<div class="card"><h3 style="margin-top:0">Évènements terminés récemment</h3><ul style="margin:0;padding-left:18px">${dn.slice(0,8).map(d=>`<li><b>${esc(d.evenement.nom||"")}</b> · ${fdate(evStart(d))} · facture ${label(d)}</li>`).join("")}</ul></div>`:"";
+  lists=`<div class="card"><h3 style="margin-top:0">Prochains évènements</h3>${up.length?`<div class="dls">${up.slice(0,6).map(x=>evRow(x,true)).join("")}</div>${up.length>6?`<p class="note" style="margin:8px 0 0">${up.length-6} autre${up.length-6>1?"s":""} évènement${up.length-6>1?"s":""} à venir.</p>`:""}`:`<p class="note">Aucun évènement à venir.</p>`}</div>`+(dn.length?`<div class="card"><h3 style="margin-top:0">Évènements terminés récemment</h3><ul style="margin:0;padding-left:18px">${dn.slice(0,8).map(d=>`<li><b>${esc(d.evenement.nom||"")}</b> · ${fdate(evStart(d))} · facture ${label(d)}</li>`).join("")}</ul></div>`:"");
  }else{ // chef et employé
   const mine=Q.filter(x=>qSlots(x.q).includes(me)),nxt=mine[0],comb=Q.filter(x=>qSlots(x.q).some(s=>!s)&&!qSlots(x.q).includes(me)&&qOk(me,x.q)),myPay=r2(PR.filter(r=>r.h.emp===me).reduce((a,r)=>a+payOf(r.h,yearOf(r.d)),0));
   T.push(tile("mesquarts","📅",mine.length,"Mes quarts à venir",nxt?`Prochain : ${dLong(nxt.q.date)}`:""));
