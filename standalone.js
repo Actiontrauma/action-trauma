@@ -174,7 +174,7 @@ window.AT_SA={
   <p class="note" style="margin-top:0">Crée son compte ici, puis donne-lui son courriel, son mot de passe et le lien de l'application. Il pourra se connecter tout de suite.</p>
   <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 14px;align-items:end">
    <div><label for="nu-e">Employé</label><select id="nu-e"><option value="">— Choisir —</option><option value="__ext">➕ Personne hors de la liste des employés</option>${emps.map(e=>`<option value="${esc(e.id)}" data-mail="${esc(e.courriel||"")}">${esc(e.nom)}</option>`).join("")}</select></div>
-   <div id="nu-nw" style="display:none"><label for="nu-n">Nom complet</label><input id="nu-n" autocomplete="off" placeholder="ex. Réjeanne Arseneault"></div>
+   <div id="nu-nw" style="display:none"><label for="nu-n">Nom complet</label><input id="nu-n" autocomplete="off" placeholder="Prénom et nom"></div>
    <div><label for="nu-r">Type d'utilisateur</label><select id="nu-r"><option value="employe">Employé</option><option value="chef">Chef d'équipe</option><option value="compta">Comptabilité</option><option value="admin">Administrateur</option></select></div>
    <div><label for="nu-m">Courriel (sert à se connecter)</label><input id="nu-m" type="email" autocomplete="off"></div>
    <div><label for="nu-p">Mot de passe</label><input id="nu-p" type="text" autocomplete="off" placeholder="8 caractères minimum"></div>
