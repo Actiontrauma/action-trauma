@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261128144427">
+<link rel="manifest" href="manifest.webmanifest?v=20261128144858">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261128144427">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261128144858">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261128144427"></script>
-<script src="standalone.js?v=20261128144427"></script>
+<script src="config.js?v=20261128144858"></script>
+<script src="standalone.js?v=20261128144858"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -284,7 +284,7 @@ details.esec{border:1px solid var(--line,#dee2e6);border-radius:10px;padding:0 1
 .dt:hover,.dt:focus-visible{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.08);outline:none}.dt:focus-visible{outline:2px solid var(--ink)}
 .dt.warn{border-left-color:#f08c00}.dt.alert{border-left-color:#e03131}.dt.alert>b{color:#e03131}
 .dti{font-size:20px;line-height:1}.dt>b{font:700 28px/1.15 Outfit,Inter,sans-serif;margin-top:6px;color:var(--ink)}.dtl{font-weight:600;font-size:14px;color:var(--ink)}.dts{font-size:12.5px;color:var(--mute)}
-.dls{display:flex;flex-direction:column}.dl{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 6px;border-top:1px solid var(--line)}.dl:first-child{border-top:0}.list.chl .erow{grid-template-columns:minmax(0,1fr)!important}.compi .cjam{font-size:13px;margin-top:4px;gap:6px}select.selexp{color:#c92a2a;font-weight:600;border-color:#e03131}select.selexp option{color:var(--ink);font-weight:400}select.selexp option.optexp{color:#c92a2a;font-weight:600}.talonc{border-color:#2b8a3e;background:light-dark(#ebfbee,#1d3324)}.nohrs{border-color:#e03131;background:light-dark(#fff5f5,#3a1d1d)}.nohrs h3{color:#c92a2a}.pill.nohp{background:#ffe3e3;color:#c92a2a;font-weight:700}.dl:hover,.dl:focus-visible{background:light-dark(#f5f7fa,#1d2938);border-radius:10px}
+.dls{display:flex;flex-direction:column}.dl{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 6px;border-top:1px solid var(--line)}.dl:first-child{border-top:0}.eqq .erow{grid-template-columns:minmax(0,1fr) auto!important}.eqq .erow>span.r{display:block!important;text-align:right;font-size:13px}.list.chl .erow{grid-template-columns:minmax(0,1fr)!important}.compi .cjam{font-size:13px;margin-top:4px;gap:6px}select.selexp{color:#c92a2a;font-weight:600;border-color:#e03131}select.selexp option{color:var(--ink);font-weight:400}select.selexp option.optexp{color:#c92a2a;font-weight:600}.talonc{border-color:#2b8a3e;background:light-dark(#ebfbee,#1d3324)}.nohrs{border-color:#e03131;background:light-dark(#fff5f5,#3a1d1d)}.nohrs h3{color:#c92a2a}.pill.nohp{background:#ffe3e3;color:#c92a2a;font-weight:700}.dl:hover,.dl:focus-visible{background:light-dark(#f5f7fa,#1d2938);border-radius:10px}
 .dld{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--brand,#dcf94a);color:#111;border-radius:10px;height:50px}.dld b{font:700 20px/1 Outfit,sans-serif}.dld small{font-size:11px;text-transform:uppercase}
 .dlm{display:flex;flex-direction:column;min-width:0}.dlm .note{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dlq{font-size:12.5px;font-weight:600;white-space:nowrap}.dlq.okq{color:#2b8a3e}
 @media(max-width:600px){.dash{grid-template-columns:1fr 1fr;gap:8px}.dt{padding:12px;min-height:110px}.dt>b{font-size:22px}.dtl{font-size:13px}.dl{grid-template-columns:46px minmax(0,1fr)}.dlq{grid-column:2}}
@@ -1639,6 +1639,12 @@ function renderEmployes(){const emps=(cfg().employes||[]).slice().sort((a,b)=>a.
  $("#eNew").onkeydown=e=>{if(e.key==="Enter")$("#eAdd").click()};
  document.querySelectorAll("[data-e]").forEach(r=>{const o=()=>empModal(r.dataset.e);r.onclick=o;r.onkeydown=e=>{if(e.key==="Enter")o()}});
 }
+function empQuartsHTML(id){const t=today(),L=[];S.docs.forEach(d=>{if(!((d.type==="soumission"&&["acceptee","facturee","archivee"].includes(d.statut))||(d.type==="facture"&&!d.sourceId&&d.statut!=="annulee")))return;((d.evenement||{}).quarts||[]).forEach(q=>{if(qSlots(q).includes(id))L.push({d,q})})});
+ L.sort((a,b)=>(a.q.date||"").localeCompare(b.q.date||"")||(a.q.debut||"").localeCompare(b.q.debut||""));const up=L.filter(x=>(x.q.date||"")>=t),past=L.filter(x=>(x.q.date||"")<t).reverse();
+ const row=({d,q})=>`<div class="erow" style="cursor:default;grid-template-columns:minmax(0,1fr) auto"><span><b>${esc(d.evenement.nom||"(sans titre)")}</b><div class="note">${esc(d.client.entreprise||"")}${d.evenement.adresse?" · "+esc(d.evenement.adresse):""}</div></span><span class="r">${q.date?dLong(q.date):"?"}<div class="note">${qLine(q)}</div></span></div>`;
+ return`<details class="more esec" data-sec="evq" ${(S.empSec||{}).evq?"open":""}><summary><b style="font-size:16px">Évènements cédulés</b><span class="note">${up.length} à venir · ${past.length} passé${past.length>1?"s":""}</span></summary>
+ <h4 style="margin:12px 0 6px">À venir</h4>${up.length?`<div class="list eqq">${up.map(row).join("")}</div>`:`<p class="note" style="margin:0">Aucun quart à venir.</p>`}
+ <h4 style="margin:14px 0 6px">Passés</h4>${past.length?`<div class="list eqq">${past.slice(0,30).map(row).join("")}</div>${past.length>30?`<p class="note">et ${past.length-30} autres</p>`:""}`:`<p class="note" style="margin:0">Aucun quart passé.</p>`}</details>`}
 function empModal(id,yy){const e=empFull((cfg().employes||[]).find(x=>x.id===id));if(!e)return;const ys=empYears(),y=yy||today().slice(0,4);
  const rows=empRows(y).filter(r=>r.h.emp===id).sort((a,b)=>(a.d.evenement.date||a.d.date).localeCompare(b.d.evenement.date||b.d.date));
  const all=S.docs.some(d=>(d.heures||[]).some(h=>h.emp===id)),tot=k=>r2(rows.reduce((a,r)=>a+(+r.h[k]||0),0)),pay=r2(rows.reduce((a,r)=>a+payOf(r.h,yearOf(r.d)),0)),du=r2(rows.filter(r=>!r.h.paye).reduce((a,r)=>a+payOf(r.h,yearOf(r.d)),0));
@@ -1658,7 +1664,7 @@ function empModal(id,yy){const e=empFull((cfg().employes||[]).find(x=>x.id===id)
  <p class="note" style="margin:6px 0 0">Mois d'expiration de la carte (valide jusqu'à la fin du mois), ou « Jamais » pour une carte bonne à vie. Sans date ni « Jamais », la carte est considérée comme expirée. Une certification expirée à la date de l'évènement bloque les heures de cette catégorie. Alerte 60 jours avant.</p>
  <div style="margin-top:8px"><label for="m-aut">Autre (précisez)</label><input id="m-aut" value="${esc(e.autreComp||"")}" placeholder="ex. Paramédic"></div>
  </details>
- ${role()==="chef"&&id!==myEmp()?"":`<details class="more esec" data-sec="ev" ${(S.empSec||{}).ev?"open":""}><summary><b style="font-size:16px">Évènements</b><span class="note">${rows.length} en ${y} · ${money(pay)}${du>0?` · <span class="due">à verser ${money(du)}</span>`:""}</span></summary>
+ ${role()==="chef"&&id!==myEmp()?empQuartsHTML(id):`<details class="more esec" data-sec="ev" ${(S.empSec||{}).ev?"open":""}><summary><b style="font-size:16px">Évènements</b><span class="note">${rows.length} en ${y} · ${money(pay)}${du>0?` · <span class="due">à verser ${money(du)}</span>`:""}</span></summary>
  <div class="chips" style="margin:10px 0">${ys.map(v=>`<button class="chip ${v===y?"on":""}" data-my="${v}">${v}</button>`).join("")}</div>
  ${rows.length?`<div class="list"><div class="erow ehd"><span>Évènement</span>${HCATS.map(k=>`<span class="r">${k==="gestion"?"Gestion":k==="pro"?"PO":k.toUpperCase()}</span>`).join("")}<span class="r">Paie</span><span class="r">Payé</span></div>${rows.map(({d,h,i})=>`<div class="erow" style="cursor:default"><span><b>${label(d)}</b> ${esc(d.evenement.nom)}<div class="note">${fdate(d.evenement.date||d.date)} · ${esc(d.client.entreprise||"")}${h.chef?" · chef":""}${h.km?" · "+fq(h.km)+" km dépl.":""}${h.lkm?" · "+fq(h.lkm)+" km livr.":""}${h.transport?" · "+money(h.transport)+" remb.":""}</div></span>${HCATS.map(k=>`<span class="r">${h[k]?fq(h[k])+" h":"–"}</span>`).join("")}<span class="r">${money(payOf(h,yearOf(d)))}</span><label class="check r" style="justify-content:flex-end"><input type="checkbox" data-pd="${esc(d.id)}" data-pi="${i}" ${h.paye?"checked":""}></label></div>`).join("")}
  <div class="erow" style="cursor:default;border-top:2px solid var(--ink)"><b>${rows.length} évènement${rows.length>1?"s":""}</b>${HCATS.map(k=>`<b class="r">${tot(k)?fq(tot(k))+" h":"–"}</b>`).join("")}<b class="r">${money(pay)}</b><span class="r ${du>0?"due":""}">${du>0?"à verser "+money(du):"tout payé"}</span></div></div>`:`<p class="note">Aucun évènement en ${y}.</p>`}</details>`}
