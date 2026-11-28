@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261128144858">
+<link rel="manifest" href="manifest.webmanifest?v=20261128145301">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261128144858">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261128145301">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261128144858"></script>
-<script src="standalone.js?v=20261128144858"></script>
+<script src="config.js?v=20261128145301"></script>
+<script src="standalone.js?v=20261128145301"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -227,7 +227,7 @@ body.chef #nav a:not([data-v="evenements"]):not([data-v="moi"]):not([data-v="mes
 body.employe #nav a:not([data-v="moi"]):not([data-v="mesquarts"]):not([data-v="combler"]):not([data-v="fiche"]),body.employe #gear,body.employe #hTot{display:none!important}
 body:not(.chef):not(.employe) #nav a[data-v="mesquarts"],body:not(.chef):not(.employe) #nav a[data-v="combler"],body:not(.chef):not(.employe) #nav a[data-v="fiche"],body.chef #nav a[data-v="quarts"],body.employe #nav a[data-v="quarts"],body.compta #nav a[data-v="quarts"]{display:none!important}
 #nav a[data-v="soumission"]{order:1}#nav a[data-v="evenements"]{order:2}#nav a[data-v="quarts"]{order:3}#nav a[data-v="facture"]{order:4}#nav a[data-v="paies"]{order:5}#nav a[data-v="clients"]{order:6}#nav a[data-v="employes"]{order:7}#nav a[data-v="materiel"]{order:8}#nav a[data-v="services"]{order:9}#nav a[data-v="statistiques"]{order:10}#nav a[data-v="utilisateurs"]{order:11}
-body.chef #nav a[data-v="evenements"],body.employe #nav a[data-v="mesquarts"]{order:1}body.chef #nav a[data-v="mesquarts"],body.employe #nav a[data-v="combler"]{order:2}body.chef #nav a[data-v="combler"],body.employe #nav a[data-v="moi"]{order:3}body.chef #nav a[data-v="moi"],body.employe #nav a[data-v="fiche"]{order:4}body.chef #nav a[data-v="fiche"]{order:5}body.chef #nav a[data-v="employes"]{order:6}
+body.chef #nav a[data-v="evenements"],body.employe #nav a[data-v="mesquarts"]{order:1}body.chef #nav a[data-v="mesquarts"],body.employe #nav a[data-v="combler"]{order:2}body.chef #nav a[data-v="combler"],body.employe #nav a[data-v="moi"]{order:3}body.chef #nav a[data-v="moi"],body.employe #nav a[data-v="fiche"]{order:4}body.chef #nav a[data-v="employes"]{order:5}body.chef #nav a[data-v="fiche"]{order:6}body.chef #nav a[data-v="moi"],body.employe #nav a[data-v="moi"]{display:none!important}
 body:not(.compta) #nav a[data-v="paies"]{display:none!important}body.compta #nav a[data-v="paies"]{order:1}body.compta #nav a[data-v="cfact"]{order:2}body.compta #nav a[data-v="recevoir"]{order:3}body.compta #nav a[data-v="statistiques"]{order:4}body.compta #nav a[data-v="employes"]{order:5}#nav a[data-v="cfact"],#nav a[data-v="recevoir"]{display:none}body.compta #nav a[data-v="cfact"],body.compta #nav a[data-v="recevoir"]{display:inline-flex}body.compta #nav a:not([data-v="paies"]):not([data-v="statistiques"]):not([data-v="employes"]):not([data-v="cfact"]):not([data-v="recevoir"]),body.compta #gear,body.compta #hTot{display:none!important}body:not(.chef):not(.employe) #nav a[data-v="moi"],body:not(.chef):not(.compta):not(.employe) #hMe{display:none!important}
 .steps{margin:0;padding-left:22px;line-height:1.55}.steps li{margin:0 0 12px}.steps li:last-child{margin:0}
 .urow.rqrow{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 170px 200px}@media(max-width:820px){.urow.rqrow{grid-template-columns:1fr 1fr}.urow.rqrow>div:first-child,.urow.rqrow>span{grid-column:1/-1}}
@@ -483,6 +483,7 @@ function render(){headerTotal();roBar();$("#gear")&&$("#gear").classList.toggle(
  meHeader();
  if((rl==="compta"&&((S.view==="employes"&&S.etab!=="apayer")||S.view==="statistiques"))||(rl==="chef"&&S.view==="employes")){setTimeout(()=>readOnly($("#app")),0);if(!S._roObs){S._roObs=1;roObs.observe($("#modal"),{childList:true,subtree:true})}}
  if(S.view==="accueil")return renderAccueil();
+ if((S.view==="moi"||S.view==="fiche")&&(role()==="chef"||role()==="employe")){S.view="fiche";return renderMaFiche()}
  if(S.view==="moi")return renderMoi();
  if(S.view==="quarts")return renderQuarts();
  if(S.view==="mesquarts")return renderMesQuarts();
@@ -1269,6 +1270,9 @@ function renderCombler(){const me=myEmp()||(S.preview?"__apercu":""),e=empById(m
  ${L.length?`<div class="card" style="padding:0">${L.map(({d,qi,q})=>{const on=(q.dispo||[]).includes(me),n=qSlots(q).filter(s=>!s).length;return`<div class="mq"><div class="mqd"><b>${dLong(q.date)}</b></div><div class="mqt">${qLine(q)} <span class="note">(${fq(r2(qDur(q)))} h) · ${n} place${n>1?"s":""}</span></div><div><b>${esc(d.evenement.nom||"")}</b>${d.evenement.adresse?`<div class="note">📍 ${esc(d.evenement.adresse)}</div>`:""}</div><button class="btn ${on?"p":""}" data-dsp="${esc(d.id)}:${qi}">${on?"✓ Disponible":"Je suis disponible"}</button></div>`}).join("")}</div>`:`<div class="card"><p class="note" style="margin:0">Aucun quart à combler pour l'instant.</p></div>`}`;
  document.querySelectorAll("[data-dsp]").forEach(b=>b.onclick=async()=>{const[id,qi]=b.dataset.dsp.split(":"),d=S.docs.find(x=>x.id===id);let on=false;if(window.AT_sb&&!S.preview&&(role()==="employe"||role()==="chef")){b.disabled=true;const {data,error}=await window.AT_sb.rpc("at_toggle_dispo",{p_path:"docs/"+id,p_qi:+qi});b.disabled=false;if(error){if(/function|schema cache/i.test(error.message||"")){if(!await saveQuart(d,+qi,q=>{const s=new Set(q.dispo||[]);if(s.has(me))s.delete(me);else{s.add(me);on=true}q.dispo=[...s]}))return}else{fail(error);return}}else on=!!data}else if(!await saveQuart(d,+qi,q=>{const s=new Set(q.dispo||[]);if(s.has(me))s.delete(me);else{s.add(me);on=true}q.dispo=[...s]}))return;toast(on?"Disponibilité envoyée":"Disponibilité retirée")})}
 /* --- onglet Ma fiche --- */
+function renderMaFiche(){renderMoi();const tmp=document.createElement("div");tmp.innerHTML=$("#app").innerHTML;const h=tmp.querySelector(".ehead");const sub=h?(h.querySelector(".note")||{}).textContent||"":"";if(h)h.remove();const stats=tmp.innerHTML;
+ renderFiche();$("#app").insertAdjacentHTML("beforeend",`<div class="ehead" id="mesStats" style="margin-top:26px"><div><h2>Mes statistiques</h2>${sub?`<p class="note" style="margin:4px 0 0">${esc(sub)}</p>`:""}</div></div>${stats}`);
+ document.querySelectorAll("[data-my]").forEach(b=>b.onclick=()=>{S.moiY=b.dataset.my;render();const m=$("#mesStats");if(m)m.scrollIntoView()});bindPv()}
 function renderFiche(){const e=empFull(empById(myEmp()))||(S.preview?{id:"__apercu",nom:ROLES[S.preview]||"Employé",comp:[]}:null);if(!e){$("#app").innerHTML=`<div class="ehead"><h2>Ma fiche</h2></div><div class="card"><p class="note" style="margin:0">${S.preview?"Aperçu générique : cette session n'est reliée à aucun employé, elle n'a donc aucune donnée personnelle. Pour voir celle d'une personne, utilise son bouton 👁 dans l'onglet Utilisateurs.":"Aucun employé n'est associé à ton compte."}</p></div>`;return}
  const kv=(a,b)=>b?`<span class="note">${a}</span><b style="text-align:left">${esc(b)}</b>`:"";
  const C=(e.comp||[]).map(c=>{const st=certSt(e,c),x=(e.compExp||{})[c];return`<li><b>${esc(compLab(e,c))}</b>${x?(x==="jamais"?" · n'expire jamais":` · expire en ${fmy(x)}`):""} ${st==="exp"?`<span class="pill st-retard">Expirée</span>`:st==="soon"?`<span class="pill st-retard">Bientôt</span>`:x?`<span class="pill st-payee">Valide</span>`:""}</li>`}).join("");
