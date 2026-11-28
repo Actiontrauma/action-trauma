@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261127213402">
+<link rel="manifest" href="manifest.webmanifest?v=20261127213509">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261127213402">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261127213509">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261127213402"></script>
-<script src="standalone.js?v=20261127213402"></script>
+<script src="config.js?v=20261127213509"></script>
+<script src="standalone.js?v=20261127213509"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -343,7 +343,7 @@ async function migrateCfg(){if(S._mig||role()!=="admin")return;const c=cfg();if(
  if(!o.catConsommable){o.materiel=(o.materiel||[]).map(m=>m.categorie==="Matériel"?{...m,categorie:"Consommable"}:m);o.catConsommable=today()}
  if(!o.chefsInit){const ids=new Set();S.docs.forEach(d=>(d.heures||[]).forEach(h=>{if(h.chef&&h.emp)ids.add(h.emp)}));o.employes=(o.employes||[]).map(e=>ids.has(e.id)?{...e,chef:true}:e);o.chefsInit=today()}
  try{await S.db.doc("config/entreprise").set(o)}catch(e){S._mig=false}}
-async function linkByName(){claimOwner();migratePrive();repairLinks();migrateCfg();if(cfg().liensNoms||S._linked){if(!S._linking)closeAllQuotes();return}if(S._linking||role()!=="admin"||!(S.isOwner||S.canEdit||!S.U))return;S._linking=true;
+async function linkByName(){claimOwner();migratePrive();normCompExp();repairLinks();migrateCfg();if(cfg().liensNoms||S._linked){if(!S._linking)closeAllQuotes();return}if(S._linking||role()!=="admin"||!(S.isOwner||S.canEdit||!S.U))return;S._linking=true;
  const nm=x=>(x||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim(),dd=d=>new Date((d.evenement&&d.evenement.date||d.date||"2000-01-01")+"T12:00:00");
  const Q=S.docs.filter(d=>d.type==="soumission"&&!d.factureId),F=S.docs.filter(d=>d.type==="facture"&&!d.sourceId).sort((a,b)=>a.numero-b.numero),used=new Set(),pairs=[];
  for(const f of F){const n=nm(f.evenement&&f.evenement.nom);if(!n)continue;const c=Q.filter(q=>!used.has(q.id)&&nm(q.evenement&&q.evenement.nom)===n&&Math.abs(dd(q)-dd(f))<=120*864e5).sort((a,b)=>Math.abs(dd(a)-dd(f))-Math.abs(dd(b)-dd(f)));if(c.length){used.add(c[0].id);pairs.push([f,c[0]])}}
@@ -1603,6 +1603,8 @@ function bindHours(){const d=S.edit;if(d.type!=="facture"||!$("#hEv"))return;
 function empRows(y){const out=[];S.docs.filter(d=>d.type==="facture"&&d.statut!=="annulee"&&yearOf(d)===y).forEach(d=>(d.heures||[]).forEach((h,i)=>out.push({d,h,i})));return out}
 const PRIV=["adresse","naissance","impot"];
 function empFull(e){if(!e)return e;const p=(S.prive||{})[e.id];if(!p)return e;const o={...e};PRIV.forEach(k=>{if(p[k]!==undefined)o[k]=p[k]});return o}
+async function normCompExp(){if(S._nce||role()!=="admin"||S.ro||S.preview||!S.ready.g)return;const E=cfg().employes||[];const bad=v=>/^\d{4}-\d{2}-\d{2}$/.test(v||"")&&monthEnd(v.slice(0,7))!==v;if(!E.some(e=>Object.values(e.compExp||{}).some(bad)))return;S._nce=true;
+ try{const o=JSON.parse(JSON.stringify(cfg()));o.employes.forEach(e=>{Object.keys(e.compExp||{}).forEach(k=>{if(bad(e.compExp[k]))e.compExp[k]=monthEnd(e.compExp[k].slice(0,7))})});await S.db.doc("config/entreprise").set(o)}catch(err){console.error(err);S._nce=false}}
 async function migratePrive(){if(S._mp||role()!=="admin"||S.ro||S.preview||!S.ready.g||!S.privOk)return;const E=cfg().employes||[];if(!E.some(e=>PRIV.some(k=>e[k])))return;S._mp=true;
  try{for(const e of E){const v={};PRIV.forEach(k=>{if(e[k])v[k]=e[k]});if(!Object.keys(v).length)continue;await S.db.doc("prive/"+e.id).set({...((S.prive||{})[e.id]||{}),...v})}
   const o=JSON.parse(JSON.stringify(cfg()));o.employes=o.employes.map(e=>{const x={...e};PRIV.forEach(k=>delete x[k]);return x});await S.db.doc("config/entreprise").set(o)}catch(err){console.error(err);S._mp=false}}
