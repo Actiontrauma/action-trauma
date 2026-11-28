@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Action Trauma</title>
 <meta name="theme-color" content="#dcfa4b">
-<link rel="manifest" href="manifest.webmanifest?v=20261127213509">
+<link rel="manifest" href="manifest.webmanifest?v=20261127215624">
 <link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261127213509">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261127215624">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Action Trauma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=20261127213509"></script>
-<script src="standalone.js?v=20261127213509"></script>
+<script src="config.js?v=20261127215624"></script>
+<script src="standalone.js?v=20261127215624"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
@@ -284,7 +284,7 @@ details.esec{border:1px solid var(--line,#dee2e6);border-radius:10px;padding:0 1
 .dt:hover,.dt:focus-visible{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.08);outline:none}.dt:focus-visible{outline:2px solid var(--ink)}
 .dt.warn{border-left-color:#f08c00}.dt.alert{border-left-color:#e03131}.dt.alert>b{color:#e03131}
 .dti{font-size:20px;line-height:1}.dt>b{font:700 28px/1.15 Outfit,Inter,sans-serif;margin-top:6px;color:var(--ink)}.dtl{font-weight:600;font-size:14px;color:var(--ink)}.dts{font-size:12.5px;color:var(--mute)}
-.dls{display:flex;flex-direction:column}.dl{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 6px;border-top:1px solid var(--line)}.dl:first-child{border-top:0}.talonc{border-color:#2b8a3e;background:light-dark(#ebfbee,#1d3324)}.nohrs{border-color:#e03131;background:light-dark(#fff5f5,#3a1d1d)}.nohrs h3{color:#c92a2a}.pill.nohp{background:#ffe3e3;color:#c92a2a;font-weight:700}.dl:hover,.dl:focus-visible{background:light-dark(#f5f7fa,#1d2938);border-radius:10px}
+.dls{display:flex;flex-direction:column}.dl{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 6px;border-top:1px solid var(--line)}.dl:first-child{border-top:0}select.selexp{color:#c92a2a;font-weight:600;border-color:#e03131}select.selexp option{color:var(--ink);font-weight:400}select.selexp option.optexp{color:#c92a2a;font-weight:600}.talonc{border-color:#2b8a3e;background:light-dark(#ebfbee,#1d3324)}.nohrs{border-color:#e03131;background:light-dark(#fff5f5,#3a1d1d)}.nohrs h3{color:#c92a2a}.pill.nohp{background:#ffe3e3;color:#c92a2a;font-weight:700}.dl:hover,.dl:focus-visible{background:light-dark(#f5f7fa,#1d2938);border-radius:10px}
 .dld{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--brand,#dcf94a);color:#111;border-radius:10px;height:50px}.dld b{font:700 20px/1 Outfit,sans-serif}.dld small{font-size:11px;text-transform:uppercase}
 .dlm{display:flex;flex-direction:column;min-width:0}.dlm .note{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dlq{font-size:12.5px;font-weight:600;white-space:nowrap}.dlq.okq{color:#2b8a3e}
 @media(max-width:600px){.dash{grid-template-columns:1fr 1fr;gap:8px}.dt{padding:12px;min-height:110px}.dt>b{font-size:22px}.dtl{font-size:13px}.dl{grid-template-columns:46px minmax(0,1fr)}.dlq{grid-column:2}}
@@ -1229,9 +1229,11 @@ const qSlots=q=>{const n=Math.max(1,+q.nb||1),a=(q.emps||[]).slice(0,n);while(a.
 const empById=id=>(cfg().employes||[]).find(x=>x.id===id);
 const qOk=(id,q)=>{if(id==="__apercu")return true;const c=empCats(id,q.date||today());return !!(c&&c.has(q.cat))};
 function slotOpts(q,j){const S0=qSlots(q),cur=S0[j],taken=new Set(S0.filter((x,k)=>x&&k!==j)),dispo=new Set(q.dispo||[]);
- const E=(cfg().employes||[]).filter(e=>(e.actif!==false&&qOk(e.id,q)&&!taken.has(e.id))||e.id===cur).sort((a,b)=>(dispo.has(b.id)-dispo.has(a.id))||a.nom.localeCompare(b.nom,"fr"));
- return`<option value="">À combler</option>`+E.map(e=>`<option value="${esc(e.id)}" ${e.id===cur?"selected":""}>${dispo.has(e.id)?"★ ":""}${esc(e.nom)}${e.id===cur&&!qOk(e.id,q)?" (compétence non valide)":""}</option>`).join("")}
-function slotsHTML(q,attr){const S0=qSlots(q);return`<div class="qas">${S0.map((x,j)=>`<select ${attr}="${j}" class="${x?"":"open"}" aria-label="Personne ${j+1}">${slotOpts(q,j)}</select>`).join("")}${(q.dispo||[]).length?`<span class="note">★ disponible : ${q.dispo.map(id=>esc((empById(id)||{}).nom||"?")).join(", ")}</span>`:""}</div>`}
+ const dt=q.date||today(),E=(cfg().employes||[]).filter(e=>(e.actif!==false&&(qOk(e.id,q)||qOkRaw(e,q))&&!taken.has(e.id))||e.id===cur).sort((a,b)=>(dispo.has(b.id)-dispo.has(a.id))||(cardExp(a,dt)-cardExp(b,dt))||a.nom.localeCompare(b.nom,"fr"));
+ return`<option value="">À combler</option>`+E.map(e=>{const x=cardExp(e,dt);return`<option value="${esc(e.id)}" ${e.id===cur?"selected":""} ${x?'class="optexp" style="color:#c92a2a;font-weight:600"':""}>${dispo.has(e.id)?"★ ":""}${esc(e.nom)}${x?" (carte échue)":e.id===cur&&!qOk(e.id,q)?" (compétence non valide)":""}</option>`}).join("")}
+const cardExp=(e,d)=>(e.comp||[]).some(c=>certSt(e,c,d)==="exp");
+function qOkRaw(e,q){const o=new Set(["gestion"]);(e.comp||[]).forEach(c=>{if(COMPCAT[c])o.add(COMPCAT[c])});if(o.has("pr")||o.has("pro"))o.add("ps");return o.has(q.cat)}
+function slotsHTML(q,attr){const S0=qSlots(q);return`<div class="qas">${S0.map((x,j)=>`<select ${attr}="${j}" class="${x?"":"open"} ${x&&empById(x)&&cardExp(empById(x),q.date||today())?"selexp":""}" aria-label="Personne ${j+1}">${slotOpts(q,j)}</select>`).join("")}${(q.dispo||[]).length?`<span class="note">★ disponible : ${q.dispo.map(id=>esc((empById(id)||{}).nom||"?")).join(", ")}</span>`:""}</div>`}
 /* tous les quarts des évènements acceptés (et des évènements sans soumission) */
 function allQuarts(withPast){const t=today(),out=[];S.docs.forEach(d=>{let ok=false;if(d.type==="soumission"&&statutOf(d)[0]==="acceptee"){const f=factOf(d);ok=!(f&&(f.statut==="annulee"||f.termine))}else if(d.type==="facture"&&!d.sourceId&&d.statut==="brouillon"&&!d.termine)ok=true;if(!ok)return;
  ((d.evenement||{}).quarts||[]).forEach((q,qi)=>{if(!q.date||(!withPast&&q.date<t))return;out.push({d,qi,q})})});return out.sort((a,b)=>(a.q.date+(a.q.debut||"")).localeCompare(b.q.date+(b.q.debut||"")))}
